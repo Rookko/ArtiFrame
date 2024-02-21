@@ -5,7 +5,7 @@
 
 #include "ofMain.h"
 
-class Renderer
+class Renderer2d
 {
 public:
 

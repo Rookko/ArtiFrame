@@ -8,9 +8,9 @@
 
 #include "renderer2d.h"
 
-class Application : public ofBaseApp
+class Application2d : public ofBaseApp
 {
-  Renderer renderer;
+  Renderer2d renderer;
 
   ofxPanel gui;
 

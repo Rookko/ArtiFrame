@@ -3,7 +3,7 @@
 
 #include "renderer2d.h"
 
-void Renderer::setup()
+void Renderer2d::setup()
 {
   ofSetFrameRate(60);
   ofSetBackgroundColor(31);
@@ -18,7 +18,7 @@ void Renderer::setup()
   font.load("consolas.ttf", font_size);
 }
 
-void Renderer::update()
+void Renderer2d::update()
 {
   // paramètres des outils de dessin
   ofSetColor(stroke_color);
@@ -28,7 +28,7 @@ void Renderer::update()
   bounding_box = font.getStringBoundingBox(text, 0, 0);
 }
 
-void Renderer::draw()
+void Renderer2d::draw()
 {
   // couleur d'arrière-plan
   ofClear(background_color);

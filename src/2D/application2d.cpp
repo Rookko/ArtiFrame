@@ -6,7 +6,7 @@
 #define MAIN_ICON 102
 
 
-void Application::setup()
+void Application2d::setup()
 {
   ofSetWindowTitle("Artiframe");
 
@@ -44,7 +44,7 @@ void Application::setup()
   gui.add(textbox);
 
   button.setup("button");
-  button.addListener(this, &Application::button_pressed);
+  button.addListener(this, &Application2d::button_pressed);
   gui.add(&button);
 
   checkbox.setName("visible");
@@ -53,7 +53,7 @@ void Application::setup()
   checkbox = true;
 }
 
-void Application::update()
+void Application2d::update()
 {
   // assigner les états courants de l'interface
   renderer.background_color = color_picker_background;
@@ -64,7 +64,7 @@ void Application::update()
   renderer.update();
 }
 
-void Application::draw()
+void Application2d::draw()
 {
   renderer.draw();
 
@@ -72,7 +72,7 @@ void Application::draw()
     gui.draw();
 }
 
-void Application::keyReleased(int key)
+void Application2d::keyReleased(int key)
 {
   if (key == 117) // touche u
   {
@@ -81,7 +81,7 @@ void Application::keyReleased(int key)
   }
 }
 
-void Application::button_pressed()
+void Application2d::button_pressed()
 {
   // réinitialiser la zone de texte
   textbox.set("text", "ift3100");
@@ -89,14 +89,14 @@ void Application::button_pressed()
   ofLog() << "<button pressed>";
 }
 
-void Application::windowResized(int w, int h)
+void Application2d::windowResized(int w, int h)
 {
   ofLog() << "<app::windowResized: (" << w << ", " << h << ")>";
 }
 
-void Application::exit()
+void Application2d::exit()
 {
-  button.removeListener(this, &Application::button_pressed);
+  button.removeListener(this, &Application2d::button_pressed);
 
   ofLog() << "<app::exit>";
 }
