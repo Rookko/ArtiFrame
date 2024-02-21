@@ -3,6 +3,6 @@
 
 # But not those elements
 !.gitignore
-!.md
+!README.md
 !src/
 !bin/data/
