@@ -2,10 +2,23 @@
 // Classe principale de l'application 2D.
 
 #include "application2d.h"
+#include <windows.h>
+#define MAIN_ICON 102
+
 
 void Application::setup()
 {
-  ofSetWindowTitle("interface (u)");
+  ofSetWindowTitle("Artiframe");
+
+  // Définir l'icône de l'application
+  HINSTANCE hInstance = GetModuleHandle(nullptr);
+  HICON hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(MAIN_ICON));
+  if (hIcon) {
+      // Associer l'icône à la fenêtre de l'application
+      HWND hwnd = ofGetWin32Window();
+      SetClassLongPtr(hwnd, GCLP_HICON, reinterpret_cast<LONG_PTR>(hIcon));
+  }
+
   ofNoFill();
 
   ofLog() << "<app::setup>";
