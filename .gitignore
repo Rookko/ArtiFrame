@@ -1,0 +1,8 @@
+# Ignore all elements
+*
+
+# But not those elements
+!.gitignore
+!.md
+!src/
+!bin/data/
