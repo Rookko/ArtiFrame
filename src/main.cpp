@@ -2,11 +2,11 @@
 // Fichier principal de l'application ArtiFrame
 
 #include "ofMain.h"
-#include "application2d.h"
+#include "application.h"
 
 
 int main()
 {
   ofSetupOpenGL(800, 600, OF_WINDOW);
-  ofRunApp(new Application2d());
+  ofRunApp(new Application());
 }

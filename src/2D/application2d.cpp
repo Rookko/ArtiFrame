@@ -2,30 +2,24 @@
 // Classe principale de l'application 2D.
 
 #include "application2d.h"
-#include <windows.h>
-#define MAIN_ICON 102
 
+
+ofxDatGui* toolsGui;
+
+ofxDatGui* shapeGui;
 
 void Application2d::setup()
 {
-  ofSetWindowTitle("Artiframe");
-
-  // Définir l'icône de l'application
-  HINSTANCE hInstance = GetModuleHandle(nullptr);
-  HICON hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(MAIN_ICON));
-  if (hIcon) {
-      // Associer l'icône à la fenêtre de l'application
-      HWND hwnd = ofGetWin32Window();
-      SetClassLongPtr(hwnd, GCLP_HICON, reinterpret_cast<LONG_PTR>(hIcon));
-  }
+  setup2DTaskbar();
 
   ofNoFill();
 
-  ofLog() << "<app::setup>";
+  ofLog() << "<app::setup2d>";
 
   renderer.setup();
 
   gui.setup("interface");
+  gui.setPosition(0, 120);
 
   group_draw.setup("outils de dessin");
 
@@ -99,4 +93,77 @@ void Application2d::exit()
   button.removeListener(this, &Application2d::button_pressed);
 
   ofLog() << "<app::exit>";
+}
+
+void Application2d::setup2DTaskbar() {
+
+    fileMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
+    fileMenu->setWidth(60);
+    fileMenuFolder = fileMenu->addFolder("File");
+    ofxDatGuiButton* fileRenderButton = fileMenuFolder->addButton("Export");
+    fileRenderButton->onButtonEvent(this, &Application2d::saveRenderButtonEvent);
+
+    addMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
+    addMenu->setWidth(120);
+    addMenu->setPosition(120, 0);
+    addMenuFolder = addMenu->addFolder("Add");
+    ofxDatGuiButton* addSquareBtn = addMenuFolder->addButton("Add Square");
+    addSquareBtn->onButtonEvent(this, &Application2d::onAddSquareEvent);
+    ofxDatGuiButton* addRectangleBtn = addMenuFolder->addButton("Add Rectangle");
+    addRectangleBtn->onButtonEvent(this, &Application2d::onAddRectangleEvent);
+    ofxDatGuiButton* addCircleBtn = addMenuFolder->addButton("Add Circle");
+    addCircleBtn->onButtonEvent(this, &Application2d::onAddCircleleEvent);
+    ofxDatGuiButton* addEllipsisBtn = addMenuFolder->addButton("Add Ellipsis");
+    addEllipsisBtn->onButtonEvent(this, &Application2d::onAddEllipsisEvent);
+    ofxDatGuiButton* addRegularPolygonBtn = addMenuFolder->addButton("Add Regular Polygon");
+    addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddRegularPolygonEvent);
+}
+
+void Application2d::showUi() {
+    fileMenu->setVisible(true);
+    addMenu->setVisible(true);
+
+}
+
+void Application2d::hideUi() {
+    fileMenu->setVisible(false);
+    addMenu->setVisible(false);
+}
+
+void Application2d::saveRenderButtonEvent(ofxDatGuiButtonEvent e) {
+    string filePath = ofSystemLoadDialog("Select a file").filePath;
+    if (!filePath.empty()) {
+        ofLogNotice("File Selected") << filePath;
+    }
+    else {
+        ofLogNotice("File selection canceled");
+    }
+}
+
+void Application2d::onAddSquareEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddRectangleEvent(ofxDatGuiButtonEvent e) {
+ 
+}
+
+void Application2d::onAddCircleleEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddEllipsisEvent(ofxDatGuiButtonEvent e) {
+   
+}
+
+void Application2d::onAddRegularPolygonEvent(ofxDatGuiButtonEvent e) {
+    
+}
+
+void Application2d::onAddStarEvent(ofxDatGuiButtonEvent e) {
+    
+}
+
+void Application2d::onAddArrowEvent(ofxDatGuiButtonEvent e) {
+    
 }
