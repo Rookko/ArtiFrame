@@ -36,6 +36,12 @@ public:
   void draw();
   void exit();
 
+  // Déclaration de la fonction setupButton pour initialiser les boutons.
+  void setupButton(ofxDatGuiFolder* folder, const std::string& label, void (Application2d::* eventHandler)(const ofxDatGuiButtonEvent&));
+
+  // Déclaration de la fonction setupMenu pour initialiser les menus.
+  void setupMenu(ofxDatGui*& menu, const std::string& title, int positionX, std::initializer_list<std::string> buttons);
+
   void keyReleased(int key);
 
   void windowResized(int w, int h);
@@ -46,7 +52,30 @@ public:
 
   void hideUi();
 
+  void onAddShapeEvent(const ofxDatGuiButtonEvent& e);
+
+  void saveRenderButtonEvent();
+
+  void onAddSquareEvent();
+
+  void onAddRectangleEvent();
+
+  void onAddCircleleEvent();
+
+  void onAddEllipsisEvent();
+
+  void onAddRegularPolygonEvent();
+
+  void onAddStarEvent();
+
+  void onAddArrowEvent();
+
+  void importButtonEvent();
+
+  /*
   void setup2DTaskbar();
+
+  void onAddShapeEvent(const ofxDatGuiButtonEvent& e);
 
   void saveRenderButtonEvent(ofxDatGuiButtonEvent e);
 
@@ -63,14 +92,27 @@ public:
   void onAddStarEvent(ofxDatGuiButtonEvent e);
 
   void onAddArrowEvent(ofxDatGuiButtonEvent e);
+  */
 
+  
   int minDimension;
   int optionWidth;
 
   private:
+
+	// Ajouter les menus pour les différents boutons
 	ofxDatGui* fileMenu;
 	ofxDatGuiFolder* fileMenuFolder;
 
 	ofxDatGui* addMenu;
 	ofxDatGuiFolder* addMenuFolder;
+
+	ofxDatGui* colorMenu;
+	ofxDatGuiFolder* colorMenuFolder;
+
+	ofxDatGui* othersMenu;
+	ofxDatGuiFolder* othersMenuFolder;
+
+	// La fonction publique à appeler pour configurer la barre d'outils 2D.
+	void setup2DTaskbar();
 };
