@@ -124,7 +124,7 @@ void Application2d::keyReleased(int key)
     }
 
     bool shiftPressed = ofGetKeyPressed(OF_KEY_SHIFT);
-
+    /*
     switch (key)
     {
     case 's': // Pour "Add Square"
@@ -167,9 +167,8 @@ void Application2d::keyReleased(int key)
             this->onAddSquareEvent();
         }
         break;
+        */
     }
-*/
-}
 
 void Application2d::rezize2DTaskbar() {
     // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
@@ -360,13 +359,6 @@ void Application2d::layerDown()
 
 }
 
-void Application2d::mousePressed(int x, int y, int button) {
-    }
-
-void Application2d::mouseDragged(int x, int y, int button) {
-    }
-
-void Application2d::mouseReleased(int x, int y, int button){}
 
 // Fonction principale pour configurer la barre d'outils 2D.
 void Application2d::setup2DTaskbar()
@@ -385,16 +377,23 @@ void Application2d::setup2DTaskbar()
 
 
 void Application2d::mousePressed(int x, int y, int button) {
-    ofRectangle imageRect(imagePosition.x, imagePosition.y, imageImport.getWidth(), imageImport.getHeight());
-    if (imageRect.inside(x, y)) {
+    if (imageImported && x >= imagePosition.x && x <= imagePosition.x + imageImport.getWidth()
+        && y >= imagePosition.y && y <= imagePosition.y + imageImport.getHeight()) {
         dragging = true;
-        dragOffset.set(x - imagePosition.x, y - imagePosition.y);
+        dragOffset.x = x - imagePosition.x;
+        dragOffset.y = y - imagePosition.y;
     }
 }
 
 void Application2d::mouseDragged(int x, int y, int button) {
     if (dragging) {
-        imagePosition.set(x - dragOffset.x, y - dragOffset.y);
+        imagePosition.x = x - dragOffset.x;
+        imagePosition.y = y - dragOffset.y;
     }
 }
 
+void Application2d::mouseReleased(int x, int y, int button) {
+    if (dragging) {
+        dragging = false;
+    }
+}
