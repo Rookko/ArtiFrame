@@ -82,6 +82,9 @@ void Application2d::update()
   else if (keyPress['e'] && keyPress['s'] && keyPress['t'] && keyPress['r']) {
       esterEgg(); // Pour "EsterEgg"
   }
+  else if (keyPress[127] && keyPress['a']) {
+      onDeletedAll(); // Pour "Deleted All" DEL + a
+  }
   
   //Ajouter les autres AU DESSUS D'ICI
 
@@ -165,6 +168,12 @@ void Application2d::keyReleased(int key)
         break;
     case 'p': // Pour "Add Polygone"
         this->onAddRegularPolygonEvent();
+        break;
+    case 'b': // Pour "Add Batman"
+        this->addBatman();
+        break;
+    case 127: // Pour "Deleted"
+        this->onDeleted();
         break;
 
         //Ajouter les autres AU DESSUS D'ICI
@@ -282,6 +291,21 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         this->layerUP();
     }
+
+    else if (buttonLabel == "Deleted")
+    {
+        this->onDeleted();
+    }
+
+    else if (buttonLabel == "Deleted All")
+    {
+        this->onDeletedAll();
+    }
+
+    else if (buttonLabel == "Add Batman")
+    {
+        this->addBatman();
+    }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 }
 
@@ -367,12 +391,12 @@ void Application2d::setup2DTaskbar()
     // Configure le menu 'File' avec un bouton 'Export'.
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import"});
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon" });
+    setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon", "Add Batman" });
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
     setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
 
     setupMenu(othersMenu, "Others", optionWidth*5, { "Test" });
-    setupMenu(editMenu, "Edit", optionWidth * 4, { "Undo", "Redo", "Layer UP", "Layer Down"});
+    setupMenu(editMenu, "Edit", optionWidth * 4, { "Undo", "Redo", "Layer UP", "Layer Down", "Deleted", "Deleted All" });
 
     header = new ofxDatGui(ofGetWidth() - optionWidth * 6, 0);
     headerLabel = header->addLabel("ArtiFrame 2D");
@@ -442,4 +466,19 @@ void Application2d::keyPressed(int key)
 
 void Application2d::esterEgg() {
     textbox.set("Text", "PipiCaca hihi");
+}
+
+
+void Application2d::onDeleted() {
+
+}
+
+
+void Application2d::onDeletedAll() {
+
+}
+
+
+void Application2d::addBatman() {
+
 }

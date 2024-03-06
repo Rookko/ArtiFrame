@@ -93,6 +93,12 @@ public:
 
   void esterEgg();
 
+  void onDeleted();
+
+  void onDeletedAll();
+
+  void addBatman();
+
   int optionWidth;
   ofImage imageImport;
   bool imageImported;
