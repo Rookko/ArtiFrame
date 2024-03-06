@@ -114,6 +114,7 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
 // Pour ajouter une kyeSwitch, simplement ajouter la touche et la relier à ca fonction
 void Application2d::keyReleased(int key)
 {
+    /*
     if (key == 117) // touche u
     {
         checkbox = !checkbox;
@@ -165,7 +166,7 @@ void Application2d::keyReleased(int key)
         }
         break;
     }
-
+*/
 }
 
 void Application2d::rezize2DTaskbar() {
@@ -189,20 +190,6 @@ void Application2d::rezize2DTaskbar() {
 
     editMenu->setWidth(optionWidth);
     editMenu->setPosition(optionWidth*4, 0);
-
-    /* header stuff
-    headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() * 2 - addMenu->getWidth());
-    headerLabel->setPosition(fileMenu->getWidth() * 2 + addMenu->getWidth(), 0);
-    /
-
-    /
-    header = new ofxDatGui(ofGetWidth() - fileMenu->getWidth()2 - addMenu->getWidth(),0);
-    headerLabel = header->addLabel("ArtiFrame 2D");
-    headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
-    headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() 2 - addMenu->getWidth());
-    headerLabel->setPosition(fileMenu->getWidth() * 2 + addMenu->getWidth(),0);
-    headerLabel->setStripeVisible(false);
-    */
 }
 
 
@@ -370,6 +357,14 @@ void Application2d::layerDown()
 {
 
 }
+
+void Application2d::mousePressed(int x, int y, int button) {
+    }
+
+void Application2d::mouseDragged(int x, int y, int button) {
+    }
+
+void Application2d::mouseReleased(int x, int y, int button){}
 
 // Fonction principale pour configurer la barre d'outils 2D.
 void Application2d::setup2DTaskbar()

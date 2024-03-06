@@ -30,7 +30,7 @@ void Application::setup() {
     int minDimension = std::min(ofGetWidth(), ofGetHeight());
 
     // Setup option width pixel
-    optionWidth = minDimension * 0.1f;
+    optionWidth = minDimension * 0.15f;
     ofLog() << optionWidth;
 
     viewMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
