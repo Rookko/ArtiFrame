@@ -5,10 +5,7 @@
 !.gitignore
 !README.md
 !src/
-!src/*
-!src/2D*
-!src/2D/object
-!src/2D/object/*
+!src/**/*
 !bin/data/
 !bin/data/*
 !icon.rc
