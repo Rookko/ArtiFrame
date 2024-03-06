@@ -13,7 +13,11 @@
 
 class Application2d : public ofBaseApp
 {
-
+	struct ImageLayer {
+		ofImage image;
+		string filePath;
+		int layer;
+	};
 public:
   Renderer2d renderer;
 
@@ -78,12 +82,6 @@ public:
 
   void layerDown();
 
-  void mousePressed(int x, int y, int button);
-
-  void mouseDragged(int x, int y, int button);
-
-  void mouseReleased(int x, int y, int button);
-
   void undoButton();
 
   void redoButton();
@@ -97,6 +95,9 @@ public:
   void onDeletedAll();
 
   void addBatman();
+
+  int optionWidth;
+ 
   
 
   private:
@@ -126,7 +127,6 @@ public:
 	int keyNumber;
 	bool keyPress[255];
 
-	vector<ImageLayer> images;
 
 	
 };

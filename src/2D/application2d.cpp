@@ -47,7 +47,6 @@ void Application2d::setup(int buttonSize)
   checkbox.setName("UwU");
   gui.add(checkbox);
 
-  dragging = false;
 
   checkbox = true;
 }
