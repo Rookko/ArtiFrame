@@ -206,6 +206,7 @@ void Application2d::showUi() {
     fileMenu->setVisible(true);
     addMenu->setVisible(true);
     colorMenu->setVisible(true);
+    editMenu->setVisible(true);
     othersMenu->setVisible(true);
     header->setVisible(true);
 }
@@ -214,6 +215,7 @@ void Application2d::hideUi() {
     fileMenu->setVisible(false);
     addMenu->setVisible(false);
     colorMenu->setVisible(false);
+    editMenu->setVisible(true);
     othersMenu->setVisible(false);
     header->setVisible(false);
 
