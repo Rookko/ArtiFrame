@@ -67,8 +67,12 @@ void Application2d::draw()
 
   if (checkbox)
     gui.draw();
-}
 
+  if (imageImported) {
+      imageImport.draw(ofGetWidth() / 4, ofGetHeight() / 4);
+  }
+}
+//comon
 void Application2d::button_pressed()
 {
     // réinitialiser la zone de texte
