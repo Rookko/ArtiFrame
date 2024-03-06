@@ -74,36 +74,169 @@ void Application2d::draw()
     gui.draw();
 }
 
-void Application2d::keyReleased(int key)
+void Application2d::exit()
 {
-  if (key == 117) // touche u
-  {
-    checkbox = !checkbox;
-    ofLog() << "<toggle ui: " << checkbox << ">";
-  }
+    button.removeListener(this, &Application2d::button_pressed);
+
+    ofLog() << "<app::exit>";
 }
 
-void Application2d::button_pressed()
+// Fonction pour ajouter un bouton à un dossier (folder) avec gestion d'événement.
+void Application2d::setupButton(ofxDatGuiFolder* folder, const std::string& label, void (Application2d::* eventHandler)(const ofxDatGuiButtonEvent&))
 {
-  // réinitialiser la zone de texte
-  textbox.set("text", "ift3100");
+    ofxDatGuiButton* button = folder->addButton(label); // Ajoute un bouton au folder avec le label spécifié.
+    button->onButtonEvent(this, eventHandler); // Lie le bouton à un gestionnaire d'événements.
+}
 
-  ofLog() << "<button pressed>";
+// Fonction pour configurer un menu avec plusieurs boutons.
+void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int positionX, std::initializer_list<std::string> buttons)
+{
+    menu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT); // Crée un nouveau menu avec ancrage en haut à gauche.
+    menu->setWidth(optionWidth); // Définit la largeur du menu.
+    menu->setPosition(positionX, 0); // Positionne le menu horizontalement avec positionX, verticalement à 0.
+    ofxDatGuiFolder* folder = menu->addFolder(title); // Ajoute un dossier au menu avec le titre spécifié.
+
+    // Pour chaque label dans la liste des boutons, ajoute un bouton au folder en utilisant setupButton.
+    for (auto& label : buttons) {
+        setupButton(folder, label, &Application2d::onAddShapeEvent); // Utilise une fonction hypothétique onAddShapeEvent comme gestionnaire pour tous les boutons.
+    }
+}
+
+void Application2d::keyReleased(int key)
+{
+    if (key == 117) // touche u
+    {
+        checkbox = !checkbox;
+        ofLog() << "<toggle ui: " << checkbox << ">";
+    }
 }
 
 void Application2d::windowResized(int w, int h)
 {
-  ofLog() << "<app::windowResized: (" << w << ", " << h << ")>";
+    ofLog() << "<app::windowResized: (" << w << ", " << h << ")>";
 }
 
-void Application2d::exit()
+void Application2d::button_pressed()
 {
-  button.removeListener(this, &Application2d::button_pressed);
+    // réinitialiser la zone de texte
+    textbox.set("text", "ift3100");
 
-  ofLog() << "<app::exit>";
+    ofLog() << "<button pressed>";
+}
+
+void Application2d::showUi() {
+    fileMenu->setVisible(true);
+    addMenu->setVisible(true);
+
+}
+
+void Application2d::hideUi() {
+    fileMenu->setVisible(false);
+    addMenu->setVisible(false);
+}
+
+void Application2d::onAddShapeEvent(ofxDatGuiButtonEvent e)
+{
+    // Identifier le bouton pressé en utilisant event.target->getLabel() ou toute autre propriété pertinente.
+    std::string buttonLabel = event.target->getLabel();
+
+    // Effectuer une action en fonction du bouton pressé.
+    if (buttonLabel == "Add Square") {
+        // Code pour ajouter un carré à la scène.
+    }
+    else if (buttonLabel == "Add Rectangle") {
+        // Code pour ajouter un rectangle à la scène.
+    }
+    else if (buttonLabel == "Add Circle") {
+        // Code pour ajouter un cercle à la scène.
+    }
+    else if (buttonLabel == "Add Ellipsis") {
+        // Code pour ajouter une ellipse à la scène.
+    }
+    else if (buttonLabel == "Add Regular Polygon") {
+        // Code pour ajouter un polygone régulier à la scène.
+    }
+    // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 }
 
 
+void Application2d::saveRenderButtonEvent(ofxDatGuiButtonEvent e) {
+    // Open a file dialog to get the desired file path and name
+
+    ofFileDialogResult result = ofSystemLoadDialog("Select a folder", true);
+    if (result.bSuccess) {
+        string folderPath = result.filePath;
+        ofLogNotice("Folder Selected") << folderPath;
+
+        // Create an ofImage and grab the screen
+        ofImage image;
+        image.grabScreen(0, 60, ofGetWidth(), ofGetHeight() - 60);
+        // Save the image to the specified folder with a default name 
+        string defaultFileName = "render.png";
+        folderPath = ofFilePath::addTrailingSlash(folderPath);
+
+        string filePath = folderPath + defaultFileName;
+        image.save(filePath);
+
+        ofLogNotice("Image Saved") << "Render saved to: " << filePath;
+    }
+    else {
+        ofLogNotice("File selection canceled");
+    }
+
+}
+
+void Application2d::onAddSquareEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddRectangleEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddCircleleEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddEllipsisEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddRegularPolygonEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddStarEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+void Application2d::onAddArrowEvent(ofxDatGuiButtonEvent e) {
+
+}
+
+// Fonction principale pour configurer la barre d'outils 2D.
+void Application2d::setup2DTaskbar()
+{
+    // Configure le menu 'File' avec un bouton 'Export'.
+    setupMenu(fileMenu, "File", 0, { "Export" });
+    // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
+    setupMenu(addMenu, "Add", optionWidth, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon" });
+
+    addSquareBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
+    addRectangleBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
+    addCircleBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
+    addEllipsisBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
+    addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
+}
+
+
+
+
+
+
+
+
+/*
 void Application2d::setup2DTaskbar() {
 
     fileMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
@@ -127,69 +260,6 @@ void Application2d::setup2DTaskbar() {
     ofxDatGuiButton* addRegularPolygonBtn = addMenuFolder->addButton("Add Regular Polygon");
     addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddRegularPolygonEvent);
 }
+*/
 
 
-void Application2d::showUi() {
-    fileMenu->setVisible(true);
-    addMenu->setVisible(true);
-
-}
-
-void Application2d::hideUi() {
-    fileMenu->setVisible(false);
-    addMenu->setVisible(false);
-}
-
-void Application2d::saveRenderButtonEvent(ofxDatGuiButtonEvent e) {
-    // Open a file dialog to get the desired file path and name
-    
-    ofFileDialogResult result = ofSystemLoadDialog("Select a folder", true);
-    if (result.bSuccess) {
-        string folderPath = result.filePath;
-        ofLogNotice("Folder Selected") << folderPath;
-
-        // Create an ofImage and grab the screen
-        ofImage image;
-        image.grabScreen(0, 60, ofGetWidth(), ofGetHeight()-60);
-        // Save the image to the specified folder with a default name 
-        string defaultFileName = "render.png";
-        folderPath = ofFilePath::addTrailingSlash(folderPath);
-
-        string filePath = folderPath + defaultFileName;
-        image.save(filePath);
-
-        ofLogNotice("Image Saved") << "Render saved to: " << filePath;
-    }
-    else {
-        ofLogNotice("File selection canceled");
-    }
-
-}
-
-void Application2d::onAddSquareEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddRectangleEvent(ofxDatGuiButtonEvent e) {
- 
-}
-
-void Application2d::onAddCircleleEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddEllipsisEvent(ofxDatGuiButtonEvent e) {
-   
-}
-
-void Application2d::onAddRegularPolygonEvent(ofxDatGuiButtonEvent e) {
-    
-}
-
-void Application2d::onAddStarEvent(ofxDatGuiButtonEvent e) {
-    
-}
-
-void Application2d::onAddArrowEvent(ofxDatGuiButtonEvent e) {
-    
-}

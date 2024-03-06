@@ -28,7 +28,7 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 
 	enum ViewType { View2D, View3D };
-
+	
 private:
 	ofxDatGui* viewMenu;
 	ofxDatGuiFolder* viewMenuFolder;
