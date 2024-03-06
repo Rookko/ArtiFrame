@@ -15,6 +15,18 @@ public:
 	void changeViewTo2dEvent(ofxDatGuiButtonEvent e);
 	void changeViewTo3dEvent(ofxDatGuiButtonEvent e);
 
+	void keyPressed(int key);
+
+	void keyReleased(int key);
+
+	void mousePressed(int x, int y, int button);
+
+	void mouseReleased(int x, int y, int button);
+
+	void windowResized(int w, int h);
+
+	void dragEvent(ofDragInfo dragInfo);
+
 	enum ViewType { View2D, View3D };
 
 private:

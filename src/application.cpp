@@ -90,3 +90,57 @@ void Application::changeViewTo3dEvent(ofxDatGuiButtonEvent e) {
     selectViewType();
     viewMenuFolder->collapse();
 }
+
+//--------------------------------------------------------------
+void Application::windowResized(int w, int h) {
+    ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
+    application2D->windowResized(w, h);
+    application3D->windowResized(w, h);
+}
+
+void Application::dragEvent(ofDragInfo dragInfo) {
+    if (viewType == Application::ViewType::View2D) {
+        application2D->dragEvent(dragInfo);
+    }
+    else if (viewType == Application::ViewType::View3D) {
+        application3D->dragEvent(dragInfo);
+    }
+}
+
+void Application::keyPressed(int key) {
+    ofLog() << "key pressed : " << key;
+    if (viewType == Application::ViewType::View2D) {
+        application2D->keyPressed(key);
+    }
+    else if (viewType == Application::ViewType::View3D) {
+        application3D->keyPressed(key);
+    }
+}
+
+void Application::keyReleased(int key) {
+    ofLog() << "key released : " << key;
+    if (viewType == Application::ViewType::View2D) {
+        application2D->keyReleased(key);
+    }
+    else if (viewType == Application::ViewType::View3D) {
+        application3D->keyReleased(key);
+    }
+}
+
+void Application::mousePressed(int x, int y, int button) {
+    if (viewType == Application::ViewType::View2D) {
+        application2D->mousePressed(x, y, button);
+    }
+    else if (viewType == Application::ViewType::View3D) {
+        application3D->mousePressed(x, y, button);
+    }
+}
+
+void Application::mouseReleased(int x, int y, int button) {
+    if (viewType == Application::ViewType::View2D) {
+        application2D->mouseReleased(x, y, button);
+    }
+    else if (viewType == Application::ViewType::View3D) {
+        application3D->mouseReleased(x, y, button);
+    }
+}
