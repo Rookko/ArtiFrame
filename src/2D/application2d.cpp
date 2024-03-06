@@ -11,7 +11,6 @@ ofxDatGui* shapeGui;
 
 void Application2d::setup()
 {
-  setup2DTaskbar();
 
   ofNoFill();
 
@@ -23,6 +22,7 @@ void Application2d::setup()
   // Setup option width pixel
   optionWidth = minDimension * 0.01f;
   ofLog() << optionWidth;
+  setup2DTaskbar();
 
   renderer.setup();
 
