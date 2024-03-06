@@ -511,6 +511,10 @@ void Application2d::import(string path) {
 }
 
 void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
+    ofLog() << "<app::selecting image at index : " << e.target->getIndex() << ">";
+
+    renderer.objetActif = renderer.vecteurObjets.at(e.target->getIndex());
+    renderer.indexActif = e.target->getIndex();
 
 }
 
