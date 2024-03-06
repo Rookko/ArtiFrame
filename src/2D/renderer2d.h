@@ -4,10 +4,13 @@
 #pragma once
 
 #include "ofMain.h"
+#include "object2D.h"
 
 class Renderer2d
 {
 public:
+
+  vector<object2D*> vecteurObjets;
 
   ofTrueTypeFont font;
 
