@@ -39,6 +39,7 @@ void Application3d::setup(int buttonSize){
     ofxDatGuiButton* applyButton = transformationMenu->addButton("Apply");
     applyButton->onButtonEvent(this, &Application3d::onApplyTransformationEvent);
 
+ 
 }
 
 void Application3d::draw() {
@@ -100,7 +101,7 @@ void Application3d::update() {
         selectionScrollView->add(object->name);
         object->selected = true;
     }
-/*
+
     if (isWPressed)
         renderer.camera->dolly(-5);
     if (isSPressed)
@@ -114,7 +115,8 @@ void Application3d::update() {
     if (isEPressed)
         renderer.camera->boom(-5);
 
-*/
+
+
 
 }
 
@@ -250,9 +252,38 @@ void Application3d::setup3DTaskbar()
     headerLabel->setStripeVisible(false);
 }
 
-void  Application3d::keyPressed(int key){}
+void  Application3d::keyPressed(int key){
 
-void  Application3d::keyReleased(int key){}
+    if (key == 119) // w
+        isWPressed = true;
+    if (key == 97) // a
+        isAPressed = true;
+    if (key == 115) // s
+        isSPressed = true;
+    if (key == 100) // d
+        isDPressed = true;
+    if (key == 113) // q
+        isQPressed = true;
+    if (key == 101) // e
+        isEPressed = true;
+
+
+}
+
+void  Application3d::keyReleased(int key){
+    if (key == 119) // w
+        isWPressed = false;
+    if (key == 97) // a
+        isAPressed = false;
+    if (key == 115) // s
+        isSPressed = false;
+    if (key == 100) // d
+        isDPressed = false;
+    if (key == 113) // q
+        isQPressed = false;
+    if (key == 101) // e
+        isEPressed = false;
+}
 
 void Application3d::mousePressed(int x, int y, int button){}
 
