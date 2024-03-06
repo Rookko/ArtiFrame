@@ -104,6 +104,8 @@ public:
 
   void onSelectImage(ofxDatGuiScrollViewEvent e);
 
+  string getObjetName(string nomFichier);
+
   private:
 
 	// Ajouter les menus pour les différents boutons

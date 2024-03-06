@@ -5,6 +5,7 @@
 
 #include "ofMain.h"
 #include "object2D.h"
+#include "image.h";
 
 class Renderer2d
 {
@@ -40,4 +41,5 @@ public:
   void setup();
   void update();
   void draw();
+  bool hit(int x, int y);
 };

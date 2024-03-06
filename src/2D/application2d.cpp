@@ -5,6 +5,7 @@
 
 #include "application2d.h"
 #include <algorithm> // Pour std::min
+#include "image.h";
 
 
 ofxDatGui* toolsGui;
@@ -52,12 +53,17 @@ void Application2d::setup(int buttonSize)
   checkbox.setName("UwU");
   gui.add(checkbox);
 
+  imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
+  imageScroller->setWidth(255);
+  imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
 
   checkbox = true;
 }
 
 void Application2d::update()
 {
+
+  imageScroller->update();
   // assigner les états courants de l'interface
   renderer.background_color = color_picker_background;
   renderer.stroke_color = color_picker_stroke;
@@ -101,6 +107,8 @@ void Application2d::draw()
 
   if (checkbox)
     gui.draw();
+
+  imageScroller->draw();
 
 }
 //comon
@@ -483,27 +491,37 @@ void Application2d::import(string path) {
         if (index != string::npos) {
             nomFichier = path.substr(index + 1);
         }
-
-        /*
-     
+        
         Image* image = new Image();
         image->path = path;
         image->dataImg = dataImg;
         image->originalName = nomFichier;
-        nomFichier = getElementName(nomFichier);
-        image->name = filename;
+        nomFichier = getObjetName(nomFichier);
+        image->name = nomFichier;
 
-        imgScrollView->add(nomfichier);
+        imageScroller->add(nomFichier);
 
-        renderer.elements.push_back(image);
-        renderer.active = image;
-        renderer.activeIndex++;
+        renderer.vecteurObjets.push_back(image);
+        renderer.objetActif = image;
+        renderer.indexActif++;
 
-        
-        */
     }
 }
 
 void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
 
+}
+
+string Application2d::getObjetName(string nomFichier) {
+    int copie = 0;
+    for (object2D* objet : renderer.vecteurObjets) {
+        if (objet->originalName == nomFichier) {
+            copie++;
+        }
+    }
+
+    if (copie > 0) {
+        nomFichier += " (" + to_string(copie) + ") ";
+    }
+    return nomFichier;
 }

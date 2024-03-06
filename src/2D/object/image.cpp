@@ -4,9 +4,8 @@
 #include "image.h";
 
 void Image::draw(int offsetX, int offsetY) {
-	/*
-	dataImg.draw()
-	*/
+	dataImg.draw(object2D::coordinates.x + offsetX,
+		object2D::coordinates.y + offsetY);
 }
 
 void Image::rotate90() {

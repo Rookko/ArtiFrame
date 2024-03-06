@@ -49,4 +49,14 @@ void Renderer2d::draw()
     (ofGetWidth()  / 2.0f) + (bounding_box.getWidth()  / 2.0f),
     (ofGetHeight() / 2.0f) + (bounding_box.getHeight() / 2.0f) + line_offset);
 
+  for (object2D* objet : Renderer2d::vecteurObjets) {
+      ofSetColor(objet->color.r, objet->color.g, objet->color.b ,objet->opacity);
+      objet->draw(offsetX1, offsetY1);
+      ofSetColor(255, 255, 255, 255);
+  }
+
+}
+
+bool Renderer2d::hit(int x, int y) {
+    return x > offsetX1 && x < offsetX2 && y > offsetY1 && y < offsetY2;
 }
