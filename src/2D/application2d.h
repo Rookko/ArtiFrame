@@ -54,7 +54,7 @@ public:
 
   //void setup2DTaskbar();
 
-  void onAddShapeEvent(ofxDatGuiButtonEvent e);
+  void onAddShapeEvent(const ofxDatGuiButtonEvent& e);
 
   void saveRenderButtonEvent(ofxDatGuiButtonEvent e);
 
@@ -77,11 +77,16 @@ public:
   int optionWidth;
 
   private:
+
+	// Ajouter les menus pour les différents boutons
 	ofxDatGui* fileMenu;
 	ofxDatGuiFolder* fileMenuFolder;
 
 	ofxDatGui* addMenu;
 	ofxDatGuiFolder* addMenuFolder;
+
+	ofxDatGui* colorMenu;
+	ofxDatGuiFolder* colorMenuFolder;
 
 	// La fonction publique à appeler pour configurer la barre d'outils 2D.
 	void setup2DTaskbar();
