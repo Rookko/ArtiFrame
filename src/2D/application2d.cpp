@@ -360,12 +360,6 @@ void Application2d::layerDown()
 
 }
 
-void Application2d::mousePressed(int x, int y, int button) {
-    }
-
-void Application2d::mouseDragged(int x, int y, int button) {
-    }
-
 void Application2d::mouseReleased(int x, int y, int button){}
 
 // Fonction principale pour configurer la barre d'outils 2D.
