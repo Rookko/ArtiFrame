@@ -157,12 +157,15 @@ void Application2d::showUi() {
     fileMenu->setVisible(true);
     addMenu->setVisible(true);
     colorMenu->setVisible(true);
+    othersMenu->setVisible(true);
 }
 
 void Application2d::hideUi() {
     fileMenu->setVisible(false);
     addMenu->setVisible(false);
     colorMenu->setVisible(false);
+    othersMenu->setVisible(true);
+
 }
 
 // Fonction utilisée lorsque bouton ou keycape sont pressés
