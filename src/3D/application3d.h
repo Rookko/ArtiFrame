@@ -66,6 +66,16 @@ public:
 	string renderMode = "Wireframe";
 
 
+	bool isWPressed = false;
+	bool isAPressed = false;
+	bool isSPressed = false;
+	bool isDPressed = false;
+
+	bool isQPressed = false;
+	bool isEPressed = false;
+
+
+
 private:
 
 	// Ajouter les menus pour les différents boutons
