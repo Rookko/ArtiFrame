@@ -12,6 +12,14 @@ public:
 
   vector<object2D*> vecteurObjets;
 
+  object2D* objetActif;
+
+  int indexActif = -1;
+  int offsetX1 = 0;
+  int offsetY1 = 0;
+  int offsetX2 = 0;
+  int offsetY2 = 0;
+
   ofTrueTypeFont font;
 
   ofColor background_color;
