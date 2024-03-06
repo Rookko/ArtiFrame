@@ -106,6 +106,8 @@ public:
 
   string getObjetName(string nomFichier);
 
+  void dragEvent(ofDragInfo infoDrag);
+
   private:
 
 	// Ajouter les menus pour les différents boutons

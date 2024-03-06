@@ -15,6 +15,8 @@ ofxDatGui* shapeGui;
 ofPoint position;
 ofPoint positionImageOrigine = { 0,0,0 };
 
+ofPoint dragOrigine = { 0, 0, 0 };
+
 ofxDatGuiScrollView* imageScroller;
 
 void Application2d::setup(int buttonSize)
@@ -524,4 +526,10 @@ string Application2d::getObjetName(string nomFichier) {
         nomFichier += " (" + to_string(copie) + ") ";
     }
     return nomFichier;
+}
+
+void Application2d::dragEvent(ofDragInfo infoDrag) {
+    ofLog() << "<app::ofDragInfo file[0]: " << infoDrag.files.at(0)
+        << " at: " << infoDrag.position << ">";
+    import(infoDrag.files.at(0));
 }
