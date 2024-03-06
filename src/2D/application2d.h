@@ -89,7 +89,7 @@ public:
   ofImage imageImport;
   bool imageImported;
   ofPoint imagePosition; 
-  bool dragging = false; 
+  bool dragging; 
   ofPoint dragOffset;
 
   private:

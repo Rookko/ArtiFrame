@@ -47,6 +47,8 @@ void Application2d::setup(int buttonSize)
   checkbox.setName("visible");
   gui.add(checkbox);
 
+  dragging = false;
+
   checkbox = true;
 }
 
@@ -356,18 +358,16 @@ void Application2d::setup2DTaskbar()
 
 
 void Application2d::mousePressed(int x, int y, int button) {
-    if (imageImported && x >= imagePosition.x && x <= imagePosition.x + imageImport.getWidth()
-        && y >= imagePosition.y && y <= imagePosition.y + imageImport.getHeight()) {
+    ofRectangle imageRect(imagePosition.x, imagePosition.y, imageImport.getWidth(), imageImport.getHeight());
+    if (imageRect.inside(x, y)) {
         dragging = true;
-        dragOffset.x = x - imagePosition.x;
-        dragOffset.y = y - imagePosition.y;
+        dragOffset.set(x - imagePosition.x, y - imagePosition.y);
     }
 }
 
 void Application2d::mouseDragged(int x, int y, int button) {
     if (dragging) {
-        imagePosition.x = x - dragOffset.x;
-        imagePosition.y = y - dragOffset.y;
+        imagePosition.set(x - dragOffset.x, y - dragOffset.y);
     }
 }
 
