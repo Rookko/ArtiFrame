@@ -1,6 +1,8 @@
 // ArtiFrame/2d/application2d.cpp
 // Classe principale de l'application 2D.
 
+//test  45356
+
 #include "application2d.h"
 #include <algorithm> // Pour std::min
 
