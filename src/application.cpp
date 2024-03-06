@@ -30,7 +30,7 @@ void Application::setup() {
 
     viewMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
     viewMenu->setPosition(0, 0);
-    viewMenu->setWidth(60);
+    viewMenu->setWidth(160);
     viewMenuFolder = viewMenu->addFolder("View");
     ofxDatGuiButton* view2DButton = viewMenuFolder->addButton("2D Editor");
     view2DButton->onButtonEvent(this, &Application::changeViewTo2dEvent);
