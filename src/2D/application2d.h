@@ -13,11 +13,7 @@
 
 class Application2d : public ofBaseApp
 {
-	struct ImageLayer {
-		ofImage image;
-		string filePath;
-		int layer;
-	};
+
 public:
   Renderer2d renderer;
 
@@ -88,8 +84,6 @@ public:
 
   void mouseReleased(int x, int y, int button);
 
-  void dragEvent(ofDragInfo dragInfo);
-
   void undoButton();
 
   void redoButton();
@@ -103,13 +97,6 @@ public:
   void onDeletedAll();
 
   void addBatman();
-
-  int optionWidth;
-  ofImage imageImport;
-  bool imageImported;
-  ofPoint imagePosition; 
-  bool dragging; 
-  ofPoint dragOffset;
   
 
   private:

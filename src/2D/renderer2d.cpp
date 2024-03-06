@@ -49,16 +49,4 @@ void Renderer2d::draw()
     (ofGetWidth()  / 2.0f) + (bounding_box.getWidth()  / 2.0f),
     (ofGetHeight() / 2.0f) + (bounding_box.getHeight() / 2.0f) + line_offset);
 
-  if (importImage.getWidth() > ofGetWindowWidth() || importImage.getHeight() > ofGetWindowHeight()) {
-      
-      float widthRatio = ofGetWindowWidth() / (float)importImage.getWidth();
-      float heightRatio = ofGetWindowHeight() / (float)importImage.getHeight();
-      float resizeRatio = std::min(widthRatio, heightRatio);
-
-      
-      importImage.draw(0, 0, importImage.getWidth() * resizeRatio, importImage.getHeight() * resizeRatio);
-  }
-  else {
-      importImage.draw(0, 0);
-  }
 }

@@ -98,10 +98,6 @@ void Application2d::draw()
   if (checkbox)
     gui.draw();
 
-  if (imageImported) {
-      imageImport.resize(ofGetWidth() / 4, ofGetHeight() / 4);
-      imageImport.draw(ofGetWidth() / 2, ofGetHeight() / 2);
-  }
 }
 //comon
 void Application2d::button_pressed()
@@ -368,15 +364,7 @@ void Application2d::importButtonEvent()
     ofFileDialogResult importResult = ofSystemLoadDialog("Choisir l'image à importer");
     if (importResult.bSuccess)
     {
-        imageImported = imageImport.load(importResult.getPath());
-        // Ajoutez un log ici pour confirmer que le chemin de l'image est correct.
-        ofLogNotice() << "Image loaded from path: " << importResult.getPath();
 
-        ImageLayer newImage;
-        newImage.image.load(importResult.getPath());
-        newImage.filePath = importResult.getPath();
-        newImage.layer = images.size(); 
-        images.push_back(newImage);
     }
 }
 
@@ -458,20 +446,7 @@ void Application2d::mouseReleased(int x, int y, int button) {
     }
 }
 
-void Application2d::dragEvent(ofDragInfo dragInfo) {
-    ofLog() << "<app::ofDragInfo file[0]: " << dragInfo.files.at(0)
-        << " at : " << dragInfo.position << ">";
 
-    renderer.importImage.load(dragInfo.files.at(0));
-
-    if (renderer.importImage.getWidth() > ofGetWindowWidth() && renderer.importImage.getHeight() > ofGetWindowHeight()) {
-        ofSetWindowShape(renderer.importImage.getWidth(), renderer.importImage.getHeight());
-    }
-    else {
-        ofSetWindowShape(ofGetWidth(), ofGetHeight());
-    }
-
-}
 
 
 void Application2d::undoButton()
