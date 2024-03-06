@@ -95,6 +95,7 @@ void Application2d::exit()
   ofLog() << "<app::exit>";
 }
 
+
 void Application2d::setup2DTaskbar() {
 
     fileMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
@@ -118,6 +119,7 @@ void Application2d::setup2DTaskbar() {
     ofxDatGuiButton* addRegularPolygonBtn = addMenuFolder->addButton("Add Regular Polygon");
     addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddRegularPolygonEvent);
 }
+
 
 void Application2d::showUi() {
     fileMenu->setVisible(true);
