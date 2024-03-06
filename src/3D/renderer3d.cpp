@@ -69,9 +69,9 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 }
 
 void Renderer3d::setCameraToPerspective() {
-	camera->enableOrtho();
+	camera->disableOrtho();
 }
 
 void Renderer3d::setCameraToOrthographic() {
-	camera->disableOrtho();
+	camera->enableOrtho();
 }

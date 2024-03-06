@@ -30,17 +30,17 @@ void Application2d::setup(int buttonSize)
   renderer.setup();
 
   gui.setup("Unlock Interface");
-  gui.setPosition(ofGetWidth() - ofGetWidth()*0.15f, ofGetHeight() - ofGetHeight()*0.95f);
+  gui.setPosition(ofGetWidth() - ofGetWidth()*0.25f, ofGetHeight() - ofGetHeight()*0.95f);
 
   group_draw.setup("Color Package");
 
   color_picker_background.set("Background Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
-  color_picker_stroke.set("Selected Object Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  color_picker_object.set("Selected Object Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
 
   slider_stroke_weight.set("Selected Object Scale", 4.0f, 0.0f, 20.0f);
 
   group_draw.add(color_picker_background);
-  group_draw.add(color_picker_stroke);
+  group_draw.add(color_picker_object);
   group_draw.add(slider_stroke_weight);
 
   gui.add(&group_draw);
@@ -68,7 +68,7 @@ void Application2d::update()
   imageScroller->update();
   // assigner les états courants de l'interface
   renderer.background_color = color_picker_background;
-  renderer.stroke_color = color_picker_stroke;
+  renderer.object_color = color_picker_object;
   renderer.stroke_weight = slider_stroke_weight;
   renderer.text = textbox;
 
@@ -346,31 +346,31 @@ void Application2d::saveRenderButtonEvent() {
 }
 
 void Application2d::onAddSquareEvent() {
-    //ofDrawTriangle((200, 600), (1000, 1000), (100, 100);
+    // Appel la fonction rectangle de la classe Primitive
 }
 
 void Application2d::onAddRectangleEvent() {
-
+    // Appel la fonction rectangle de la classe Primitive
 }
 
 void Application2d::onAddCircleleEvent() {
-
+    // Appel la fonction circle de la classe Primitive
 }
 
 void Application2d::onAddEllipsisEvent() {
-
+    // Appel la fonction ellipsis de la classe Primitive
 }
 
 void Application2d::onAddRegularPolygonEvent() {
-
+    // Appel la fonction polygone de la classe Primitive
 }
 
 void Application2d::onAddStarEvent() {
-
+    // Appel la fonction star de la classe Primitive
 }
 
 void Application2d::onAddArrowEvent() {
-
+    // Appel la fonction arrow de la classe Primitive
 }
 
 void Application2d::importButtonEvent()
@@ -479,7 +479,7 @@ void Application2d::onDeletedAll() {
 
 
 void Application2d::addBatman() {
-
+    // Appel la fonction batman de la classe Primitive
 }
 
 

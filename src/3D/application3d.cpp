@@ -418,3 +418,14 @@ Renderer3d::RenderMode Application3d::getRenderMode() {
     if (renderMode == "Shader")
         return Renderer3d::RenderMode::Shader;
 }
+
+void Application3d::onChangeCameraMode(ofxDatGuiButtonEvent e) {
+    if (renderer.cameraMode == Renderer3d::Perspective) {
+        renderer.setCameraToOrthographic();
+        renderer.cameraMode = Renderer3d::Orthographic;
+    }
+    else if (renderer.cameraMode == Renderer3d::Orthographic) {
+        renderer.setCameraToPerspective();
+        renderer.cameraMode = Renderer3d::Perspective;
+    }
+}

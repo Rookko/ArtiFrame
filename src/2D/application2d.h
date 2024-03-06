@@ -26,7 +26,7 @@ public:
   ofxGuiGroup group_draw;
 
   ofParameter<ofColor> color_picker_background;
-  ofParameter<ofColor> color_picker_stroke;
+  ofParameter<ofColor> color_picker_object;
 
   ofParameter<float> slider_stroke_weight;
 

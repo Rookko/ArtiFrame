@@ -24,7 +24,7 @@ void Renderer2d::setup()
 void Renderer2d::update()
 {
   // paramètres des outils de dessin
-  ofSetColor(stroke_color);
+  ofSetColor(object_color);
   ofSetLineWidth(stroke_weight);
 
   // résolution du rectangle qui délimite la zone de texte

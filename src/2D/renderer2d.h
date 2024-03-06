@@ -25,7 +25,7 @@ public:
 
   ofColor background_color;
 
-  ofColor stroke_color;
+  ofColor object_color;
 
   ofRectangle bounding_box;
 
