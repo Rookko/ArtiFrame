@@ -135,13 +135,37 @@ void Application2d::keyReleased(int key)
     case 'r': // Pour "Add Rectangle"
         if (shiftPressed)
         {
-            // Code pour ajouter un rectangle à la scène uniquement si Shift est pressé.
+            this->onAddRectangleEvent();
         }
         break;
-    case 'c': // Pour "Add Circle"
-        // Code pour ajouter un cercle à la scène. Shift n'est pas requis.
+    case '': // Pour "Add Square"
+        if (shiftPressed)
+        {
+            this->onAddSquareEvent();
+        }
         break;
-        // Ajoutez des cas supplémentaires pour d'autres raccourcis clavier.
+
+    // SHIFT non nécessaire pour les prochaine 
+
+    case 'c': // Pour "Add Circle"
+        this->onAddCircleleEvent();
+        break;
+     
+    case 's': // Pour "Add Square"
+        {
+            this->onAddSquareEvent();
+        }
+        break;
+    case 'r': // Pour "Add Rectangle"
+        {
+            this->onAddRectangleEvent();
+        }
+        break;
+    case '': // Pour "Add Square"
+        {
+            this->onAddSquareEvent();
+        }
+        break;
     }
 
 }
@@ -163,10 +187,10 @@ void Application2d::rezize2DTaskbar() {
     colorMenu->setPosition(optionWidth*3, 0);
 
     othersMenu->setWidth(optionWidth);
-    othersMenu->setPosition(optionWidth*4, 0);
+    othersMenu->setPosition(optionWidth*5, 0);
 
     editMenu->setWidth(optionWidth);
-    editMenu->setPosition(optionWidth*5, 0);
+    editMenu->setPosition(optionWidth*4, 0);
 
     /* header stuff
     headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() * 2 - addMenu->getWidth());
@@ -182,6 +206,15 @@ void Application2d::rezize2DTaskbar() {
     headerLabel->setStripeVisible(false);
     */
 }
+
+
+
+
+
+
+
+
+
 
 void Application2d::windowResized(int w, int h)
 {
@@ -350,8 +383,7 @@ void Application2d::setup2DTaskbar()
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
     setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
 
-    setupMenu(othersMenu, "Others", optionWidth*4, { "Test" });
-
+    setupMenu(othersMenu, "Others", optionWidth*5, { "Test" });
     setupMenu(editMenu, "Edit", optionWidth * 4, { "Layer UP", "Layer Down"});
 }
 
@@ -371,8 +403,3 @@ void Application2d::mouseDragged(int x, int y, int button) {
     }
 }
 
-void Application2d::mouseReleased(int x, int y, int button) {
-    if (dragging) {
-        dragging = false;
-    }
-}
