@@ -225,11 +225,13 @@ void Application2d::onAddArrowEvent(ofxDatGuiButtonEvent e) {
 void Application2d::setup2DTaskbar()
 {
     // Configure le menu 'File' avec un bouton 'Export'.
-    setupMenu(fileMenu, "File", 0, { "Export" });
+    setupMenu(fileMenu, "File", optionWidth, { "Export" });
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon" });
+    setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon" });
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
-    setupMenu(colorMenu, "Color", optionWidth*2, { "Histogram" });
+    setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
+
+    setupMenu(othersMenu, "Others", optionWidth * 4, { "Test" });
 
     /*
     addSquareBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);

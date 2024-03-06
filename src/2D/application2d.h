@@ -88,6 +88,9 @@ public:
 	ofxDatGui* colorMenu;
 	ofxDatGuiFolder* colorMenuFolder;
 
+	ofxDatGui* othersMenu;
+	ofxDatGuiFolder* othersMenuFolder;
+
 	// La fonction publique à appeler pour configurer la barre d'outils 2D.
 	void setup2DTaskbar();
 };
