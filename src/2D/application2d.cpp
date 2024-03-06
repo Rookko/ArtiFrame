@@ -20,7 +20,8 @@ void Application2d::setup()
   minDimension = std::min(ofGetWidth(), ofGetHeight());
 
   // Setup option width pixel
-  optionWidth = minDimension * 0.01f;
+  //optionWidth = minDimension * 0.01f;
+  optionWidth = 160;
   ofLog() << optionWidth;
   setup2DTaskbar();
 
@@ -127,16 +128,19 @@ void Application2d::button_pressed()
 void Application2d::showUi() {
     fileMenu->setVisible(true);
     addMenu->setVisible(true);
+    colorMenu->setVisible(true);
 
 }
 
 void Application2d::hideUi() {
     fileMenu->setVisible(false);
     addMenu->setVisible(false);
+    colorMenu->setVisible(true);
 }
 
-void Application2d::onAddShapeEvent(ofxDatGuiButtonEvent e)
+void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 {
+    /*
     // Identifier le bouton pressé en utilisant event.target->getLabel() ou toute autre propriété pertinente.
     std::string buttonLabel = event.target->getLabel();
 
@@ -157,6 +161,7 @@ void Application2d::onAddShapeEvent(ofxDatGuiButtonEvent e)
         // Code pour ajouter un polygone régulier à la scène.
     }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
+    */
 }
 
 
@@ -221,12 +226,15 @@ void Application2d::setup2DTaskbar()
     setupMenu(fileMenu, "File", 0, { "Export" });
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
     setupMenu(addMenu, "Add", optionWidth, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon" });
+    setupMenu(colorMenu, "Color", optionWidth*2, { "Histogram" });
 
+    /*
     addSquareBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
     addRectangleBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
     addCircleBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
     addEllipsisBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
     addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddShapeEvent);
+    */
 }
 
 
