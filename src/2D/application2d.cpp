@@ -13,7 +13,7 @@ ofxDatGui* shapeGui;
 
 void Application2d::setup(int buttonSize)
 {
-    optionWidth = buttonSize;
+  optionWidth = buttonSize;
   ofNoFill();
   ofLog() << "<app::setup2d>";
 
@@ -21,15 +21,15 @@ void Application2d::setup(int buttonSize)
 
   renderer.setup();
 
-  gui.setup("interface");
-  gui.setPosition(0, 300);
+  gui.setup("Unlock Interface");
+  gui.setPosition(ofGetWidth() - ofGetWidth()*0.15f, ofGetHeight() - ofGetHeight()*0.95f);
 
-  group_draw.setup("outils de dessin");
+  group_draw.setup("Color Package");
 
-  color_picker_background.set("couleur du canevas", ofColor(31), ofColor(0, 0), ofColor(255, 255));
-  color_picker_stroke.set("couleur du trait", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  color_picker_background.set("Background Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
+  color_picker_stroke.set("Selected Object Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
 
-  slider_stroke_weight.set("largeur de la ligne", 4.0f, 0.0f, 10.0f);
+  slider_stroke_weight.set("Selected Object Scale", 4.0f, 0.0f, 20.0f);
 
   group_draw.add(color_picker_background);
   group_draw.add(color_picker_stroke);
@@ -37,14 +37,14 @@ void Application2d::setup(int buttonSize)
 
   gui.add(&group_draw);
 
-  textbox.set("text", "ift3100");
+  textbox.set("Text", "[{-_-}] ZZZzz zz z...");
   gui.add(textbox);
 
-  button.setup("button");
+  button.setup("Scapiiishh Button");
   button.addListener(this, &Application2d::button_pressed);
   gui.add(&button);
 
-  checkbox.setName("visible");
+  checkbox.setName("UwU");
   gui.add(checkbox);
 
   dragging = false;
@@ -59,6 +59,31 @@ void Application2d::update()
   renderer.stroke_color = color_picker_stroke;
   renderer.stroke_weight = slider_stroke_weight;
   renderer.text = textbox;
+
+  // Touche multiple ici avec space bar
+  if (keyPress[32] && keyPress['i']) {
+      importButtonEvent(); // Pour "Import"
+  }
+  else if (keyPress[32] && keyPress['e']) {
+      saveRenderButtonEvent(); // Pour "Export"
+  }
+  else if (keyPress[32] && keyPress['u']) {
+      layerUP(); // Pour "Layer UP"
+  }
+  else if (keyPress[32] && keyPress['d']) {
+      layerDown(); // Pour "Layer Down"
+  }
+  else if (keyPress[32] && keyPress['z']) {
+      undoButton(); // Pour "Undo"
+  }
+  else if (keyPress[32] && keyPress['x']) {
+      redoButton(); // Pour "Redo"
+  }
+  else if (keyPress['e'] && keyPress['s'] && keyPress['t'] && keyPress['r']) {
+      esterEgg(); // Pour "EsterEgg"
+  }
+  
+  //Ajouter les autres AU DESSUS D'ICI
 
   renderer.update();
 }
@@ -79,7 +104,7 @@ void Application2d::draw()
 void Application2d::button_pressed()
 {
     // réinitialiser la zone de texte
-    textbox.set("text", "ift3100");
+    textbox.set("Text", "(-.-)Zzz...");
 
     ofLog() << "<button pressed>";
 }
@@ -116,59 +141,35 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
 // Pour ajouter une kyeSwitch, simplement ajouter la touche et la relier à ca fonction
 void Application2d::keyReleased(int key)
 {
-    /*
+    keyPress[key] = false;
     if (key == 117) // touche u
     {
         checkbox = !checkbox;
         ofLog() << "<toggle ui: " << checkbox << ">";
     }
 
-    bool shiftPressed = ofGetKeyPressed(OF_KEY_SHIFT);
-    /*
+    // Ici, vous pouvez gérer les cas où seulement une touche est pressé.
     switch (key)
     {
     case 's': // Pour "Add Square"
-        if (shiftPressed)
-        {
-            this->onAddSquareEvent();
-        }
+        this->onAddSquareEvent();
         break;
     case 'r': // Pour "Add Rectangle"
-        if (shiftPressed)
-        {
-            this->onAddRectangleEvent();
-        }
+        this->onAddRectangleEvent();
         break;
-    case '': // Pour "Add Square"
-        if (shiftPressed)
-        {
-            this->onAddSquareEvent();
-        }
-        break;
-
-    // SHIFT non nécessaire pour les prochaine 
-
     case 'c': // Pour "Add Circle"
         this->onAddCircleleEvent();
         break;
-     
-    case 's': // Pour "Add Square"
-        {
-            this->onAddSquareEvent();
-        }
+    case 'e': // Pour "Add Ellipse"
+        this->onAddEllipsisEvent();
         break;
-    case 'r': // Pour "Add Rectangle"
-        {
-            this->onAddRectangleEvent();
-        }
+    case 'p': // Pour "Add Polygone"
+        this->onAddRegularPolygonEvent();
         break;
-    case '': // Pour "Add Square"
-        {
-            this->onAddSquareEvent();
-        }
-        break;
-        */
+
+        //Ajouter les autres AU DESSUS D'ICI
     }
+}
 
 void Application2d::rezize2DTaskbar() {
     // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
@@ -311,7 +312,7 @@ void Application2d::saveRenderButtonEvent() {
 }
 
 void Application2d::onAddSquareEvent() {
-
+    //ofDrawTriangle((200, 600), (1000, 1000), (100, 100);
 }
 
 void Application2d::onAddRectangleEvent() {
@@ -371,7 +372,7 @@ void Application2d::setup2DTaskbar()
     setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
 
     setupMenu(othersMenu, "Others", optionWidth*5, { "Test" });
-    setupMenu(editMenu, "Edit", optionWidth * 4, { "Layer UP", "Layer Down"});
+    setupMenu(editMenu, "Edit", optionWidth * 4, { "Undo", "Redo", "Layer UP", "Layer Down"});
 
     header = new ofxDatGui(ofGetWidth() - optionWidth * 6, 0);
     headerLabel = header->addLabel("ArtiFrame 2D");
@@ -418,3 +419,27 @@ void Application2d::dragEvent(ofDragInfo dragInfo) {
 }
 
 
+void Application2d::undoButton()
+{
+
+}
+
+
+void Application2d::redoButton()
+{
+
+}
+
+
+void Application2d::keyPressed(int key)
+{
+    //keyNumber = key;
+    keyPress[key] = true;
+    ofLog() << "<boolkeyPressed: " << keyPress << ">";
+    ofLog() << "<keyNumberPressed: " << keyNumber << ">";
+}
+
+
+void Application2d::esterEgg() {
+    textbox.set("Text", "PipiCaca hihi");
+}

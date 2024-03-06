@@ -12,7 +12,7 @@ void Renderer2d::setup()
   minDimension = std::min(ofGetWidth(), ofGetHeight());
 
   // paramètre
-  font_size = 64;
+  font_size = 90;
 
   // variable
   line_offset = font_size / 2.0f;

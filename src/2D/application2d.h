@@ -57,8 +57,6 @@ public:
 
   void saveRenderButtonEvent();
   
-  void importButtomEvent();
-
   void onAddSquareEvent();
 
   void onAddRectangleEvent();
@@ -86,6 +84,14 @@ public:
   void mouseReleased(int x, int y, int button);
 
   void dragEvent(ofDragInfo dragInfo);
+
+  void undoButton();
+
+  void redoButton();
+
+  void keyPressed(int key);
+
+  void esterEgg();
 
   int optionWidth;
   ofImage imageImport;
@@ -117,4 +123,7 @@ public:
 
 	// La fonction publique à appeler pour configurer la barre d'outils 2D.
 	void setup2DTaskbar();
+
+	int keyNumber;
+	bool keyPress[255];
 };
