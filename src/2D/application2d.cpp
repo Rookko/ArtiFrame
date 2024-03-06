@@ -190,17 +190,12 @@ void Application2d::rezize2DTaskbar() {
     othersMenu->setPosition(optionWidth*5, 0);
 
     editMenu->setWidth(optionWidth);
-    editMenu->setPosition(optionWidth*4, 0);
+    editMenu->setPosition(optionWidth * 4, 0);
+
+    headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
+    headerLabel->setPosition(optionWidth * 6, 0);
+    
 }
-
-
-
-
-
-
-
-
-
 
 void Application2d::windowResized(int w, int h)
 {
@@ -211,14 +206,18 @@ void Application2d::showUi() {
     fileMenu->setVisible(true);
     addMenu->setVisible(true);
     colorMenu->setVisible(true);
+    editMenu->setVisible(true);
     othersMenu->setVisible(true);
+    header->setVisible(true);
 }
 
 void Application2d::hideUi() {
     fileMenu->setVisible(false);
     addMenu->setVisible(false);
     colorMenu->setVisible(false);
+    editMenu->setVisible(true);
     othersMenu->setVisible(false);
+    header->setVisible(false);
 
 }
 
@@ -372,6 +371,13 @@ void Application2d::setup2DTaskbar()
 
     setupMenu(othersMenu, "Others", optionWidth*5, { "Test" });
     setupMenu(editMenu, "Edit", optionWidth * 4, { "Layer UP", "Layer Down"});
+
+    header = new ofxDatGui(ofGetWidth() - optionWidth * 6, 0);
+    headerLabel = header->addLabel("ArtiFrame 2D");
+    headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
+    headerLabel->setWidth(ofGetWidth() - optionWidth * 6);
+    headerLabel->setPosition(optionWidth * 6, 0);
+    headerLabel->setStripeVisible(false);
 }
 
 
