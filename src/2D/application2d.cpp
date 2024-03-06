@@ -200,6 +200,7 @@ void Application2d::rezize2DTaskbar() {
 void Application2d::windowResized(int w, int h)
 {
   rezize2DTaskbar();
+  ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
 }
 
 void Application2d::showUi() {
@@ -405,5 +406,15 @@ void Application2d::mouseReleased(int x, int y, int button) {
 }
 
 void Application2d::dragEvent(ofDragInfo dragInfo) {
+    ofLog() << "<app::ofDragInfo file[0]: " << dragInfo.files.at(0)
+        << " at : " << dragInfo.position << ">";
 
+    // importer le premier fichier déposé sur la fenêtre si c'est une image (attention : aucune validation du type de fichier)
+    renderer.importImage.load(dragInfo.files.at(0));
+
+    // redimensionner la fenêtre selon la résolution de l'image
+    if (renderer.importImage.getWidth() > 0 && renderer.importImage.getHeight() > 0)
+        ofSetWindowShape(renderer.importImage.getWidth(), renderer.importImage.getHeight());
 }
+
+

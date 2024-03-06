@@ -26,6 +26,8 @@ public:
   int font_size;
   int minDimension;
 
+  ofImage importImage;
+
   void setup();
   void update();
   void draw();
