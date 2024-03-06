@@ -434,12 +434,15 @@ void Application2d::dragEvent(ofDragInfo dragInfo) {
     ofLog() << "<app::ofDragInfo file[0]: " << dragInfo.files.at(0)
         << " at : " << dragInfo.position << ">";
 
-    // importer le premier fichier déposé sur la fenêtre si c'est une image (attention : aucune validation du type de fichier)
     renderer.importImage.load(dragInfo.files.at(0));
 
-    // redimensionner la fenêtre selon la résolution de l'image
-    if (renderer.importImage.getWidth() > 0 && renderer.importImage.getHeight() > 0)
+    if (renderer.importImage.getWidth() > ofGetWindowWidth() && renderer.importImage.getHeight() > ofGetWindowHeight()) {
         ofSetWindowShape(renderer.importImage.getWidth(), renderer.importImage.getHeight());
+    }
+    else {
+        ofSetWindowShape(ofGetWidth(), ofGetHeight());
+    }
+
 }
 
 
