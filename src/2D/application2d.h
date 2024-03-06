@@ -36,6 +36,12 @@ public:
   void draw();
   void exit();
 
+  // Déclaration de la fonction setupButton pour initialiser les boutons.
+  void setupButton(ofxDatGuiFolder* folder, const std::string& label, void (Application2d::* eventHandler)(const ofxDatGuiButtonEvent&));
+
+  // Déclaration de la fonction setupMenu pour initialiser les menus.
+  void setupMenu(ofxDatGui*& menu, const std::string& title, int positionX, std::initializer_list<std::string> buttons);
+
   void keyReleased(int key);
 
   void windowResized(int w, int h);
@@ -46,7 +52,9 @@ public:
 
   void hideUi();
 
-  void setup2DTaskbar();
+  //void setup2DTaskbar();
+
+  void onAddShapeEvent(ofxDatGuiButtonEvent e);
 
   void saveRenderButtonEvent(ofxDatGuiButtonEvent e);
 
@@ -64,6 +72,7 @@ public:
 
   void onAddArrowEvent(ofxDatGuiButtonEvent e);
 
+  
   int minDimension;
   int optionWidth;
 
@@ -73,4 +82,7 @@ public:
 
 	ofxDatGui* addMenu;
 	ofxDatGuiFolder* addMenuFolder;
+
+	// La fonction publique à appeler pour configurer la barre d'outils 2D.
+	void setup2DTaskbar();
 };
