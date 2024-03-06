@@ -12,6 +12,8 @@ vector<Object*> selection;
 stack<Operation*> history;
 stack<Operation*> historyUndone;
 
+//ofxDatGui* objectMenu;
+
 void Application3d::setup(int buttonSize){
 	ofLog() << "<app::setup3d>";
 	optionWidth = buttonSize;
@@ -38,6 +40,8 @@ void Application3d::setup(int buttonSize){
     zAxisSlider = transformationMenu->addSlider("Z", -1000, 1000, 0);
     ofxDatGuiButton* applyButton = transformationMenu->addButton("Apply");
     applyButton->onButtonEvent(this, &Application3d::onApplyTransformationEvent);
+   // ofxDatGuiButton* changeCameraButton = objectMenu->addButton("Switch Camera Mode");
+    //changeCameraButton->onButtonEvent(this, &Application3d::onChangeCameraMode);
 
  
 }
@@ -130,6 +134,7 @@ void Application3d::showUi()
     renderMenu->setVisible(true);
     header->setVisible(true);
     transformationMenu->setVisible(true);
+    cameraMenu->setVisible(true);
 }
 
 void Application3d::hideUi()
@@ -140,6 +145,7 @@ void Application3d::hideUi()
     renderMenu->setVisible(false);
     header->setVisible(false);
     transformationMenu->setVisible(false);
+    cameraMenu->setVisible(false);
 }
 
 void Application3d::setupButton(ofxDatGuiFolder* folder, const std::string& label, void (Application3d::* eventHandler)(const ofxDatGuiButtonEvent&))
@@ -182,7 +188,11 @@ void Application3d::rezize3DTaskbar() {
     renderMenu->setPosition(optionWidth*4, 0);
 
     headerLabel->setWidth(ofGetWidth() - optionWidth * 4);
-    headerLabel->setPosition(optionWidth * 5, 0);
+    headerLabel->setPosition(optionWidth * 6, 0);
+
+
+    cameraMenu->setWidth(optionWidth);
+    cameraMenu->setPosition(optionWidth * 5, 0);
 
 }
 
@@ -211,26 +221,44 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour ajouter un rectangle à la scène lorsque bouton Add Cynlinder cliqué.
     else if (buttonLabel == "Add Cynlinder")
     {
-    
+
     }
 
     // Fonction pour ajouter un Circle à la scène lorsque bouton Add Monkey cliqué.
     else if (buttonLabel == "Add Monkey")
     {
-    
+
     }
 
     else if (buttonLabel == "Deleted")
     {
-     
+
     }
 
     else if (buttonLabel == "Deleted All")
     {
-     
+
     }
-    // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
+
+    else if (buttonLabel == "Perspective") {
+
+        if (renderer.cameraMode == Renderer3d::Orthographic) {
+            renderer.setCameraToPerspective();
+            renderer.cameraMode = Renderer3d::Perspective;
+
+        }
+    }
+
+    else if (buttonLabel == "Orthogonale") {
+        if (renderer.cameraMode == Renderer3d::Perspective) {
+            renderer.setCameraToOrthographic();
+            renderer.cameraMode = Renderer3d::Orthographic;
+        }
+
+    }
 }
+    // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
+
 
 // Fonction principale pour configurer la barre d'outils 2D.
 void Application3d::setup3DTaskbar()
@@ -244,11 +272,14 @@ void Application3d::setup3DTaskbar()
 
     setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Shader"});
 
-    header = new ofxDatGui(ofGetWidth() - optionWidth * 5, 0);
+    setupMenu(cameraMenu, "Camera Menu", optionWidth * 5, {"Perspective", "Orthogonale"});
+
+
+    header = new ofxDatGui(ofGetWidth() - optionWidth * 6, 0);
     headerLabel = header->addLabel("ArtiFrame 3D");
     headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
-    headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
-    headerLabel->setPosition(optionWidth * 5, 0);
+    headerLabel->setWidth(ofGetWidth() - optionWidth * 6);
+    headerLabel->setPosition(optionWidth * 6, 0);
     headerLabel->setStripeVisible(false);
 }
 
@@ -419,13 +450,4 @@ Renderer3d::RenderMode Application3d::getRenderMode() {
         return Renderer3d::RenderMode::Shader;
 }
 
-void Application3d::onChangeCameraMode(ofxDatGuiButtonEvent e) {
-    if (renderer.cameraMode == Renderer3d::Perspective) {
-        renderer.setCameraToOrthographic();
-        renderer.cameraMode = Renderer3d::Orthographic;
-    }
-    else if (renderer.cameraMode == Renderer3d::Orthographic) {
-        renderer.setCameraToPerspective();
-        renderer.cameraMode = Renderer3d::Perspective;
-    }
-}
+
