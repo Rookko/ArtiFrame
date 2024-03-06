@@ -363,7 +363,11 @@ void Application2d::importButtonEvent()
     ofFileDialogResult importResult = ofSystemLoadDialog("Choisir l'image à importer");
     if (importResult.bSuccess)
     {
-
+        import(importResult.getPath());
+        ofLog() << "<app::import success>";
+    }
+    else {
+        ofLog() << "app::import failed>";
     }
 }
 
@@ -461,4 +465,36 @@ void Application2d::onDeletedAll() {
 
 void Application2d::addBatman() {
 
+}
+
+
+
+void Application2d::import(string path) {
+    ofImage dataImg;
+    dataImg.load(path);
+    if (dataImg.isAllocated()) {
+        string nomFichier;
+        string::size_type index = path.rfind('\\');
+        if (index != string::npos) {
+            nomFichier = path.substr(index + 1);
+        }
+
+        /*
+     
+        Image* image = new Image();
+        image->path = path;
+        image->dataImg = dataImg;
+        image->originalName = nomFichier;
+        nomFichier = getElementName(nomFichier);
+        image->name = filename;
+
+        imgScrollView->add(nomfichier);
+
+        renderer.elements.push_back(image);
+        renderer.active = image;
+        renderer.activeIndex++;
+
+        
+        */
+    }
 }

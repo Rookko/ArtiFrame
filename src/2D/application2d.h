@@ -100,6 +100,8 @@ public:
  
   
 
+  void import(string path);
+
   private:
 
 	// Ajouter les menus pour les différents boutons
