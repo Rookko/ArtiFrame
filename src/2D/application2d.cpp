@@ -403,3 +403,7 @@ void Application2d::mouseReleased(int x, int y, int button) {
         dragging = false;
     }
 }
+
+void Application2d::dragEvent(ofDragInfo dragInfo) {
+
+}
