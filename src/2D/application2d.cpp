@@ -424,31 +424,6 @@ void Application2d::setup2DTaskbar()
 
 
 
-void Application2d::mousePressed(int x, int y, int button) {
-    if (imageImported && x >= imagePosition.x && x <= imagePosition.x + imageImport.getWidth()
-        && y >= imagePosition.y && y <= imagePosition.y + imageImport.getHeight()) {
-        dragging = true;
-        dragOffset.x = x - imagePosition.x;
-        dragOffset.y = y - imagePosition.y;
-    }
-}
-
-void Application2d::mouseDragged(int x, int y, int button) {
-    if (dragging) {
-        imagePosition.x = x - dragOffset.x;
-        imagePosition.y = y - dragOffset.y;
-    }
-}
-
-void Application2d::mouseReleased(int x, int y, int button) {
-    if (dragging) {
-        dragging = false;
-    }
-}
-
-
-
-
 void Application2d::undoButton()
 {
 
