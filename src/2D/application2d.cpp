@@ -131,13 +131,29 @@ void Application2d::hideUi() {
 }
 
 void Application2d::saveRenderButtonEvent(ofxDatGuiButtonEvent e) {
-    string filePath = ofSystemLoadDialog("Select a file").filePath;
-    if (!filePath.empty()) {
-        ofLogNotice("File Selected") << filePath;
+    // Open a file dialog to get the desired file path and name
+    
+    ofFileDialogResult result = ofSystemLoadDialog("Select a folder", true);
+    if (result.bSuccess) {
+        string folderPath = result.filePath;
+        ofLogNotice("Folder Selected") << folderPath;
+
+        // Create an ofImage and grab the screen
+        ofImage image;
+        image.grabScreen(0, 60, ofGetWidth(), ofGetHeight()-60);
+        // Save the image to the specified folder with a default name 
+        string defaultFileName = "render.png";
+        folderPath = ofFilePath::addTrailingSlash(folderPath);
+
+        string filePath = folderPath + defaultFileName;
+        image.save(filePath);
+
+        ofLogNotice("Image Saved") << "Render saved to: " << filePath;
     }
     else {
         ofLogNotice("File selection canceled");
     }
+
 }
 
 void Application2d::onAddSquareEvent(ofxDatGuiButtonEvent e) {
