@@ -79,9 +79,18 @@ public:
 
   void layerDown();
 
+  void mousePressed(int x, int y, int button);
+
+  void mouseDragged(int x, int y, int button);
+
+  void mouseReleased(int x, int y, int button);
+
   int optionWidth;
   ofImage imageImport;
   bool imageImported;
+  ofPoint imagePosition; 
+  bool dragging = false; 
+  ofPoint dragOffset;
 
   private:
 
