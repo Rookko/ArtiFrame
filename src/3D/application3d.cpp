@@ -222,7 +222,9 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour ajouter un rectangle à la scène lorsque bouton Add Cynlinder cliqué.
     else if (buttonLabel == "Add Cynlinder")
     {
+
         addCylinder();
+
     }
 
     // Fonction pour ajouter un Circle à la scène lorsque bouton Add Monkey cliqué.
@@ -238,8 +240,26 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 
     else if (buttonLabel == "Deleted All")
     {
-     
+
     }
+
+    else if (buttonLabel == "Perspective") {
+
+        if (renderer.cameraMode == Renderer3d::Orthographic) {
+            renderer.setCameraToPerspective();
+            renderer.cameraMode = Renderer3d::Perspective;
+
+        }
+    }
+
+    else if (buttonLabel == "Orthogonale") {
+        if (renderer.cameraMode == Renderer3d::Perspective) {
+            renderer.setCameraToOrthographic();
+            renderer.cameraMode = Renderer3d::Orthographic;
+        }
+
+    }
+
     else if (buttonLabel == "WireFrame")
     {
         renderMode = "Wireframe";
@@ -250,6 +270,9 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         renderMode = "Shader";
     }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
+
+}
+
 
 
 // Fonction principale pour configurer la barre d'outils 2D.
