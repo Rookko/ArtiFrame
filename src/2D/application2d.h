@@ -64,6 +64,9 @@ public:
 
   void onAddArrowEvent(ofxDatGuiButtonEvent e);
 
+  int minDimension;
+  int optionWidth;
+
   private:
 	ofxDatGui* fileMenu;
 	ofxDatGuiFolder* fileMenuFolder;

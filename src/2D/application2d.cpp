@@ -2,6 +2,7 @@
 // Classe principale de l'application 2D.
 
 #include "application2d.h"
+#include <algorithm> // Pour std::min
 
 
 ofxDatGui* toolsGui;
@@ -16,10 +17,17 @@ void Application2d::setup()
 
   ofLog() << "<app::setup2d>";
 
+  // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
+  minDimension = std::min(ofGetWidth(), ofGetHeight());
+
+  // Setup option width pixel
+  optionWidth = minDimension * 0.1f;
+  ofLog() << optionWidth;
+
   renderer.setup();
 
   gui.setup("interface");
-  gui.setPosition(0, 120);
+  gui.setPosition(0, 300);
 
   group_draw.setup("outils de dessin");
 
@@ -99,14 +107,14 @@ void Application2d::exit()
 void Application2d::setup2DTaskbar() {
 
     fileMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
-    fileMenu->setWidth(60);
+    fileMenu->setWidth(optionWidth);
     fileMenuFolder = fileMenu->addFolder("File");
     ofxDatGuiButton* fileRenderButton = fileMenuFolder->addButton("Export");
     fileRenderButton->onButtonEvent(this, &Application2d::saveRenderButtonEvent);
 
     addMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
     addMenu->setWidth(120);
-    addMenu->setPosition(120, 0);
+    addMenu->setPosition(optionWidth, 0);
     addMenuFolder = addMenu->addFolder("Add");
     ofxDatGuiButton* addSquareBtn = addMenuFolder->addButton("Add Square");
     addSquareBtn->onButtonEvent(this, &Application2d::onAddSquareEvent);

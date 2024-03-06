@@ -8,6 +8,9 @@ void Renderer2d::setup()
   ofSetFrameRate(60);
   ofSetBackgroundColor(31);
 
+  // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
+  minDimension = std::min(ofGetWidth(), ofGetHeight());
+
   // paramètre
   font_size = 64;
 

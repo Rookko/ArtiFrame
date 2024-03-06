@@ -24,6 +24,7 @@ public:
   float line_offset;
 
   int font_size;
+  int minDimension;
 
   void setup();
   void update();
