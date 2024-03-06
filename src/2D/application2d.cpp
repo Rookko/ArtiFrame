@@ -101,6 +101,8 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
     for (auto& label : buttons) {
         setupButton(folder, label, &Application2d::onAddShapeEvent); // Utilise une fonction hypothétique onAddShapeEvent comme gestionnaire pour tous les boutons.
     }
+
+
 }
 
 void Application2d::keyReleased(int key)
@@ -226,6 +228,7 @@ void Application2d::setup2DTaskbar()
     setupMenu(fileMenu, "File", 0, { "Export" });
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
     setupMenu(addMenu, "Add", optionWidth, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon" });
+    // Ajouter optionWidth a chaque nouveau bouton pour le décaller
     setupMenu(colorMenu, "Color", optionWidth*2, { "Histogram" });
 
     /*
