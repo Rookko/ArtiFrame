@@ -11,6 +11,11 @@ ofxDatGui* toolsGui;
 
 ofxDatGui* shapeGui;
 
+ofPoint position;
+ofPoint positionImageOrigine = { 0,0,0 };
+
+ofxDatGuiScrollView* imageScroller;
+
 void Application2d::setup(int buttonSize)
 {
   optionWidth = buttonSize;
@@ -497,4 +502,8 @@ void Application2d::import(string path) {
         
         */
     }
+}
+
+void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
+
 }

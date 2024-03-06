@@ -102,6 +102,8 @@ public:
 
   void import(string path);
 
+  void onSelectImage(ofxDatGuiScrollViewEvent e);
+
   private:
 
 	// Ajouter les menus pour les différents boutons
