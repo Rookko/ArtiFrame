@@ -69,7 +69,8 @@ void Application2d::draw()
     gui.draw();
 
   if (imageImported) {
-      imageImport.draw(ofGetWidth() / 4, ofGetHeight() / 4);
+      imageImport.resize(ofGetWidth() / 4, ofGetHeight() / 4);
+      imageImport.draw(ofGetWidth() / 2, ofGetHeight() / 2);
   }
 }
 //comon
@@ -248,17 +249,6 @@ void Application2d::saveRenderButtonEvent() {
 
 }
 
-void Application2d::importButtomEvent()
-{
-    ofFileDialogResult importResult = ofSystemLoadDialog("Choisir l'image à importer");
-    if (importResult.bSuccess)
-    {
-        imageImported = imageImport.load(importResult.getPath());
-        // Ajoutez un log ici pour confirmer que le chemin de l'image est correct.
-        ofLogNotice() << "Image loaded from path: " << importResult.getPath();
-    }
-}
-
 void Application2d::onAddSquareEvent() {
 
 }
@@ -289,7 +279,13 @@ void Application2d::onAddArrowEvent() {
 
 void Application2d::importButtonEvent()
 {
-
+    ofFileDialogResult importResult = ofSystemLoadDialog("Choisir l'image à importer");
+    if (importResult.bSuccess)
+    {
+        imageImported = imageImport.load(importResult.getPath());
+        // Ajoutez un log ici pour confirmer que le chemin de l'image est correct.
+        ofLogNotice() << "Image loaded from path: " << importResult.getPath();
+    }
 }
 
 // Fonction principale pour configurer la barre d'outils 2D.
