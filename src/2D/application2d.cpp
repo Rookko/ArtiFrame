@@ -9,19 +9,12 @@ ofxDatGui* toolsGui;
 
 ofxDatGui* shapeGui;
 
-void Application2d::setup()
+void Application2d::setup(int buttonSize)
 {
-
+    optionWidth = buttonSize;
   ofNoFill();
-
   ofLog() << "<app::setup2d>";
 
-  // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
-  minDimension = std::min(ofGetWidth(), ofGetHeight());
-
-  // Setup option width pixel
-  optionWidth = minDimension * 0.01f;
-  ofLog() << optionWidth;
   setup2DTaskbar();
 
   renderer.setup();
@@ -100,8 +93,6 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
     for (auto& label : buttons) {
         setupButton(folder, label, &Application2d::onAddShapeEvent); // Utilise une fonction hypothétique onAddShapeEvent comme gestionnaire pour tous les boutons.
     }
-
-
 }
 
 void Application2d::keyReleased(int key)
@@ -115,23 +106,10 @@ void Application2d::keyReleased(int key)
 
 void Application2d::windowResized(int w, int h)
 {
-    ofLog() << "<app::windowResized: (" << w << ", " << h << ")>";
+  rezize2DTaskbar();
 }
 
 void Application2d::button_pressed()
-{
-    // réinitialiser la zone de texte
-    textbox.set("text", "ift3100");
-
-    ofLog() << "<button pressed>";
-}
-
-void Application2d::showUi() {
-    fileMenu->setVisible(true);
-    addMenu->setVisible(true);
-
-}
-
 void Application2d::hideUi() {
     fileMenu->setVisible(false);
     addMenu->setVisible(false);
@@ -173,6 +151,12 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         this->onAddCircleleEvent();
     }
 
+
+
+void Application2d::showUi() {
+    fileMenu->setVisible(true);
+    addMenu->setVisible(true);
+    colorMenu->setVisible(true);
     // Fonction pour ajouter un Ellipsis à la scène lorsque bouton Add Ellipsis cliqué.
     else if (buttonLabel == "Add Ellipsis")
     {
@@ -187,6 +171,11 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 }
 
+void Application2d::hideUi() {
+    fileMenu->setVisible(false);
+    addMenu->setVisible(false);
+    colorMenu->setVisible(true);
+}
 
 void Application2d::saveRenderButtonEvent() {
     // Open a file dialog to get the desired file path and name
@@ -321,6 +310,3 @@ void Application2d::setup2DTaskbar() {
     ofxDatGuiButton* addRegularPolygonBtn = addMenuFolder->addButton("Add Regular Polygon");
     addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddRegularPolygonEvent);
 }
-*/
-
-

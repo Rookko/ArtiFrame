@@ -31,7 +31,7 @@ public:
 
   ofxButton button;
 
-  void setup();
+  void setup(int buttonSize);
   void update();
   void draw();
   void exit();
@@ -94,8 +94,6 @@ public:
   void onAddArrowEvent(ofxDatGuiButtonEvent e);
   */
 
-  
-  int minDimension;
   int optionWidth;
 
   private:
