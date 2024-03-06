@@ -74,6 +74,8 @@ public:
 	bool isQPressed = false;
 	bool isEPressed = false;
 
+	void onChangeCameraMode(ofxDatGuiButtonEvent e);
+
 
 
 private:
