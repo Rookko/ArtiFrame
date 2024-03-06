@@ -34,6 +34,7 @@ public:
   void setup(int buttonSize);
   void update();
   void draw();
+  void button_pressed();
   void exit();
 
   // Déclaration de la fonction setupButton pour initialiser les boutons.
@@ -44,9 +45,9 @@ public:
 
   void keyReleased(int key);
 
-  void windowResized(int w, int h);
+  void rezize2DTaskbar();
 
-  void button_pressed();
+  void windowResized(int w, int h);
 
   void showUi();
 
@@ -55,6 +56,8 @@ public:
   void onAddShapeEvent(const ofxDatGuiButtonEvent& e);
 
   void saveRenderButtonEvent();
+  
+  void importButtomEvent();
 
   void onAddSquareEvent();
 
@@ -72,29 +75,9 @@ public:
 
   void importButtonEvent();
 
-  /*
-  void setup2DTaskbar();
-
-  void onAddShapeEvent(const ofxDatGuiButtonEvent& e);
-
-  void saveRenderButtonEvent(ofxDatGuiButtonEvent e);
-
-  void onAddSquareEvent(ofxDatGuiButtonEvent e);
-
-  void onAddRectangleEvent(ofxDatGuiButtonEvent e);
-
-  void onAddCircleleEvent(ofxDatGuiButtonEvent e);
-
-  void onAddEllipsisEvent(ofxDatGuiButtonEvent e);
-
-  void onAddRegularPolygonEvent(ofxDatGuiButtonEvent e);
-
-  void onAddStarEvent(ofxDatGuiButtonEvent e);
-
-  void onAddArrowEvent(ofxDatGuiButtonEvent e);
-  */
-
   int optionWidth;
+  ofImage imageImport;
+  bool imageImported;
 
   private:
 

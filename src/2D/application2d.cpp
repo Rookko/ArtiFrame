@@ -67,6 +67,14 @@ void Application2d::draw()
     gui.draw();
 }
 
+void Application2d::button_pressed()
+{
+    // réinitialiser la zone de texte
+    textbox.set("text", "ift3100");
+
+    ofLog() << "<button pressed>";
+}
+
 void Application2d::exit()
 {
     button.removeListener(this, &Application2d::button_pressed);
@@ -104,15 +112,55 @@ void Application2d::keyReleased(int key)
     }
 }
 
+void Application2d::rezize2DTaskbar() {
+    // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
+    int minDimension = std::min(ofGetWidth(), ofGetHeight());
+
+    // Setup option width pixel
+    optionWidth = minDimension * 0.15f;
+
+    fileMenu->setWidth(optionWidth);
+    fileMenu->setPosition(optionWidth, 0);
+
+    addMenu->setWidth(optionWidth);
+    addMenu->setPosition(optionWidth*2, 0);
+
+    colorMenu->setWidth(optionWidth);
+    colorMenu->setPosition(optionWidth*3, 0);
+
+    othersMenu->setWidth(optionWidth);
+    othersMenu->setPosition(optionWidth*4, 0);
+
+    /* header stuff
+    headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() * 2 - addMenu->getWidth());
+    headerLabel->setPosition(fileMenu->getWidth() * 2 + addMenu->getWidth(), 0);
+    /
+
+    /
+    header = new ofxDatGui(ofGetWidth() - fileMenu->getWidth()2 - addMenu->getWidth(),0);
+    headerLabel = header->addLabel("ArtiFrame 2D");
+    headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
+    headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() 2 - addMenu->getWidth());
+    headerLabel->setPosition(fileMenu->getWidth() * 2 + addMenu->getWidth(),0);
+    headerLabel->setStripeVisible(false);
+    */
+}
+
 void Application2d::windowResized(int w, int h)
 {
   rezize2DTaskbar();
 }
 
-void Application2d::button_pressed()
+void Application2d::showUi() {
+    fileMenu->setVisible(true);
+    addMenu->setVisible(true);
+    colorMenu->setVisible(true);
+}
+
 void Application2d::hideUi() {
     fileMenu->setVisible(false);
     addMenu->setVisible(false);
+    colorMenu->setVisible(false);
 }
 
 // Fonction utilisée lorsque bouton ou keycape sont pressés
@@ -151,12 +199,6 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         this->onAddCircleleEvent();
     }
 
-
-
-void Application2d::showUi() {
-    fileMenu->setVisible(true);
-    addMenu->setVisible(true);
-    colorMenu->setVisible(true);
     // Fonction pour ajouter un Ellipsis à la scène lorsque bouton Add Ellipsis cliqué.
     else if (buttonLabel == "Add Ellipsis")
     {
@@ -169,12 +211,6 @@ void Application2d::showUi() {
         this->onAddRegularPolygonEvent();
     }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
-}
-
-void Application2d::hideUi() {
-    fileMenu->setVisible(false);
-    addMenu->setVisible(false);
-    colorMenu->setVisible(true);
 }
 
 void Application2d::saveRenderButtonEvent() {
@@ -201,6 +237,17 @@ void Application2d::saveRenderButtonEvent() {
         ofLogNotice("File selection canceled");
     }
 
+}
+
+void Application2d::importButtomEvent()
+{
+    ofFileDialogResult importResult = ofSystemLoadDialog("Choisir l'image à importer");
+    if (importResult.bSuccess)
+    {
+        imageImported = imageImport.load(importResult.getPath());
+        // Ajoutez un log ici pour confirmer que le chemin de l'image est correct.
+        ofLogNotice() << "Image loaded from path: " << importResult.getPath();
+    }
 }
 
 void Application2d::onAddSquareEvent() {
@@ -236,77 +283,15 @@ void Application2d::importButtonEvent()
 
 }
 
-/*
-void Application2d::onAddSquareEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddRectangleEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddCircleleEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddEllipsisEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddRegularPolygonEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddStarEvent(ofxDatGuiButtonEvent e) {
-
-}
-
-void Application2d::onAddArrowEvent(ofxDatGuiButtonEvent e) {
-
-}
-*/
-
 // Fonction principale pour configurer la barre d'outils 2D.
 void Application2d::setup2DTaskbar()
 {
     // Configure le menu 'File' avec un bouton 'Export'.
-    setupMenu(fileMenu, "File", optionWidth, { "Export" });
+    setupMenu(fileMenu, "File", optionWidth, { "Export", "Import"});
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
     setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon" });
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
     setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
 
     setupMenu(othersMenu, "Others", optionWidth*4, { "Test" });
-}
-
-
-
-
-
-
-
-
-/*
-void Application2d::setup2DTaskbar() {
-
-    fileMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
-    fileMenu->setWidth(optionWidth);
-    fileMenuFolder = fileMenu->addFolder("File");
-    ofxDatGuiButton* fileRenderButton = fileMenuFolder->addButton("Export");
-    fileRenderButton->onButtonEvent(this, &Application2d::saveRenderButtonEvent);
-
-    addMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
-    addMenu->setWidth(120);
-    addMenu->setPosition(optionWidth, 0);
-    addMenuFolder = addMenu->addFolder("Add");
-    ofxDatGuiButton* addSquareBtn = addMenuFolder->addButton("Add Square");
-    addSquareBtn->onButtonEvent(this, &Application2d::onAddSquareEvent);
-    ofxDatGuiButton* addRectangleBtn = addMenuFolder->addButton("Add Rectangle");
-    addRectangleBtn->onButtonEvent(this, &Application2d::onAddRectangleEvent);
-    ofxDatGuiButton* addCircleBtn = addMenuFolder->addButton("Add Circle");
-    addCircleBtn->onButtonEvent(this, &Application2d::onAddCircleleEvent);
-    ofxDatGuiButton* addEllipsisBtn = addMenuFolder->addButton("Add Ellipsis");
-    addEllipsisBtn->onButtonEvent(this, &Application2d::onAddEllipsisEvent);
-    ofxDatGuiButton* addRegularPolygonBtn = addMenuFolder->addButton("Add Regular Polygon");
-    addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddRegularPolygonEvent);
 }

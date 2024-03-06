@@ -34,7 +34,6 @@ void Application::setup() {
     ofLog() << optionWidth;
 
     viewMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
-    viewMenu->setPosition(optionWidth, 0);
     viewMenu->setWidth(optionWidth);
     viewMenuFolder = viewMenu->addFolder("View");
     ofxDatGuiButton* view2DButton = viewMenuFolder->addButton("2D Editor");
@@ -101,9 +100,8 @@ void Application::windowResized(int w, int h) {
     ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
 
     int minDimension = std::min(ofGetWidth(), ofGetHeight());
-    optionWidth = minDimension * 0.1f;
+    optionWidth = minDimension * 0.15f;
 
-    viewMenu->setPosition(optionWidth, 0);
     viewMenu->setWidth(optionWidth);
     application2D->windowResized(w, h);
     application3D->windowResized(w, h);
