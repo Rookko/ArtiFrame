@@ -45,7 +45,7 @@ void Application::setup() {
     application3D = new Application3d();
 
     application2D->setup(optionWidth);
-    application3D->setup();
+    application3D->setup(optionWidth);
 
     selectViewType();
 
