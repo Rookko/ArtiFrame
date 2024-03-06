@@ -110,6 +110,8 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
     }
 }
 
+
+// Pour ajouter une kyeSwitch, simplement ajouter la touche et la relier à ca fonction
 void Application2d::keyReleased(int key)
 {
     if (key == 117) // touche u
@@ -117,6 +119,29 @@ void Application2d::keyReleased(int key)
         checkbox = !checkbox;
         ofLog() << "<toggle ui: " << checkbox << ">";
     }
+
+    bool shiftPressed = ofGetKeyPressed(OF_KEY_SHIFT);
+
+    switch (key)
+    {
+    case 's': // Pour "Add Square"
+        if (shiftPressed)
+        {
+            this->onAddSquareEvent();
+        }
+        break;
+    case 'r': // Pour "Add Rectangle"
+        if (shiftPressed)
+        {
+            // Code pour ajouter un rectangle à la scène uniquement si Shift est pressé.
+        }
+        break;
+    case 'c': // Pour "Add Circle"
+        // Code pour ajouter un cercle à la scène. Shift n'est pas requis.
+        break;
+        // Ajoutez des cas supplémentaires pour d'autres raccourcis clavier.
+    }
+
 }
 
 void Application2d::rezize2DTaskbar() {
@@ -137,6 +162,9 @@ void Application2d::rezize2DTaskbar() {
 
     othersMenu->setWidth(optionWidth);
     othersMenu->setPosition(optionWidth*4, 0);
+
+    editMenu->setWidth(optionWidth);
+    editMenu->setPosition(optionWidth*5, 0);
 
     /* header stuff
     headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() * 2 - addMenu->getWidth());
@@ -220,6 +248,18 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         this->onAddRegularPolygonEvent();
     }
+
+    // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
+    else if (buttonLabel == "Layer UP")
+    {
+        this->layerDown();
+    }
+
+    // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
+    else if (buttonLabel == "Layer Down")
+    {
+        this->layerUP();
+    }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 }
 
@@ -288,6 +328,16 @@ void Application2d::importButtonEvent()
     }
 }
 
+void Application2d::layerUP()
+{
+
+}
+
+void Application2d::layerDown()
+{
+
+}
+
 // Fonction principale pour configurer la barre d'outils 2D.
 void Application2d::setup2DTaskbar()
 {
@@ -299,4 +349,6 @@ void Application2d::setup2DTaskbar()
     setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
 
     setupMenu(othersMenu, "Others", optionWidth*4, { "Test" });
+
+    setupMenu(editMenu, "Edit", optionWidth * 4, { "Layer UP", "Layer Down"});
 }

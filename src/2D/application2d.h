@@ -75,6 +75,10 @@ public:
 
   void importButtonEvent();
 
+  void layerUP();
+
+  void layerDown();
+
   int optionWidth;
   ofImage imageImport;
   bool imageImported;
@@ -93,6 +97,9 @@ public:
 
 	ofxDatGui* othersMenu;
 	ofxDatGuiFolder* othersMenuFolder;
+
+	ofxDatGui* editMenu;
+	ofxDatGuiFolder* editMenuFolder;
 
 	// La fonction publique à appeler pour configurer la barre d'outils 2D.
 	void setup2DTaskbar();
