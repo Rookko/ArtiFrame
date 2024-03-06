@@ -21,7 +21,7 @@ void Application2d::setup()
   minDimension = std::min(ofGetWidth(), ofGetHeight());
 
   // Setup option width pixel
-  optionWidth = minDimension * 0.1f;
+  optionWidth = minDimension * 0.01f;
   ofLog() << optionWidth;
 
   renderer.setup();
