@@ -110,7 +110,7 @@ public:
   ofPoint imagePosition; 
   bool dragging; 
   ofPoint dragOffset;
-  vector<ImageLayer> images;
+  
 
   private:
 
@@ -138,6 +138,8 @@ public:
 
 	int keyNumber;
 	bool keyPress[255];
+
+	vector<ImageLayer> images;
 
 	
 };

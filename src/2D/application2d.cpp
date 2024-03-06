@@ -371,21 +371,31 @@ void Application2d::importButtonEvent()
         imageImported = imageImport.load(importResult.getPath());
         // Ajoutez un log ici pour confirmer que le chemin de l'image est correct.
         ofLogNotice() << "Image loaded from path: " << importResult.getPath();
+
+        ImageLayer newImage;
+        newImage.image.load(importResult.getPath());
+        newImage.filePath = importResult.getPath();
+        newImage.layer = images.size(); 
+        images.push_back(newImage);
     }
 }
 
 
 
 void Application2d::layerUP()
-{  /*
-    if (imageImported && imageLayer > 0) {
-        // Décrémentez l'indice de la couche de l'image importée
-        imageLayer--;
+{/*
+    int selectedLayer = -1;
+    for (int i = 0; i < images.size(); ++i) {
+        if (images[i].filePath == imageImport.getPath()) {
+            selectedLayer = i;
+            break;
+        }
+    }
 
-        // Déplacez l'image importée vers le haut dans la liste en intervertissant avec l'image précédente
-        std::swap(images[imageLayer], images[imageLayer + 1]);
-
-        ofLogNotice() << "Layer UP: Image moved up";
+    // Si l'image est trouvée et n'est pas déjà en haut
+    if (selectedLayer != -1 && selectedLayer < images.size() - 1) {
+        // Échangez les positions de couche avec l'image suivante
+        swap(images[selectedLayer], images[selectedLayer + 1]);
     } */
 }
 
