@@ -78,7 +78,7 @@ public:
 
   private:
 
-	// Ajouter les menus pour les diférents boutons
+	// Ajouter les menus pour les différents boutons
 	ofxDatGui* fileMenu;
 	ofxDatGuiFolder* fileMenuFolder;
 
