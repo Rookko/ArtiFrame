@@ -110,6 +110,9 @@ public:
 	ofxDatGui* editMenu;
 	ofxDatGuiFolder* editMenuFolder;
 
+	ofxDatGui* header;
+	ofxDatGuiLabel* headerLabel;
+
 	// La fonction publique à appeler pour configurer la barre d'outils 2D.
 	void setup2DTaskbar();
 };
