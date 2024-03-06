@@ -99,6 +99,10 @@ void Application::changeViewTo3dEvent(ofxDatGuiButtonEvent e) {
 void Application::windowResized(int w, int h) {
     ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
 
+    if (w < 1200 || h < 600) {
+        ofSetWindowShape(ofClamp(w, 1200, INT_MAX), ofClamp(h, 600, INT_MAX));
+    }
+
     int minDimension = std::min(ofGetWidth(), ofGetHeight());
     optionWidth = minDimension * 0.15f;
 
