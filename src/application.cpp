@@ -26,11 +26,16 @@ void Application::setup() {
         SetClassLongPtr(hwnd, GCLP_HICON, reinterpret_cast<LONG_PTR>(hIcon));
     }
 
+    // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
+    int minDimension = std::min(ofGetWidth(), ofGetHeight());
 
+    // Setup option width pixel
+    optionWidth = minDimension * 0.1f;
+    ofLog() << optionWidth;
 
     viewMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
-    viewMenu->setPosition(60, 0);
-    viewMenu->setWidth(60);
+    viewMenu->setPosition(optionWidth, 0);
+    viewMenu->setWidth(optionWidth);
     viewMenuFolder = viewMenu->addFolder("View");
     ofxDatGuiButton* view2DButton = viewMenuFolder->addButton("2D Editor");
     view2DButton->onButtonEvent(this, &Application::changeViewTo2dEvent);
@@ -40,7 +45,7 @@ void Application::setup() {
     application2D = new Application2d();
     application3D = new Application3d();
 
-    application2D->setup();
+    application2D->setup(optionWidth);
     application3D->setup();
 
     selectViewType();
@@ -94,6 +99,12 @@ void Application::changeViewTo3dEvent(ofxDatGuiButtonEvent e) {
 //--------------------------------------------------------------
 void Application::windowResized(int w, int h) {
     ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
+
+    int minDimension = std::min(ofGetWidth(), ofGetHeight());
+    optionWidth = minDimension * 0.1f;
+
+    viewMenu->setPosition(optionWidth, 0);
+    viewMenu->setWidth(optionWidth);
     application2D->windowResized(w, h);
     application3D->windowResized(w, h);
 }

@@ -31,7 +31,7 @@ public:
 
   ofxButton button;
 
-  void setup();
+  void setup(int buttonSize);
   void update();
   void draw();
   void exit();
@@ -56,6 +56,8 @@ public:
 
   void onAddShapeEvent(const ofxDatGuiButtonEvent& e);
 
+  void rezize2DTaskbar();
+
   void saveRenderButtonEvent(ofxDatGuiButtonEvent e);
 
   void onAddSquareEvent(ofxDatGuiButtonEvent e);
@@ -72,8 +74,6 @@ public:
 
   void onAddArrowEvent(ofxDatGuiButtonEvent e);
 
-  
-  int minDimension;
   int optionWidth;
 
   private:

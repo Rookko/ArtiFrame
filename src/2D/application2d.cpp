@@ -9,20 +9,12 @@ ofxDatGui* toolsGui;
 
 ofxDatGui* shapeGui;
 
-void Application2d::setup()
+void Application2d::setup(int buttonSize)
 {
-
+    optionWidth = buttonSize;
   ofNoFill();
-
   ofLog() << "<app::setup2d>";
 
-  // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
-  minDimension = std::min(ofGetWidth(), ofGetHeight());
-
-  // Setup option width pixel
-  //optionWidth = minDimension * 0.01f;
-  optionWidth = 160;
-  ofLog() << optionWidth;
   setup2DTaskbar();
 
   renderer.setup();
@@ -114,7 +106,7 @@ void Application2d::keyReleased(int key)
 
 void Application2d::windowResized(int w, int h)
 {
-    ofLog() << "<app::windowResized: (" << w << ", " << h << ")>";
+  rezize2DTaskbar();
 }
 
 void Application2d::button_pressed()
@@ -122,8 +114,46 @@ void Application2d::button_pressed()
     // réinitialiser la zone de texte
     textbox.set("text", "ift3100");
 
-    ofLog() << "<button pressed>";
+    addMenu = new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT);
+    addMenu->setWidth(optionWidth*2);
+    addMenu->setPosition(optionWidth*2, 0);
+    addMenuFolder = addMenu->addFolder("Add");
+    ofxDatGuiButton* addSquareBtn = addMenuFolder->addButton("Add Square");
+    addSquareBtn->onButtonEvent(this, &Application2d::onAddSquareEvent);
+    ofxDatGuiButton* addRectangleBtn = addMenuFolder->addButton("Add Rectangle");
+    addRectangleBtn->onButtonEvent(this, &Application2d::onAddRectangleEvent);
+    ofxDatGuiButton* addCircleBtn = addMenuFolder->addButton("Add Circle");
+    addCircleBtn->onButtonEvent(this, &Application2d::onAddCircleleEvent);
+    ofxDatGuiButton* addEllipsisBtn = addMenuFolder->addButton("Add Ellipsis");
+    addEllipsisBtn->onButtonEvent(this, &Application2d::onAddEllipsisEvent);
+    ofxDatGuiButton* addRegularPolygonBtn = addMenuFolder->addButton("Add Regular Polygon");
+    addRegularPolygonBtn->onButtonEvent(this, &Application2d::onAddRegularPolygonEvent);
+
+    header = new ofxDatGui(ofGetWidth() - fileMenu->getWidth()*2 - addMenu->getWidth(),0);
+    headerLabel = header->addLabel("ArtiFrame 2D");
+    headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
+    headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() * 2 - addMenu->getWidth());
+    headerLabel->setPosition(fileMenu->getWidth() * 2 + addMenu->getWidth(),0);
+    headerLabel->setStripeVisible(false);
 }
+
+void Application2d::rezize2DTaskbar() {
+    // Utiliser la dimension la plus petite de la fenêtre pour les calculs de proportion
+    int minDimension = std::min(ofGetWidth(), ofGetHeight());
+
+    // Setup option width pixel
+    optionWidth = minDimension * 0.1f;
+
+    fileMenu->setWidth(optionWidth);
+
+    addMenu->setWidth(120);
+    addMenu->setPosition(optionWidth*2, 0);
+
+    headerLabel->setWidth(ofGetWidth() - fileMenu->getWidth() * 2 - addMenu->getWidth());
+    headerLabel->setPosition(fileMenu->getWidth() * 2 + addMenu->getWidth(), 0);
+}
+
+
 
 void Application2d::showUi() {
     fileMenu->setVisible(true);
