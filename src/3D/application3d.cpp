@@ -188,7 +188,7 @@ void Application3d::rezize3DTaskbar() {
     renderMenu->setWidth(optionWidth);
     renderMenu->setPosition(optionWidth*4, 0);
 
-    headerLabel->setWidth(ofGetWidth() - optionWidth * 4);
+    headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
     headerLabel->setPosition(optionWidth * 6, 0);
 
 
