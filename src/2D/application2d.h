@@ -85,6 +85,8 @@ public:
 
   void mouseReleased(int x, int y, int button);
 
+  void dragEvent(ofDragInfo dragInfo);
+
   int optionWidth;
   ofImage imageImport;
   bool imageImported;
