@@ -13,6 +13,11 @@
 
 class Application2d : public ofBaseApp
 {
+	struct ImageLayer {
+		ofImage image;
+		string filePath;
+		int layer;
+	};
 public:
   Renderer2d renderer;
 
@@ -105,6 +110,7 @@ public:
   ofPoint imagePosition; 
   bool dragging; 
   ofPoint dragOffset;
+  vector<ImageLayer> images;
 
   private:
 
@@ -132,4 +138,6 @@ public:
 
 	int keyNumber;
 	bool keyPress[255];
+
+	
 };

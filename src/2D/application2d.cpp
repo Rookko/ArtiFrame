@@ -374,14 +374,32 @@ void Application2d::importButtonEvent()
     }
 }
 
-void Application2d::layerUP()
-{
 
+
+void Application2d::layerUP()
+{  /*
+    if (imageImported && imageLayer > 0) {
+        // Décrémentez l'indice de la couche de l'image importée
+        imageLayer--;
+
+        // Déplacez l'image importée vers le haut dans la liste en intervertissant avec l'image précédente
+        std::swap(images[imageLayer], images[imageLayer + 1]);
+
+        ofLogNotice() << "Layer UP: Image moved up";
+    } */
 }
 
 void Application2d::layerDown()
-{
+{ /*
+    if (imageImported && imageLayer < images.size() - 1) {
+        // Incrémentez l'indice de la couche de l'image importée
+        imageLayer++;
 
+        // Déplacez l'image importée vers le bas dans la liste en intervertissant avec l'image suivante
+        std::swap(images[imageLayer], images[imageLayer - 1]);
+
+        ofLogNotice() << "Layer Down: Image moved down";
+    } */
 }
 
 
