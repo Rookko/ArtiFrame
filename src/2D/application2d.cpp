@@ -18,6 +18,10 @@
 ofxDatGui* toolsGui;
 
 ofxDatGui* shapeGui;
+ofxDatGuiColorPicker* shapeColorPicker;
+ofxDatGuiSlider* widthSlider;
+ofxDatGuiSlider* heightSlider;
+
 ofxDatGuiScrollView* imgScrollView;
 ofPoint position;
 ofPoint positionImageOrigine = { 0,0,0 };
@@ -63,7 +67,17 @@ void Application2d::setup(int buttonSize)
   checkbox.setName("UwU");
   gui.add(checkbox);
 
- 
+  //menu pour les shape
+  shapeGui = new ofxDatGui(300, 300);
+  shapeGui->addLabel("Menu des primitives");
+  shapeGui->addHeader("Slider");
+  widthSlider = shapeGui->addSlider("Width", 0, 1000, 1000);
+  //widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
+  heightSlider = shapeGui->addSlider("Height", 0, 1000, 1000);
+  //heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
+  shapeColorPicker = shapeGui->addColorPicker("Fill", ofColor::aliceBlue);
+  //fillColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorPickerEvent);
+
 
   imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
   imageScroller->setWidth(255);
@@ -145,6 +159,12 @@ void Application2d::draw()
     gui.draw();
 
   imageScroller->draw();
+  if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+      shapeGui->setVisible(true);
+  }
+  else {
+      shapeGui->setVisible(false);
+  }
 
   float x = static_cast<float>(ofGetMouseX());
   float y = static_cast<float>(ofGetMouseY());
@@ -304,6 +324,7 @@ void Application2d::showUi() {
     editMenu->setVisible(true);
     othersMenu->setVisible(true);
     header->setVisible(true);
+    shapeGui->setVisible(true);
 }
 
 void Application2d::hideUi() {
@@ -313,7 +334,7 @@ void Application2d::hideUi() {
     editMenu->setVisible(false);
     othersMenu->setVisible(false);
     header->setVisible(false);
-
+    shapeGui->setVisible(false);
 }
 
 // Fonction utilisée lorsque bouton ou keycape sont pressés
@@ -735,7 +756,10 @@ void Application2d::removeActiveObjectFromeVector() {
 
 void Application2d::mousePressed(int x, int y, int button) {
     ofLog() << "<app::mousePressed at:(" << x << ", " << y << ")>";
-   
+    if (guiHit(x,y)) {
+       // renderer.hit(x, y) = false;
+    }
+
     if (renderer.hit(x,y) && renderer.objetActif != nullptr) {
         draggingObject = true;
         dragOrigine = { static_cast<float>(x),static_cast<float>(y), 0 };
@@ -756,9 +780,11 @@ void Application2d::mouseDragged(int x, int y, int button) {
 }
 
 bool Application2d::guiHit(int x, int y) {
-    
-    return (y > header->getPosition().y && y < header->getPosition().y + header->getHeight());
-
+    if (shapeGui->getVisible()) {
+        return (y > header->getPosition().y && y < header->getPosition().y + header->getHeight())
+            || (x > shapeGui->getPosition().x && shapeGui->getPosition().x + shapeGui->getWidth()
+                && y > shapeGui->getPosition().y && y < shapeGui->getPosition().y + shapeGui->getHeight());
+    }
 }
 
 
