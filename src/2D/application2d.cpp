@@ -66,6 +66,8 @@ void Application2d::setup(int buttonSize)
   imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
   imageScroller->setWidth(255);
   imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
+  imageScroller->onScrollViewEvent(this, &Application2d::onSelectImage);
+
   renderer.offsetX1 = 0;
   renderer.offsetX2 = ofGetWidth() - imageScroller->getWidth();
   renderer.offsetY1 = 0;
