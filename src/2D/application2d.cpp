@@ -96,15 +96,15 @@ void Application2d::setup(int buttonSize)
   checkbox = true;
 
   basicCursor = new ofImage();
-  basicCursor->load("cursors/basic_cursor.png");
+  basicCursor->load("cursors/basic_icon.png");
   moveCursor = new ofImage();
-  moveCursor->load("cursors/move_cursors.png");
+  moveCursor->load("cursors/move_icon.png");
   exportingCursor = new ofImage();
-  exportingCursor->load("cursors/rotate_cursors.png");
+  exportingCursor->load("cursors/export_icon.png");
   rotateCursor = new ofImage();
-  rotateCursor->load("cursors/rotate_cursors.png");
+  rotateCursor->load("cursors/rotate_icon.png");
   deleteCursor = new ofImage();
-  deleteCursor->load("cursors/delete_cursor.png");
+  deleteCursor->load("cursors/deleted_icon.png");
 }
 
 void Application2d::update()
@@ -149,6 +149,7 @@ void Application2d::update()
   if (draggingObject && renderer.objetActif != nullptr) {
       renderer.objetActif->coordinates.x = ofGetMouseX() - dragOrigine.x + positionImageOrigine.x;
       renderer.objetActif->coordinates.y = ofGetMouseY() - dragOrigine.y + positionImageOrigine.y;
+
   }
 
   renderer.update();
@@ -176,6 +177,11 @@ void Application2d::draw()
   if (isDelete && renderer.hit(x, y) && renderer.objetActif != nullptr) {
       ofHideCursor();
       deleteCursor->draw(x - (deleteCursor->getWidth() / 2), y - (deleteCursor->getWidth() / 2));
+  }
+  else if (draggingObject && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      moveCursor->draw(x - (moveCursor->getWidth() / 2), y - (moveCursor->getWidth() / 2));
+
   }
   else if (isRotate && renderer.hit(x, y) && renderer.objetActif != nullptr) {
       ofHideCursor();
@@ -280,7 +286,14 @@ void Application2d::keyReleased(int key)
         this->addBatman();
         break;
     case 127: // Pour "Deleted"
-        this->onDeleted();
+        if (isDelete == true) {
+            isDelete = false;
+        }
+
+        else {
+            isDelete = true;
+            this->onDeleted();
+        }
         break;
 
         //Ajouter les autres AU DESSUS D'ICI
@@ -413,7 +426,15 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 
     else if (buttonLabel == "Deleted")
     {
+        if (isDelete == true) {
+            isDelete = false;
+        }
+        
+        else {
+        isDelete = true;
         this->onDeleted();
+        }
+        
     }
 
     else if (buttonLabel == "Deleted All")
@@ -663,7 +684,7 @@ void Application2d::esterEgg() {
 
 
 void Application2d::onDeleted() {
-
+    isDelete = false;
 }
 
 

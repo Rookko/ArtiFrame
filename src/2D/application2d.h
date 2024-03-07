@@ -124,6 +124,7 @@ public:
   bool isDelete = false;
   bool isDragging = false;
   bool isRotate = false;
+  bool isMoving = false;
 
   ofImage* basicCursor;
   ofImage* moveCursor;
