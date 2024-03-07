@@ -486,8 +486,6 @@ void Application2d::onAddSquareEvent() {
     filename = getElementName(filename);
     square->name = filename;
 
-    square->setColor(color_picker_object);
-
     imageScroller->add(filename);
 
     addElementToRenderer(square);
