@@ -95,7 +95,7 @@ void Application2d::setup(int buttonSize)
   checkbox = true;
 
   basicCursor = new ofImage();
-  basicCursor->load("cursors/basic_cursor.png");
+  basicCursor->load("cursors/basic_icon.png");
   moveCursor = new ofImage();
   moveCursor->load("cursors/move_icon.png");
   exportingCursor = new ofImage();
