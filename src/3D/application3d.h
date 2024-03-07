@@ -74,7 +74,7 @@ public:
 
 	void deleteSelected();
 
-
+	void deleteAll();
 
 
 	int optionWidth;

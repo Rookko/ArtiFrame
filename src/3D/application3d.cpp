@@ -13,7 +13,6 @@ vector<Object*> selection;
 stack<Operation*> history;
 stack<Operation*> historyUndone;
 
-//ofxDatGui* objectMenu;
 
 void Application3d::setup(int buttonSize) {
     ofLog() << "<app::setup3d>";
@@ -32,7 +31,7 @@ void Application3d::setup(int buttonSize) {
     selectionScrollView->setOpacity(0.1);
 
     transformationMenu = new ofxDatGui(300, 300);
-    transformationMenu->addLabel("Transformation Menu");
+    transformationMenu->addLabel("|Transformation Menu|");
     transformationMenu->addHeader(":: Click here to drag ::");
     vector<string> transformationOptions = { "Translation", "Rotation", "Proportion" };
     transformationDropdown = transformationMenu->addDropdown("Transformation Type", transformationOptions);
@@ -42,11 +41,12 @@ void Application3d::setup(int buttonSize) {
     ofxDatGuiButton* applyButton = transformationMenu->addButton("Apply");
     applyButton->onButtonEvent(this, &Application3d::onApplyTransformationEvent);
 
-    transformationMenu->addLabel("Animation Menu");
+    transformationMenu->addLabel("|Animation Menu|");
     ofxDatGuiButton* enableTurntableBtn = transformationMenu->addButton("Enable Turntable");
     enableTurntableBtn->onButtonEvent(this, &Application3d::onEnableTurntable);
     ofxDatGuiButton* enableTranslationAnimBtn = transformationMenu->addButton("Enable Translation Animation");
     enableTranslationAnimBtn->onButtonEvent(this, &Application3d::onEnableTranslationAnimation);
+    transformationMenu->setTheme(new ofxDatGuiThemeCharcoal());
 
 
     // ofxDatGuiButton* changeCameraButton = objectMenu->addButton("Switch Camera Mode");
@@ -88,6 +88,8 @@ void Application3d::draw() {
 void Application3d::update() {
     renderer.update();
     objectScrollView->update();
+
+
 
     for (int i = 0; i < everything.size(); i++) {
         selectionScrollView->remove(0);
@@ -251,7 +253,7 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 
     else if (buttonLabel == "Deleted All")
     {
-
+        deleteAll();
     }
 
     else if (buttonLabel == "Perspective") {
@@ -286,7 +288,7 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 
 
 
-// Fonction principale pour configurer la barre d'outils 2D.
+// Fonction principale pour configurer la barre d'outils 3D.
 void Application3d::setup3DTaskbar()
 {
     // Configure le menu 'File' avec un bouton 'Export'.
@@ -502,11 +504,9 @@ void Application3d::importPath(string path) {
         LoadedFile* obj = new LoadedFile();
         obj->model = model;
 
-        std::string filename;
-        std::string::size_type idx = path.rfind('\\');
-        if (idx != std::string::npos) {
-            filename = path.substr(idx + 1);
-        }
+        // Use ofFilePath to extract the filename from the path
+        std::string filename = ofFilePath::getFileName(path);
+
         obj->originalName = filename;
         filename = getElementName(filename);
 
@@ -518,7 +518,7 @@ void Application3d::importPath(string path) {
 }
 
 void Application3d::addMonkey(){
-    importPath("Monkey.obj");
+    importPath("./Monkey.obj");
 }
 
 void Application3d::exportRender() {
@@ -585,3 +585,41 @@ void Application3d::deleteSelected() {
         delete object;
     }
 }
+
+void Application3d::deleteAll() {
+    deleteSelected();
+        while (!everything.empty()) {
+            Object* object = everything.back();  // Get the last element
+
+            // Remove from parent's children
+            if (object->parent != nullptr) {
+                auto childIt = find(object->parent->children.begin(), object->parent->children.end(), object);
+                if (childIt != object->parent->children.end()) {
+                    object->parent->children.erase(childIt);
+                }
+            }
+
+            // Add children to the scene
+            for (Object* child : object->children) {
+                child->parent = nullptr;
+                renderer.scene->objects.push_back(child);
+            }
+
+            // Remove from objectScrollView
+            auto scrollViewIt = find(everything.begin(), everything.end(), object);
+            if (scrollViewIt != everything.end()) {
+                objectScrollView->remove(distance(everything.begin(), scrollViewIt));
+            }
+
+            // Remove from scene
+            auto sceneIt = find(renderer.scene->objects.begin(), renderer.scene->objects.end(), object);
+            if (sceneIt != renderer.scene->objects.end()) {
+                renderer.scene->objects.erase(sceneIt);
+            }
+
+            // Delete the object
+            everything.pop_back();  // Remove from the end
+            delete object;
+        }
+    }
+
