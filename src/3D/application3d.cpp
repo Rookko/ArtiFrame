@@ -22,13 +22,13 @@ void Application3d::setup(int buttonSize) {
     renderer.setup();
     setup3DTaskbar();
 
-    objectScrollView = new ofxDatGuiScrollView("My scroll view", 100);
+    objectScrollView = new ofxDatGuiScrollView("Graph of scene", 100);
     objectScrollView->setWidth(255);
     objectScrollView->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
     objectScrollView->onScrollViewEvent(this, &Application3d::onObjectSelection);
 
-    selectionScrollView = new ofxDatGuiScrollView("My scroll view", 100);
-    selectionScrollView->setPosition(300, header->getHeight() - 1);
+    selectionScrollView = new ofxDatGuiScrollView("Selected object", 100);
+    selectionScrollView->setPosition(optionWidth * 6, header->getHeight() - 1);
     selectionScrollView->setOpacity(0.1);
 
     transformationMenu = new ofxDatGui(300, 300);
@@ -121,9 +121,6 @@ void Application3d::update() {
         renderer.camera->boom(5);
     if (isEPressed)
         renderer.camera->boom(-5);
-
-
-
 
 }
 
@@ -340,6 +337,7 @@ void  Application3d::mouseReleased(int x, int y, int button) {}
 void Application3d::windowResized(int w, int h) {
     rezize3DTaskbar();
     objectScrollView->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
+    selectionScrollView->setPosition(20, 200);
 }
 
 

@@ -12,7 +12,12 @@ void Renderer3d::setup()
 	camera->setDistance(1000);
 
 	shader = new ofShader();
-	//shader->load("lambert_330_vs.glsl", "lambert_330_fs.glsl");
+	if (shader->load("lambert_330_vs.glsl", "lambert_330_fs.glsl")) {
+		ofLog() << "Shaders loaded successfully";
+	}
+	else {
+		ofLogError() << "Failed to load shaders";
+	}
 
 
 	light.setPointLight();

@@ -7,6 +7,13 @@
 
 int main()
 {
-  ofSetupOpenGL(1800, 1000, OF_WINDOW);
-  ofRunApp(new Application());
+	ofGLFWWindowSettings windowSettings;
+	windowSettings.resizable = true;
+	windowSettings.setSize(1800, 1000);
+	windowSettings.setGLVersion(4, 6);
+
+	ofCreateWindow(windowSettings);
+
+	Application* application = new Application();
+	ofRunApp(application);
 }
