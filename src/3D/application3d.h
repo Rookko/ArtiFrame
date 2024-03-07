@@ -62,6 +62,7 @@ public:
 
 
 
+
 	int optionWidth;
 	string renderMode = "Wireframe";
 

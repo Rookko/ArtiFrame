@@ -85,6 +85,8 @@ void Application3d::update() {
         selectionScrollView->remove(0);
     }
 
+    
+
     for (Object* object : everything) {
         object->selected = false;
 
@@ -342,6 +344,10 @@ void Application3d::windowResized(int w, int h) {
 
 
 void Application3d::onObjectSelection(ofxDatGuiScrollViewEvent e) {
+
+
+
+
     Object* obj = everything.at(e.target->getIndex());
     if (find(selection.begin(), selection.end(), obj) != selection.end()) {
         selection.erase(std::find(selection.begin(), selection.end(), obj));
