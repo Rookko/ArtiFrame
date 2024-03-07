@@ -173,5 +173,9 @@ public:
 
 	void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
 
+	void calculHistogram();
+
+
+
 	
 };

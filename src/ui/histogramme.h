@@ -1,7 +1,7 @@
 // ArtiFrame/ui/histogramme.h
 // Classe responsable de l'histogramme
 
-/*
+
 
 #pragma once
 
@@ -22,4 +22,13 @@ public:
     void setBlueHist(int bHist[]);
 };
 
+
+
+
+//DEUXIEME VERSION
+/*
+
+void updateMax()
+
+void drawHistogram(const int hist[], int maxVal, ofColor color, int bottom, float width)
 */
