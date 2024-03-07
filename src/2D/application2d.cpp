@@ -1,17 +1,24 @@
 // ArtiFrame/2d/application2d.cpp
 // Classe principale de l'application 2D.
 
-//test  45356
+
 
 #include "application2d.h"
 #include <algorithm> // Pour std::min
 #include "image.h";
+#include "arrow.h"
+#include "circle.h"
+#include "ellipsis.h"
+#include "rectangle.h"
+#include "regularPolygon.h"
+#include "square.h"
+#include "star.h"
 
 
 ofxDatGui* toolsGui;
 
 ofxDatGui* shapeGui;
-
+ofxDatGuiScrollView* imgScrollView;
 ofPoint position;
 ofPoint positionImageOrigine = { 0,0,0 };
 
@@ -354,18 +361,16 @@ void Application2d::saveRenderButtonEvent() {
 void Application2d::onAddSquareEvent() {
     // Appel la fonction rectangle de la classe Primitive
     // Création d'une instance de Primitive2D en tant que carré
-    /*
-    Primitive2D* square = new Primitive2D(Primitive2D::SQUARE, taille); // Remplacer 'taille' par la valeur appropriée
+    Square* square = new Square();
     string filename = "square";
-    square->originalName = filename; // Assurez-vous que Primitive2D gère ces propriétés
+    square->originalName = filename;
     filename = getElementName(filename);
     square->name = filename;
 
     imgScrollView->add(filename);
 
-    addElementToRenderer(square); // Assurez-vous que cette méthode accepte Primitive2D*
+    addElementToRenderer(square);
     updateUiFromShape();
-    */
 }
 
 void Application2d::onAddRectangleEvent() {

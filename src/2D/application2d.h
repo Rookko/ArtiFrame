@@ -21,7 +21,7 @@ class Application2d : public ofBaseApp
 	};
 public:
   Renderer2d renderer;
-
+  
   ofxPanel gui;
 
   ofxGuiGroup group_draw;
@@ -144,6 +144,12 @@ public:
 	int keyNumber;
 	bool keyPress[255];
 
+	string getElementName(string filename);
 
+	void addElementToRenderer(object2D* object);
+
+	void updateShapeFromUi();
+
+	void updateUiFromShape();
 	
 };
