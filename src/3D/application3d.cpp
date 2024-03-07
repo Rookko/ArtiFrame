@@ -232,8 +232,8 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         addSphere();
     }
 
-    // Fonction pour ajouter un rectangle à la scène lorsque bouton Add Cynlinder cliqué.
-    else if (buttonLabel == "Add Cynlinder")
+    // Fonction pour ajouter un rectangle à la scène lorsque bouton Add Cylinder cliqué.
+    else if (buttonLabel == "Add Cylinder")
     {
 
         addCylinder();
@@ -294,7 +294,7 @@ void Application3d::setup3DTaskbar()
     // Configure le menu 'File' avec un bouton 'Export'.
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import" });
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth * 2, { "Add Sphere", "Add Cynlinder", "Add Monkey" });
+    setupMenu(addMenu, "Add", optionWidth * 2, { "Add Sphere", "Add Cylinder", "Add Monkey" });
 
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Deleted", "Deleted All" });
 
