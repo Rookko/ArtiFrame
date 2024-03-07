@@ -75,7 +75,19 @@ void Application2d::setup(int buttonSize)
   renderer.offsetY1 = 0;
   renderer.offsetY2 = ofGetHeight();
 
+
   checkbox = true;
+
+  basicCursor = new ofImage();
+  basicCursor->load("cursors/basic_cursor.png");
+  moveCursor = new ofImage();
+  moveCursor->load("cursors/move_cursors.png");
+  exportingCursor = new ofImage();
+  exportingCursor->load("cursors/rotate_cursors.png");
+  rotateCursor = new ofImage();
+  rotateCursor->load("cursors/rotate_cursors.png");
+  deleteCursor = new ofImage();
+  deleteCursor->load("cursors/delete_cursor.png");
 }
 
 void Application2d::update()
@@ -134,6 +146,36 @@ void Application2d::draw()
 
   imageScroller->draw();
 
+  float x = static_cast<float>(ofGetMouseX());
+  float y = static_cast<float>(ofGetMouseY());
+  
+  
+  if (isDelete && renderer.hit(x, y) && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      deleteCursor->draw(x - (deleteCursor->getWidth() / 2), y - (deleteCursor->getWidth() / 2));
+  }
+  else if (isRotate && renderer.hit(x, y) && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      rotateCursor->draw(x - (rotateCursor->getWidth() / 2), y - (moveCursor->getWidth() / 2));
+  }
+  else if (isDragging && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      moveCursor->draw(x - (moveCursor->getWidth() / 2), y - (moveCursor->getWidth() / 2));
+  }
+  else if (isExporting) {
+      ofHideCursor();
+      exportingCursor->draw(x, y);
+  } 
+  
+  else if (!guiHit(x, y)) {
+  ofHideCursor();
+  basicCursor->draw(x, y);
+  }
+  else {
+      ofShowCursor();
+  }
+
+
 }
 //comon
 void Application2d::button_pressed()
@@ -176,6 +218,16 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
 // Pour ajouter une kyeSwitch, simplement ajouter la touche et la relier à ca fonction
 void Application2d::keyReleased(int key)
 {
+    if (key == OF_KEY_ALT) {
+        isDelete = false;
+    }
+    else if (key == OF_KEY_SHIFT) {
+        isRotate = false;
+    }
+    else if (key == 48) {
+        isExporting = false;
+    }
+
     keyPress[key] = false;
     if (key == 117) // touche u
     {
@@ -567,6 +619,16 @@ void Application2d::keyPressed(int key)
     keyPress[key] = true;
     ofLog() << "<boolkeyPressed: " << keyPress << ">";
     ofLog() << "<keyNumberPressed: " << keyNumber << ">";
+
+    if (key == OF_KEY_ALT) {
+        isDelete = true;
+    }
+    else if (key == OF_KEY_SHIFT) {
+        isRotate = true;
+    }
+    else if (key == 48) {
+        isExporting = true;
+    }
 }
 
 
@@ -693,6 +755,12 @@ void Application2d::mouseDragged(int x, int y, int button) {
     }
 }
 
+bool Application2d::guiHit(int x, int y) {
+    
+    return (y > header->getPosition().y && y < header->getPosition().y + header->getHeight());
+
+}
+
 
 
 
@@ -796,3 +864,5 @@ void Application2d::updateShapeFromUi() {
 void Application2d::updateUiFromShape() {
 
 }
+
+

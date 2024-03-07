@@ -44,6 +44,9 @@ void Application3d::setup(int buttonSize) {
     // ofxDatGuiButton* changeCameraButton = objectMenu->addButton("Switch Camera Mode");
      //changeCameraButton->onButtonEvent(this, &Application3d::onChangeCameraMode);
 
+    //basicCursor = new ofImage();
+    //basicCursor->load("/data/basic_cursor.png");
+
 
 }
 
@@ -75,6 +78,12 @@ void Application3d::draw() {
             ofShowCursor();
         }
         */
+  
+        //ofHideCursor();
+        //basicCursor->draw(x - (basicCursor->getWidth()/2), y - (basicCursor->getWidth()/2));
+        //ofShowCursor();
+        
+    
 }
 
 void Application3d::update() {
@@ -121,6 +130,8 @@ void Application3d::update() {
         renderer.camera->boom(5);
     if (isEPressed)
         renderer.camera->boom(-5);
+
+    ofShowCursor();
 
 }
 

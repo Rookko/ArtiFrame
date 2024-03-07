@@ -62,3 +62,5 @@ bool Renderer2d::hit(int x, int y) {
     ofLog() << "hit test at (" << x << ", " << y << "): " << (isHit ? "true" : "false");
     return isHit;
 }
+
+

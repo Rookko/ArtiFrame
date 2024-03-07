@@ -119,6 +119,18 @@ public:
   
   void mouseDragged(int x, int y, int button);
 
+  bool isExporting = false;
+
+  bool isDelete = false;
+  bool isDragging = false;
+  bool isRotate = false;
+
+  ofImage* basicCursor;
+  ofImage* moveCursor;
+  ofImage* exportingCursor;
+  ofImage* rotateCursor;
+  ofImage* deleteCursor;
+
   private:
 
 	// Ajouter les menus pour les différents boutons
@@ -153,6 +165,8 @@ public:
 	void updateShapeFromUi();
 
 	void updateUiFromShape();
+
+	bool guiHit(int x, int y);
 
 	
 };
