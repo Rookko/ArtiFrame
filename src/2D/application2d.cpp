@@ -146,7 +146,7 @@ void Application2d::draw()
   float x = static_cast<float>(ofGetMouseX());
   float y = static_cast<float>(ofGetMouseY());
   
-  /*
+  
   if (isDelete && renderer.hit(x, y) && renderer.objetActif != nullptr) {
       ofHideCursor();
       deleteCursor->draw(x - (deleteCursor->getWidth() / 2), y - (deleteCursor->getWidth() / 2));
@@ -163,15 +163,8 @@ void Application2d::draw()
       ofHideCursor();
       exportingCursor->draw(x, y);
   } 
+  
   else if (!guiHit(x, y)) {
-      ofHideCursor();
-      basicCursor->draw(x, y);
-  } 
-  else  {
-      ofShowCursor();
-  } 
-  */
-  if (!guiHit(x, y)) {
   ofHideCursor();
   basicCursor->draw(x, y);
   }
@@ -222,6 +215,16 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
 // Pour ajouter une kyeSwitch, simplement ajouter la touche et la relier à ca fonction
 void Application2d::keyReleased(int key)
 {
+    if (key == OF_KEY_ALT) {
+        isDelete = false;
+    }
+    else if (key == OF_KEY_SHIFT) {
+        isRotate = false;
+    }
+    else if (key == 48) {
+        isExporting = false;
+    }
+
     keyPress[key] = false;
     if (key == 117) // touche u
     {
@@ -611,6 +614,16 @@ void Application2d::keyPressed(int key)
     keyPress[key] = true;
     ofLog() << "<boolkeyPressed: " << keyPress << ">";
     ofLog() << "<keyNumberPressed: " << keyNumber << ">";
+
+    if (key == OF_KEY_ALT) {
+        isDelete = true;
+    }
+    else if (key == OF_KEY_SHIFT) {
+        isRotate = true;
+    }
+    else if (key == 48) {
+        isExporting = true;
+    }
 }
 
 
