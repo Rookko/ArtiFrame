@@ -7,3 +7,9 @@
 !src/
 !bin/data/
 !icon.rc
+/primitive2D.cpp
+/primitive2D.h
+/shape.cpp
+/shape.h
+/primitive2D.cpp
+/primitive2D.h

@@ -347,6 +347,19 @@ void Application2d::saveRenderButtonEvent() {
 
 void Application2d::onAddSquareEvent() {
     // Appel la fonction rectangle de la classe Primitive
+    // Création d'une instance de Primitive2D en tant que carré
+    /*
+    Primitive2D* square = new Primitive2D(Primitive2D::SQUARE, taille); // Remplacer 'taille' par la valeur appropriée
+    string filename = "square";
+    square->originalName = filename; // Assurez-vous que Primitive2D gère ces propriétés
+    filename = getElementName(filename);
+    square->name = filename;
+
+    imgScrollView->add(filename);
+
+    addElementToRenderer(square); // Assurez-vous que cette méthode accepte Primitive2D*
+    updateUiFromShape();
+    */
 }
 
 void Application2d::onAddRectangleEvent() {
