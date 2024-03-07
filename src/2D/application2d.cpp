@@ -16,7 +16,6 @@ ofPoint position;
 ofPoint positionImageOrigine = { 0,0,0 };
 
 ofPoint dragOrigine = { 0, 0, 0 };
-bool draggingObject;
 
 ofxDatGuiScrollView* imageScroller;
 
@@ -100,11 +99,6 @@ void Application2d::update()
   }
   
   //Ajouter les autres AU DESSUS D'ICI
-
-  if (draggingObject && renderer.objetActif != nullptr) {
-      renderer.objetActif->coordinates.x = ofGetMouseX() - dragOrigine.x + positionImageOrigine.x;
-      renderer.objetActif->coordinates.y = ofGetMouseY() - dragOrigine.y + positionImageOrigine.y;
-  }
 
   renderer.update();
 }
@@ -517,10 +511,6 @@ void Application2d::import(string path) {
 }
 
 void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
-    ofLog() << "<app::selecting image at index : " << e.target->getIndex() << ">";
-
-    renderer.objetActif = renderer.vecteurObjets.at(e.target->getIndex());
-    renderer.indexActif = e.target->getIndex();
 
 }
 
@@ -542,41 +532,4 @@ void Application2d::dragEvent(ofDragInfo infoDrag) {
     ofLog() << "<app::ofDragInfo file[0]: " << infoDrag.files.at(0)
         << " at: " << infoDrag.position << ">";
     import(infoDrag.files.at(0));
-}
-
-void Application2d::addObjectToVector(object2D* objet) {
-    renderer.vecteurObjets.push_back(objet);
-    renderer.objetActif = objet;
-    renderer.indexActif++;
-}
-
-void Application2d::removeActiveObjectFromeVector() {
-    if (renderer.objetActif != nullptr) {
-        renderer.vecteurObjets.erase(renderer.vecteurObjets.begin() + renderer.indexActif);
-        
-        imageScroller->remove(renderer.indexActif);
-        if (renderer.vecteurObjets.size() > 0) {
-            renderer.objetActif = renderer.vecteurObjets.at(0);
-            renderer.indexActif = 0;
-        }
-        else {
-            renderer.objetActif = nullptr;
-            renderer.indexActif = -1;
-        }
-    }
-}
-
-void Application2d::mousePressed(int x, int y, int button) {
-    ofLog() << "<app::mousePressed at:(" << x << ", " << y << ")>";
-   
-    if (renderer.hit(x,y) && renderer.objetActif != nullptr) {
-        draggingObject = true;
-        dragOrigine = { static_cast<float>(x),static_cast<float>(y), 0 };
-        positionImageOrigine = { renderer.objetActif->coordinates.x, renderer.objetActif->coordinates.y, 0 };
-    }
-   }
-
-void Application2d::mouseReleased(int x, int y, int button) {
-    ofLog() << "<app::mouseReleased at:(" << x << ", " << y << ")>";
-    draggingObject = false;
 }
