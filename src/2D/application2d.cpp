@@ -285,7 +285,14 @@ void Application2d::keyReleased(int key)
         this->addBatman();
         break;
     case 127: // Pour "Deleted"
-        this->onDeleted();
+        if (isDelete == true) {
+            isDelete = false;
+        }
+
+        else {
+            isDelete = true;
+            this->onDeleted();
+        }
         break;
 
         //Ajouter les autres AU DESSUS D'ICI
@@ -418,7 +425,15 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 
     else if (buttonLabel == "Deleted")
     {
+        if (isDelete == true) {
+            isDelete = false;
+        }
+        
+        else {
+        isDelete = true;
         this->onDeleted();
+        }
+        
     }
 
     else if (buttonLabel == "Deleted All")
@@ -668,7 +683,7 @@ void Application2d::esterEgg() {
 
 
 void Application2d::onDeleted() {
-
+    isDelete = false;
 }
 
 
