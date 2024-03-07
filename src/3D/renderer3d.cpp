@@ -12,10 +12,8 @@ void Renderer3d::setup()
 	camera->setDistance(1000);
 
 	shader = new ofShader();
-	if (!shader->load("lambert_330_vs.glsl", "lambert_330_fs.glsl")) {
-		ofLogError() << "Shader compilation failed!";
-		return;
-	}
+	//shader->load("lambert_330_vs.glsl", "lambert_330_fs.glsl");
+
 
 	light.setPointLight();
 	light.setDiffuseColor(255);
@@ -40,6 +38,7 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 		light.enable();
 	}
 
+
 	shader->begin();
 
 	camera->begin();
@@ -53,6 +52,7 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 			shader->begin();
 			break;
 		case Renderer3d::RenderMode::Shader:
+
 			object->drawShader();
 			break;
 		}
