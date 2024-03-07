@@ -24,7 +24,6 @@ ofxDatGuiColorPicker* shapeColorPicker;
 ofxDatGuiSlider* widthSlider;
 ofxDatGuiSlider* heightSlider;
 
-ofxDatGuiScrollView* imgScrollView;
 ofPoint position;
 ofPoint positionImageOrigine = { 0,0,0 };
 
@@ -415,13 +414,14 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer UP")
     {
-        this->layerDown();
+        this->layerUP();
     }
 
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer Down")
     {
-        this->layerUP();
+
+        this->layerDown();
     }
 
     else if (buttonLabel == "Deleted")
@@ -594,33 +594,31 @@ void Application2d::importButtonEvent()
 
 
 void Application2d::layerUP()
-{/*
-    int selectedLayer = -1;
-    for (int i = 0; i < images.size(); ++i) {
-        if (images[i].filePath == imageImport.getPath()) {
-            selectedLayer = i;
-            break;
+{
+    if (renderer.objetActif != nullptr) {
+        // Si l'image est trouvée et n'est pas déjà en haut
+        if (renderer.indexActif < renderer.vecteurObjets.size() - 1 || renderer.indexActif > 0) {
+            // Échangez les positions de couche avec l'image suivante
+            imageScroller->swap(renderer.indexActif, renderer.indexActif - 1);
+            swap(renderer.vecteurObjets[renderer.indexActif], renderer.vecteurObjets[renderer.indexActif - 1]);
+            renderer.indexActif -= 1;
+            renderer.objetActif = renderer.vecteurObjets.at(renderer.indexActif);
         }
     }
-
-    // Si l'image est trouvée et n'est pas déjà en haut
-    if (selectedLayer != -1 && selectedLayer < images.size() - 1) {
-        // Échangez les positions de couche avec l'image suivante
-        swap(images[selectedLayer], images[selectedLayer + 1]);
-    } */
 }
 
 void Application2d::layerDown()
-{ /*
-    if (imageImported && imageLayer < images.size() - 1) {
-        // Incrémentez l'indice de la couche de l'image importée
-        imageLayer++;
-
-        // Déplacez l'image importée vers le bas dans la liste en intervertissant avec l'image suivante
-        std::swap(images[imageLayer], images[imageLayer - 1]);
-
-        ofLogNotice() << "Layer Down: Image moved down";
-    } */
+{
+    if (renderer.objetActif != nullptr) {
+        // Si l'image est trouvée et n'est pas déjà en haut
+        if (renderer.indexActif < renderer.vecteurObjets.size()-1|| renderer.indexActif > 0) {
+            // Échangez les positions de couche avec l'image suivante
+            imageScroller->swap(renderer.indexActif, renderer.indexActif + 1);
+            swap(renderer.vecteurObjets[renderer.indexActif], renderer.vecteurObjets[renderer.indexActif + 1]);
+            renderer.indexActif += 1;
+            renderer.objetActif = renderer.vecteurObjets.at(renderer.indexActif);
+        }
+    }
 }
 
 
