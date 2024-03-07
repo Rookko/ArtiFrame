@@ -18,6 +18,8 @@
 ofxDatGui* toolsGui;
 
 ofxDatGui* shapeGui;
+bool draggingShapeGui;
+
 ofxDatGuiColorPicker* shapeColorPicker;
 ofxDatGuiSlider* widthSlider;
 ofxDatGuiSlider* heightSlider;
@@ -315,6 +317,7 @@ void Application2d::windowResized(int w, int h)
 {
   rezize2DTaskbar();
   ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
+  imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
 }
 
 void Application2d::showUi() {
@@ -757,7 +760,8 @@ void Application2d::removeActiveObjectFromeVector() {
 void Application2d::mousePressed(int x, int y, int button) {
     ofLog() << "<app::mousePressed at:(" << x << ", " << y << ")>";
     if (guiHit(x,y)) {
-       // renderer.hit(x, y) = false;
+        draggingShapeGui = true;
+        draggingObject = false;
     }
 
     if (renderer.hit(x,y) && renderer.objetActif != nullptr) {
@@ -776,6 +780,10 @@ void Application2d::mouseDragged(int x, int y, int button) {
     if (draggingObject && renderer.objetActif != nullptr) {
         renderer.objetActif->coordinates.x = x - dragOrigine.x + positionImageOrigine.x;
         renderer.objetActif->coordinates.y = y - dragOrigine.y + positionImageOrigine.y;
+    }
+
+    if (draggingShapeGui) {
+        //shapeGui
     }
 }
 
