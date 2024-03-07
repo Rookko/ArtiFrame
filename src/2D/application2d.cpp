@@ -760,15 +760,17 @@ void Application2d::removeActiveObjectFromeVector() {
 void Application2d::mousePressed(int x, int y, int button) {
     ofLog() << "<app::mousePressed at:(" << x << ", " << y << ")>";
     ofLog() << "hitGUi test at (" << x << ", " << y << "): " << (guiHit(x,y) ? "true" : "false");
+    ofLog() << "shapeGui Position: (" << shapeGui->getPosition().x << ", " << shapeGui->getPosition().y << "), Taille: " << shapeGui->getWidth() << "x" << shapeGui->getHeight() << std::endl;
     if (guiHit(x,y)) {
         draggingShapeGui = true;
         draggingObject = false;
     }
-
-    if (renderer.hit(x,y) && renderer.objetActif != nullptr) {
-        draggingObject = true;
-        dragOrigine = { static_cast<float>(x),static_cast<float>(y), 0 };
-        positionImageOrigine = { renderer.objetActif->coordinates.x, renderer.objetActif->coordinates.y, 0 };
+    else {
+        if (renderer.hit(x, y) && renderer.objetActif != nullptr) {
+            draggingObject = true;
+            dragOrigine = { static_cast<float>(x),static_cast<float>(y), 0 };
+            positionImageOrigine = { renderer.objetActif->coordinates.x, renderer.objetActif->coordinates.y, 0 };
+        }
     }
    }
 
@@ -786,12 +788,18 @@ void Application2d::mouseDragged(int x, int y, int button) {
 }
 
 bool Application2d::guiHit(int x, int y) {
+    
+    bool guiHit;
     if (shapeGui->getVisible()) {
-        bool guiHit = y > header->getPosition().y && y < header->getPosition().y + header->getHeight()
-            && (x > shapeGui->getPosition().x && shapeGui->getPosition().x + shapeGui->getWidth()
+            guiHit = y > header->getPosition().y && y < header->getPosition().y + header->getHeight()
+            || (x > shapeGui->getPosition().x && x < shapeGui->getPosition().x + shapeGui->getWidth()
                 && y > shapeGui->getPosition().y && y < shapeGui->getPosition().y + shapeGui->getHeight());
-        return guiHit;
     }
+    else {
+         guiHit = y > header->getPosition().y&& y < header->getPosition().y + header->getHeight();
+    }
+        return guiHit;
+    
 }
 
 
