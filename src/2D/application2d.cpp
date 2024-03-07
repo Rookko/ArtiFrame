@@ -63,6 +63,8 @@ void Application2d::setup(int buttonSize)
   checkbox.setName("UwU");
   gui.add(checkbox);
 
+ 
+
   imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
   imageScroller->setWidth(255);
   imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
@@ -85,6 +87,7 @@ void Application2d::update()
   renderer.object_color = color_picker_object;
   renderer.stroke_weight = slider_stroke_weight;
   renderer.text = textbox;
+
 
   // Touche multiple ici avec space bar
   if (keyPress[32] && keyPress['i']) {
@@ -383,6 +386,8 @@ void Application2d::onAddSquareEvent() {
     filename = getElementName(filename);
     square->name = filename;
 
+    square->setColor(color_picker_object);
+
     imageScroller->add(filename);
 
     addElementToRenderer(square);
@@ -618,6 +623,10 @@ void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
     renderer.objetActif = renderer.vecteurObjets.at(e.target->getIndex());
     renderer.indexActif = e.target->getIndex();
 
+    if (renderer.objetActif != nullptr) {
+        renderer.objetActif->setColor(color_picker_object);
+    }
+
 }
 
 string Application2d::getObjetName(string nomFichier) {
@@ -683,8 +692,6 @@ void Application2d::mouseDragged(int x, int y, int button) {
         renderer.objetActif->coordinates.y = y - dragOrigine.y + positionImageOrigine.y;
     }
 }
-
-
 
 
 
