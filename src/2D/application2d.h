@@ -117,6 +117,8 @@ public:
 
   void mouseReleased(int x, int y, int button);
   
+  void mouseDragged(int x, int y, int button);
+
   private:
 
 	// Ajouter les menus pour les différents boutons

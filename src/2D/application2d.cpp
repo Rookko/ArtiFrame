@@ -66,6 +66,10 @@ void Application2d::setup(int buttonSize)
   imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
   imageScroller->setWidth(255);
   imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
+  renderer.offsetX1 = 0;
+  renderer.offsetX2 = ofGetWidth() - imageScroller->getWidth();
+  renderer.offsetY1 = 0;
+  renderer.offsetY2 = ofGetHeight();
 
   checkbox = true;
 }
@@ -361,7 +365,7 @@ void Application2d::saveRenderButtonEvent() {
 void Application2d::onAddSquareEvent() {
     // Appel la fonction rectangle de la classe Primitive
     // Création d'une instance de Primitive2D en tant que carré
-    Square* square = new Square();
+/*    Square* square = new Square();
     string filename = "square";
     square->originalName = filename;
     filename = getElementName(filename);
@@ -370,7 +374,7 @@ void Application2d::onAddSquareEvent() {
     imgScrollView->add(filename);
 
     addElementToRenderer(square);
-    updateUiFromShape();
+    updateUiFromShape();*/
 }
 
 void Application2d::onAddRectangleEvent() {
@@ -597,6 +601,13 @@ void Application2d::mousePressed(int x, int y, int button) {
 void Application2d::mouseReleased(int x, int y, int button) {
     ofLog() << "<app::mouseReleased at:(" << x << ", " << y << ")>";
     draggingObject = false;
+}
+
+void Application2d::mouseDragged(int x, int y, int button) {
+    if (draggingObject && renderer.objetActif != nullptr) {
+        renderer.objetActif->coordinates.x = x - dragOrigine.x + positionImageOrigine.x;
+        renderer.objetActif->coordinates.y = y - dragOrigine.y + positionImageOrigine.y;
+    }
 }
 
 

@@ -58,5 +58,7 @@ void Renderer2d::draw()
 }
 
 bool Renderer2d::hit(int x, int y) {
-    return x > offsetX1 && x < offsetX2 && y > offsetY1 && y < offsetY2;
+    bool isHit = (x > offsetX1) && (x < offsetX2) && (y > offsetY1) && (y < offsetY2);
+    ofLog() << "hit test at (" << x << ", " << y << "): " << (isHit ? "true" : "false");
+    return isHit;
 }
