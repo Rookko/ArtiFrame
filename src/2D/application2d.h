@@ -168,5 +168,9 @@ public:
 
 	bool guiHit(int x, int y);
 
+	void onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e);
+
+	void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
+
 	
 };

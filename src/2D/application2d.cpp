@@ -74,11 +74,12 @@ void Application2d::setup(int buttonSize)
   shapeGui->addLabel("Menu des primitives");
   shapeGui->addHeader("Slider");
   widthSlider = shapeGui->addSlider("Width", 0, 1000, 1000);
-  //widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
+  widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
   heightSlider = shapeGui->addSlider("Height", 0, 1000, 1000);
-  //heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
-  shapeColorPicker = shapeGui->addColorPicker("Fill", ofColor::aliceBlue);
-  //fillColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorPickerEvent);
+  heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
+  shapeColorPicker = shapeGui->addColorPicker("Shape color", ofColor::aliceBlue);
+  shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
+
 
 
   imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
@@ -793,7 +794,7 @@ bool Application2d::guiHit(int x, int y) {
     if (shapeGui->getVisible()) {
             guiHit = y > header->getPosition().y && y < header->getPosition().y + header->getHeight()
             || (x > shapeGui->getPosition().x && x < shapeGui->getPosition().x + shapeGui->getWidth()
-                && y > shapeGui->getPosition().y && y < shapeGui->getPosition().y + shapeGui->getHeight());
+                && y > shapeGui->getPosition().y && y < shapeGui->getPosition().y + shapeGui->getHeight() + 80);
     }
     else {
          guiHit = y > header->getPosition().y&& y < header->getPosition().y + header->getHeight();
@@ -869,8 +870,13 @@ bool Application2d::guiHit(int x, int y) {
 
 
 
+void Application2d::onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e) {
+    updateShapeFromUi();
+}
 
-
+void Application2d::onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e) {
+    updateShapeFromUi();
+}
 
 
 
@@ -899,7 +905,12 @@ void Application2d::addElementToRenderer(object2D* object) {
 }
 
 void Application2d::updateShapeFromUi() {
-
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr){
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        shape->fillColor = shapeColorPicker->getColor();
+        shape->height = heightSlider->getValue();
+        shape->width = widthSlider->getValue();
+    }
 }
 
 void Application2d::updateUiFromShape() {
