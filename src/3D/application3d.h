@@ -75,6 +75,8 @@ public:
 	bool isQPressed = false;
 	bool isEPressed = false;
 
+	//ofImage* basicCursor;
+
 
 
 

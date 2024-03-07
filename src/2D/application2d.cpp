@@ -73,7 +73,19 @@ void Application2d::setup(int buttonSize)
   renderer.offsetY1 = 0;
   renderer.offsetY2 = ofGetHeight();
 
+
   checkbox = true;
+
+  basicCursor = new ofImage();
+  basicCursor->load("cursors/basic_cursor.png");
+  moveCursor = new ofImage();
+  moveCursor->load("cursors/move_cursors.png");
+  exportingCursor = new ofImage();
+  exportingCursor->load("cursors/rotate_cursors.png");
+  rotateCursor = new ofImage();
+  rotateCursor->load("cursors/rotate_cursors.png");
+  deleteCursor = new ofImage();
+  deleteCursor->load("cursors/delete_cursor.png");
 }
 
 void Application2d::update()
@@ -130,6 +142,43 @@ void Application2d::draw()
     gui.draw();
 
   imageScroller->draw();
+
+  float x = static_cast<float>(ofGetMouseX());
+  float y = static_cast<float>(ofGetMouseY());
+  
+  /*
+  if (isDelete && renderer.hit(x, y) && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      deleteCursor->draw(x - (deleteCursor->getWidth() / 2), y - (deleteCursor->getWidth() / 2));
+  }
+  else if (isRotate && renderer.hit(x, y) && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      rotateCursor->draw(x - (rotateCursor->getWidth() / 2), y - (moveCursor->getWidth() / 2));
+  }
+  else if (isDragging && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      moveCursor->draw(x - (moveCursor->getWidth() / 2), y - (moveCursor->getWidth() / 2));
+  }
+  else if (isExporting) {
+      ofHideCursor();
+      exportingCursor->draw(x, y);
+  } 
+  else if (!guiHit(x, y)) {
+      ofHideCursor();
+      basicCursor->draw(x, y);
+  } 
+  else  {
+      ofShowCursor();
+  } 
+  */
+  if (!guiHit(x, y)) {
+  ofHideCursor();
+  basicCursor->draw(x, y);
+  }
+  else {
+      ofShowCursor();
+  }
+
 
 }
 //comon
@@ -634,6 +683,12 @@ void Application2d::mouseDragged(int x, int y, int button) {
     }
 }
 
+bool Application2d::guiHit(int x, int y) {
+    
+    return (y > header->getPosition().y && y < header->getPosition().y + header->getHeight());
+
+}
+
 
 
 
@@ -739,3 +794,5 @@ void Application2d::updateShapeFromUi() {
 void Application2d::updateUiFromShape() {
 
 }
+
+
