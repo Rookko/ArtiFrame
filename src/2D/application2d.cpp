@@ -309,6 +309,16 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         this->onAddRegularPolygonEvent();
     }
 
+    else if (buttonLabel == "Add Star")
+    {
+        this->onAddStarEvent();
+    }
+
+    else if (buttonLabel == "Add Arrow")
+    {
+        this->onAddArrowEvent();
+    }
+
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer UP")
     {
@@ -381,6 +391,16 @@ void Application2d::onAddSquareEvent() {
 
 void Application2d::onAddRectangleEvent() {
     // Appel la fonction rectangle de la classe Primitive
+    RectangleShape* rectangle = new RectangleShape();
+    string filename = "rectangle";
+    rectangle->originalName = filename;
+    filename = getElementName(filename);
+    rectangle->name = filename;
+
+    imageScroller->add(filename);
+
+    addElementToRenderer(rectangle);
+    updateUiFromShape();
 
 }
 
@@ -415,14 +435,44 @@ void Application2d::onAddEllipsisEvent() {
 
 void Application2d::onAddRegularPolygonEvent() {
     // Appel la fonction polygone de la classe Primitive
+    RegularPolygon* regularPolygon = new RegularPolygon();
+    string filename = "polygone régulier";
+    regularPolygon->originalName = filename;
+    filename = getElementName(filename);
+    regularPolygon->name = filename;
+
+    imageScroller->add(filename);
+
+    addElementToRenderer(regularPolygon);
+    updateUiFromShape();
 }
 
 void Application2d::onAddStarEvent() {
     // Appel la fonction star de la classe Primitive
+    Star* star = new Star();
+    string filename = "star";
+    star->originalName = filename;
+    filename = getElementName(filename);
+    star->name = filename;
+
+    imageScroller->add(filename);
+
+    addElementToRenderer(star);
+    updateUiFromShape();
 }
 
 void Application2d::onAddArrowEvent() {
     // Appel la fonction arrow de la classe Primitive
+    Arrow* arrow = new Arrow();
+    string filename = "arrow";
+    arrow->originalName = filename;
+    filename = getElementName(filename);
+    arrow->name = filename;
+
+    imageScroller->add(filename);
+
+    addElementToRenderer(arrow);
+    updateUiFromShape();
 }
 
 void Application2d::importButtonEvent()
@@ -477,7 +527,7 @@ void Application2d::setup2DTaskbar()
     // Configure le menu 'File' avec un bouton 'Export'.
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import"});
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon", "Add Batman" });
+    setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon", "Add Star", "Add Arrow" ,"Add Batman"});
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
     setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
 
