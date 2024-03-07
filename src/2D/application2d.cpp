@@ -759,6 +759,7 @@ void Application2d::removeActiveObjectFromeVector() {
 
 void Application2d::mousePressed(int x, int y, int button) {
     ofLog() << "<app::mousePressed at:(" << x << ", " << y << ")>";
+    ofLog() << "hitGUi test at (" << x << ", " << y << "): " << (guiHit(x,y) ? "true" : "false");
     if (guiHit(x,y)) {
         draggingShapeGui = true;
         draggingObject = false;
@@ -782,16 +783,14 @@ void Application2d::mouseDragged(int x, int y, int button) {
         renderer.objetActif->coordinates.y = y - dragOrigine.y + positionImageOrigine.y;
     }
 
-    if (draggingShapeGui) {
-        //shapeGui
-    }
 }
 
 bool Application2d::guiHit(int x, int y) {
     if (shapeGui->getVisible()) {
-        return (y > header->getPosition().y && y < header->getPosition().y + header->getHeight())
-            || (x > shapeGui->getPosition().x && shapeGui->getPosition().x + shapeGui->getWidth()
+        bool guiHit = y > header->getPosition().y && y < header->getPosition().y + header->getHeight()
+            && (x > shapeGui->getPosition().x && shapeGui->getPosition().x + shapeGui->getWidth()
                 && y > shapeGui->getPosition().y && y < shapeGui->getPosition().y + shapeGui->getHeight());
+        return guiHit;
     }
 }
 
