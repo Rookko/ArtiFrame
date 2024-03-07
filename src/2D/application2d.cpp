@@ -367,28 +367,50 @@ void Application2d::saveRenderButtonEvent() {
 void Application2d::onAddSquareEvent() {
     // Appel la fonction rectangle de la classe Primitive
     // Création d'une instance de Primitive2D en tant que carré
-/*    Square* square = new Square();
+    Square* square = new Square();
     string filename = "square";
     square->originalName = filename;
     filename = getElementName(filename);
     square->name = filename;
 
-    imgScrollView->add(filename);
+    imageScroller->add(filename);
 
     addElementToRenderer(square);
-    updateUiFromShape();*/
+    updateUiFromShape();
 }
 
 void Application2d::onAddRectangleEvent() {
     // Appel la fonction rectangle de la classe Primitive
+
 }
 
 void Application2d::onAddCircleleEvent() {
     // Appel la fonction circle de la classe Primitive
+    Circle* circle = new Circle();
+    string filename = "circle";
+    circle->originalName = filename;
+    filename = getElementName(filename);
+    circle->name = filename;
+
+    imageScroller->add(filename);
+
+    addElementToRenderer(circle);
+    updateUiFromShape();
+    
 }
 
 void Application2d::onAddEllipsisEvent() {
     // Appel la fonction ellipsis de la classe Primitive
+    Ellipsis* ellipse = new Ellipsis();
+    string filename = "ellipse";
+    ellipse->originalName = filename;
+    filename = getElementName(filename);
+    ellipse->name = filename;
+
+    imageScroller->add(filename);
+
+    addElementToRenderer(ellipse);
+    updateUiFromShape();
 }
 
 void Application2d::onAddRegularPolygonEvent() {
@@ -705,7 +727,9 @@ string Application2d::getElementName(string filename) {
 }
 
 void Application2d::addElementToRenderer(object2D* object) {
-
+    renderer.vecteurObjets.push_back(object);
+    renderer.objetActif = object;
+    renderer.indexActif++;
 }
 
 void Application2d::updateShapeFromUi() {
