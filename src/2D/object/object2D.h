@@ -12,7 +12,7 @@ public:
 	string name;
 	ofPoint coordinates;
 	string originalName;
-	ofColor color = ofColor::whiteSmoke;
+	ofColor color = ofColor::aliceBlue;
 	int opacity = 255;
 
 	virtual void draw(int offsetX, int offsetY) = 0;

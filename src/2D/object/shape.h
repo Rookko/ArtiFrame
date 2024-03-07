@@ -15,7 +15,7 @@ public:
     int height = 100;
     int width = 150;
     int nbApex = 5;
-    ofColor fillColor = ofColor::white;
+    ofColor fillColor = ofColor::chartreuse;
     ofColor outlineColor = ofColor::black;
     bool outline = false;
 
