@@ -6,18 +6,21 @@
 #include "./3d/object/operation.h"
 #include "./3d/object/cylinderPrimitive.h"
 #include "./3d/object/spherePrimitive.h"
+#include "./3d/object/loadedFile.h"
 
 vector<Object*> everything;
 vector<Object*> selection;
 stack<Operation*> history;
 stack<Operation*> historyUndone;
 
-void Application3d::setup(int buttonSize){
-	ofLog() << "<app::setup3d>";
-	optionWidth = buttonSize;
+//ofxDatGui* objectMenu;
+
+void Application3d::setup(int buttonSize) {
+    ofLog() << "<app::setup3d>";
+    optionWidth = buttonSize;
 
     renderer.setup();
-	setup3DTaskbar();
+    setup3DTaskbar();
 
     objectScrollView = new ofxDatGuiScrollView("My scroll view", 100);
     objectScrollView->setWidth(255);
@@ -38,8 +41,10 @@ void Application3d::setup(int buttonSize){
     zAxisSlider = transformationMenu->addSlider("Z", -1000, 1000, 0);
     ofxDatGuiButton* applyButton = transformationMenu->addButton("Apply");
     applyButton->onButtonEvent(this, &Application3d::onApplyTransformationEvent);
+    // ofxDatGuiButton* changeCameraButton = objectMenu->addButton("Switch Camera Mode");
+     //changeCameraButton->onButtonEvent(this, &Application3d::onChangeCameraMode);
 
- 
+
 }
 
 void Application3d::draw() {
@@ -61,15 +66,15 @@ void Application3d::draw() {
 
     float x = static_cast<float>(ofGetMouseX());
     float y = static_cast<float>(ofGetMouseY());
-/*
-    if (exporting) {
-        ofHideCursor();
-        downloadCursor->draw(x - (downloadCursor->getWidth() / 2), y - (downloadCursor->getWidth() / 2));
-    }
-    else {
-        ofShowCursor();
-    }
-    */
+    /*
+        if (exporting) {
+            ofHideCursor();
+            downloadCursor->draw(x - (downloadCursor->getWidth() / 2), y - (downloadCursor->getWidth() / 2));
+        }
+        else {
+            ofShowCursor();
+        }
+        */
 }
 
 void Application3d::update() {
@@ -79,6 +84,8 @@ void Application3d::update() {
     for (int i = 0; i < everything.size(); i++) {
         selectionScrollView->remove(0);
     }
+
+
 
     for (Object* object : everything) {
         object->selected = false;
@@ -120,7 +127,7 @@ void Application3d::update() {
 
 }
 
-void Application3d::exit(){}
+void Application3d::exit() {}
 
 void Application3d::showUi()
 {
@@ -130,6 +137,7 @@ void Application3d::showUi()
     renderMenu->setVisible(true);
     header->setVisible(true);
     transformationMenu->setVisible(true);
+    cameraMenu->setVisible(true);
 }
 
 void Application3d::hideUi()
@@ -140,12 +148,13 @@ void Application3d::hideUi()
     renderMenu->setVisible(false);
     header->setVisible(false);
     transformationMenu->setVisible(false);
+    cameraMenu->setVisible(false);
 }
 
 void Application3d::setupButton(ofxDatGuiFolder* folder, const std::string& label, void (Application3d::* eventHandler)(const ofxDatGuiButtonEvent&))
 {
-	ofxDatGuiButton* button = folder->addButton(label); // Ajoute un bouton au folder avec le label spécifié.
-	button->onButtonEvent(this, eventHandler); // Lie le bouton à un gestionnaire d'événements.
+    ofxDatGuiButton* button = folder->addButton(label); // Ajoute un bouton au folder avec le label spécifié.
+    button->onButtonEvent(this, eventHandler); // Lie le bouton à un gestionnaire d'événements.
 }
 
 // Fonction pour configurer un menu avec plusieurs boutons.
@@ -179,10 +188,14 @@ void Application3d::rezize3DTaskbar() {
     editMenu->setPosition(optionWidth * 3, 0);
 
     renderMenu->setWidth(optionWidth);
-    renderMenu->setPosition(optionWidth*4, 0);
+    renderMenu->setPosition(optionWidth * 4, 0);
 
-    headerLabel->setWidth(ofGetWidth() - optionWidth * 4);
-    headerLabel->setPosition(optionWidth * 5, 0);
+    headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
+    headerLabel->setPosition(optionWidth * 6, 0);
+
+
+    cameraMenu->setWidth(optionWidth);
+    cameraMenu->setPosition(optionWidth * 5, 0);
 
 }
 
@@ -211,26 +224,58 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour ajouter un rectangle à la scène lorsque bouton Add Cynlinder cliqué.
     else if (buttonLabel == "Add Cynlinder")
     {
-    
+
+        addCylinder();
+
     }
 
     // Fonction pour ajouter un Circle à la scène lorsque bouton Add Monkey cliqué.
     else if (buttonLabel == "Add Monkey")
     {
-    
+
     }
 
     else if (buttonLabel == "Deleted")
     {
-     
+
     }
 
     else if (buttonLabel == "Deleted All")
     {
-     
+
+    }
+
+    else if (buttonLabel == "Perspective") {
+
+        if (renderer.cameraMode == Renderer3d::Orthographic) {
+            renderer.setCameraToPerspective();
+            renderer.cameraMode = Renderer3d::Perspective;
+
+        }
+    }
+
+    else if (buttonLabel == "Orthogonale") {
+        if (renderer.cameraMode == Renderer3d::Perspective) {
+            renderer.setCameraToOrthographic();
+            renderer.cameraMode = Renderer3d::Orthographic;
+        }
+
+    }
+
+    else if (buttonLabel == "WireFrame")
+    {
+        renderMode = "Wireframe";
+    }
+
+    else if (buttonLabel == "Shader")
+    {
+        renderMode = "Shader";
     }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
+
 }
+
+
 
 // Fonction principale pour configurer la barre d'outils 2D.
 void Application3d::setup3DTaskbar()
@@ -238,21 +283,24 @@ void Application3d::setup3DTaskbar()
     // Configure le menu 'File' avec un bouton 'Export'.
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import" });
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth * 2, { "Add Sphere", "Add Cynlinder", "Add Monkey"});
+    setupMenu(addMenu, "Add", optionWidth * 2, { "Add Sphere", "Add Cynlinder", "Add Monkey" });
 
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Deleted", "Deleted All" });
 
-    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Shader"});
+    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Shader" });
 
-    header = new ofxDatGui(ofGetWidth() - optionWidth * 5, 0);
+    setupMenu(cameraMenu, "Camera Menu", optionWidth * 5, { "Perspective", "Orthogonale" });
+
+
+    header = new ofxDatGui(ofGetWidth() - optionWidth * 6, 0);
     headerLabel = header->addLabel("ArtiFrame 3D");
     headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
-    headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
-    headerLabel->setPosition(optionWidth * 5, 0);
+    headerLabel->setWidth(ofGetWidth() - optionWidth * 6);
+    headerLabel->setPosition(optionWidth * 6, 0);
     headerLabel->setStripeVisible(false);
 }
 
-void  Application3d::keyPressed(int key){
+void  Application3d::keyPressed(int key) {
 
     if (key == 119) // w
         isWPressed = true;
@@ -270,7 +318,7 @@ void  Application3d::keyPressed(int key){
 
 }
 
-void  Application3d::keyReleased(int key){
+void  Application3d::keyReleased(int key) {
     if (key == 119) // w
         isWPressed = false;
     if (key == 97) // a
@@ -285,16 +333,21 @@ void  Application3d::keyReleased(int key){
         isEPressed = false;
 }
 
-void Application3d::mousePressed(int x, int y, int button){}
+void Application3d::mousePressed(int x, int y, int button) {}
 
-void  Application3d::mouseReleased(int x, int y, int button){}
+void  Application3d::mouseReleased(int x, int y, int button) {}
 
 void Application3d::windowResized(int w, int h) {
     rezize3DTaskbar();
+    objectScrollView->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
 }
 
 
 void Application3d::onObjectSelection(ofxDatGuiScrollViewEvent e) {
+
+
+
+
     Object* obj = everything.at(e.target->getIndex());
     if (find(selection.begin(), selection.end(), obj) != selection.end()) {
         selection.erase(std::find(selection.begin(), selection.end(), obj));
@@ -417,15 +470,4 @@ Renderer3d::RenderMode Application3d::getRenderMode() {
         return Renderer3d::RenderMode::Wireframe;
     if (renderMode == "Shader")
         return Renderer3d::RenderMode::Shader;
-}
-
-void Application3d::onChangeCameraMode(ofxDatGuiButtonEvent e) {
-    if (renderer.cameraMode == Renderer3d::Perspective) {
-        renderer.setCameraToOrthographic();
-        renderer.cameraMode = Renderer3d::Orthographic;
-    }
-    else if (renderer.cameraMode == Renderer3d::Orthographic) {
-        renderer.setCameraToPerspective();
-        renderer.cameraMode = Renderer3d::Perspective;
-    }
 }
