@@ -598,3 +598,107 @@ void Application2d::mouseReleased(int x, int y, int button) {
     ofLog() << "<app::mouseReleased at:(" << x << ", " << y << ")>";
     draggingObject = false;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+string Application2d::getElementName(string filename) {
+    int duplicate = 0;
+    for (object2D* element : renderer.vecteurObjets) {
+        if (element->originalName == filename) {
+            duplicate++;
+        }
+    }
+
+    if (duplicate > 0) {
+        filename = filename + " (" + to_string(duplicate) + ")";
+    }
+    return filename;
+}
+
+void Application2d::addElementToRenderer(object2D* object) {
+
+}
+
+void Application2d::updateShapeFromUi() {
+
+}
+
+void Application2d::updateUiFromShape() {
+
+}
