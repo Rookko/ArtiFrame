@@ -41,6 +41,14 @@ void Application3d::setup(int buttonSize) {
     zAxisSlider = transformationMenu->addSlider("Z", -1000, 1000, 0);
     ofxDatGuiButton* applyButton = transformationMenu->addButton("Apply");
     applyButton->onButtonEvent(this, &Application3d::onApplyTransformationEvent);
+
+    transformationMenu->addLabel("Animation Menu");
+    ofxDatGuiButton* enableTurntableBtn = transformationMenu->addButton("Enable Turntable");
+    enableTurntableBtn->onButtonEvent(this, &Application3d::onEnableTurntable);
+    ofxDatGuiButton* enableTranslationAnimBtn = transformationMenu->addButton("Enable Translation Animation");
+    enableTranslationAnimBtn->onButtonEvent(this, &Application3d::onEnableTranslationAnimation);
+
+
     // ofxDatGuiButton* changeCameraButton = objectMenu->addButton("Switch Camera Mode");
      //changeCameraButton->onButtonEvent(this, &Application3d::onChangeCameraMode);
 
@@ -52,15 +60,6 @@ void Application3d::setup(int buttonSize) {
 
 void Application3d::draw() {
     renderer.draw(getRenderMode(), selection);
-    /*
-    if (exporting && ofGetFrameNum() % 2 == 0) {
-        ofLog() << "exporting";
-        ofImage img;
-        img.grabScreen(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
-        string filename = "/export/" + to_string(ofGetFrameNum()) + ".png";
-        img.save(filename);
-    }
-    */
 
     objectScrollView->draw();
     selectionScrollView->setHeight(selectionScrollView->getNumItems() * 26);
@@ -216,13 +215,15 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour exporter la scène lorsque bouton Export cliqué.
     if (buttonLabel == "Export")
     {
+        hideUi();
+        exportRender();
+        showUi();
     }
-
     // Fonction pour importer un objet lorsque bouton Import cliqué.
     else if (buttonLabel == "Import")
     {
+        import();
     }
-
     // Fonction pour ajouter un carré à la scène lorsque bouton Add Sphere cliqué.
     else if (buttonLabel == "Add Sphere")
     {
@@ -240,12 +241,12 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour ajouter un Circle à la scène lorsque bouton Add Monkey cliqué.
     else if (buttonLabel == "Add Monkey")
     {
-
+        addMonkey();
     }
 
     else if (buttonLabel == "Deleted")
     {
-
+        deleteSelected();
     }
 
     else if (buttonLabel == "Deleted All")
@@ -348,7 +349,7 @@ void  Application3d::mouseReleased(int x, int y, int button) {}
 void Application3d::windowResized(int w, int h) {
     rezize3DTaskbar();
     objectScrollView->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
-    selectionScrollView->setPosition(20, 200);
+    selectionScrollView->setPosition(optionWidth * 6, header->getHeight() - 1);
 }
 
 
@@ -417,6 +418,7 @@ void Application3d::addSphere() {
     addObject(spherePrimitive, filename);
 }
 
+
 void Application3d::addObject(Object* object, string filename) {
     if (selection.empty()) {
         object->name = filename;
@@ -479,4 +481,107 @@ Renderer3d::RenderMode Application3d::getRenderMode() {
         return Renderer3d::RenderMode::Wireframe;
     if (renderMode == "Shader")
         return Renderer3d::RenderMode::Shader;
+}
+
+
+void Application3d::import() {
+    ofLog() << "<import>";
+    ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an object");
+    if (openFileResult.bSuccess) {
+        ofLog() << "<file import - success>";
+        importPath(openFileResult.getPath());
+    }
+    else {
+        ofLog() << "<import(file) - failed>";
+    }
+}
+
+void Application3d::importPath(string path) {
+    ofxAssimpModelLoader* model = new ofxAssimpModelLoader();
+    if (model->loadModel(path)) {
+        LoadedFile* obj = new LoadedFile();
+        obj->model = model;
+
+        std::string filename;
+        std::string::size_type idx = path.rfind('\\');
+        if (idx != std::string::npos) {
+            filename = path.substr(idx + 1);
+        }
+        obj->originalName = filename;
+        filename = getElementName(filename);
+
+        addObject(obj, filename);
+    }
+    else {
+        ofLog() << "<app::import - failed>";
+    }
+}
+
+void Application3d::addMonkey(){
+    importPath("Monkey.obj");
+}
+
+void Application3d::exportRender() {
+    // Open a file dialog to get the desired file path and name
+    ofFileDialogResult result = ofSystemLoadDialog("Select a folder", true);
+    if (result.bSuccess) {
+        string folderPath = result.filePath;
+        ofLogNotice("Folder Selected") << folderPath;
+        
+        // Create an ofImage and grab the screen
+        ofImage image;
+        image.grabScreen(0, 60, ofGetWidth()-255, ofGetHeight() - 60);
+        // Save the image to the specified folder with a default name 
+        string defaultFileName = "render.png";
+        folderPath = ofFilePath::addTrailingSlash(folderPath);
+
+
+        string filePath = folderPath + defaultFileName;
+        image.save(filePath);
+
+
+        ofLogNotice("Image Saved") << "Render saved to: " << filePath;
+    }
+    else {
+        ofLogNotice("File selection canceled");
+    }
+    
+}
+
+void Application3d::onEnableTurntable(ofxDatGuiButtonEvent e) {
+    for (Object* object : selection) {
+        object->rotation_animation = !object->rotation_animation;
+    }
+}
+
+void Application3d::onEnableTranslationAnimation(ofxDatGuiButtonEvent e) {
+    for (Object* object : selection) {
+        object->translation_animation = !object->translation_animation;
+    }
+}
+
+void Application3d::deleteSelected() {
+    while (!selection.empty()) {
+        Object* object = selection.at(0);
+        auto itInSelection = find(selection.begin(), selection.end(), object);
+        selectionScrollView->remove(itInSelection - selection.begin());
+        selection.erase(find(selection.begin(), selection.end(), object));
+
+        if (object->parent != nullptr) {
+            if (count(object->parent->children.begin(), object->parent->children.end(), object))
+                object->parent->children.erase(find(object->parent->children.begin(), object->parent->children.end(), object));
+        }
+
+        for (Object* child : object->children) {
+            child->parent = nullptr;
+            renderer.scene->objects.push_back(child);
+        }
+
+        auto it = find(everything.begin(), everything.end(), object);
+        objectScrollView->remove(it - everything.begin());
+        if (count(renderer.scene->objects.begin(), renderer.scene->objects.end(), object))
+            renderer.scene->objects.erase(find(renderer.scene->objects.begin(), renderer.scene->objects.end(), object));
+        everything.erase(it);
+        delete object;
+    }
 }

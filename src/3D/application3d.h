@@ -52,6 +52,18 @@ public:
 
 	void addObject(Object* object, string filename);
 
+    void import();
+
+	void importPath(string path);
+
+	void addMonkey();
+
+	void exportRender();
+
+	void onEnableTurntable(ofxDatGuiButtonEvent e);
+
+	void onEnableTranslationAnimation(ofxDatGuiButtonEvent e);
+
 	string getElementName(string filename);
 
 	std::vector<Object*> getAllElementFromScene();
@@ -60,11 +72,13 @@ public:
 
 	Renderer3d::RenderMode getRenderMode();
 
+	void deleteSelected();
+
 
 
 
 	int optionWidth;
-	string renderMode = "Wireframe";
+	string renderMode = "Shader";
 
 
 	bool isWPressed = false;
