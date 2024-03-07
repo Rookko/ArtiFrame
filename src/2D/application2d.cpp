@@ -97,13 +97,13 @@ void Application2d::setup(int buttonSize)
   basicCursor = new ofImage();
   basicCursor->load("cursors/basic_cursor.png");
   moveCursor = new ofImage();
-  moveCursor->load("cursors/move_cursors.png");
+  moveCursor->load("cursors/move_icon.png");
   exportingCursor = new ofImage();
-  exportingCursor->load("cursors/rotate_cursors.png");
+  exportingCursor->load("cursors/export_icon.png");
   rotateCursor = new ofImage();
-  rotateCursor->load("cursors/rotate_cursors.png");
+  rotateCursor->load("cursors/rotate_icon.png");
   deleteCursor = new ofImage();
-  deleteCursor->load("cursors/delete_cursor.png");
+  deleteCursor->load("cursors/deleted_icon.png");
 }
 
 void Application2d::update()
@@ -148,6 +148,7 @@ void Application2d::update()
   if (draggingObject && renderer.objetActif != nullptr) {
       renderer.objetActif->coordinates.x = ofGetMouseX() - dragOrigine.x + positionImageOrigine.x;
       renderer.objetActif->coordinates.y = ofGetMouseY() - dragOrigine.y + positionImageOrigine.y;
+
   }
 
   renderer.update();
@@ -175,6 +176,11 @@ void Application2d::draw()
   if (isDelete && renderer.hit(x, y) && renderer.objetActif != nullptr) {
       ofHideCursor();
       deleteCursor->draw(x - (deleteCursor->getWidth() / 2), y - (deleteCursor->getWidth() / 2));
+  }
+  else if (draggingObject && renderer.objetActif != nullptr) {
+      ofHideCursor();
+      moveCursor->draw(x - (moveCursor->getWidth() / 2), y - (moveCursor->getWidth() / 2));
+
   }
   else if (isRotate && renderer.hit(x, y) && renderer.objetActif != nullptr) {
       ofHideCursor();
