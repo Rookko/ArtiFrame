@@ -8,6 +8,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxDatGui.h"
+#include "object2D.h";
 
 #include "renderer2d.h"
 
@@ -108,6 +109,14 @@ public:
 
   void dragEvent(ofDragInfo infoDrag);
 
+  void addObjectToVector(object2D* objet);
+
+  void removeActiveObjectFromeVector();
+
+  void mousePressed(int x, int y, int button);
+
+  void mouseReleased(int x, int y, int button);
+  
   private:
 
 	// Ajouter les menus pour les différents boutons

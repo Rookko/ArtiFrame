@@ -62,6 +62,7 @@ public:
 
 
 
+
 	int optionWidth;
 	string renderMode = "Wireframe";
 
@@ -74,7 +75,6 @@ public:
 	bool isQPressed = false;
 	bool isEPressed = false;
 
-	void onChangeCameraMode(ofxDatGuiButtonEvent e);
 
 
 
@@ -98,6 +98,9 @@ private:
 
 	ofxDatGui* header;
 	ofxDatGuiLabel* headerLabel;
+
+	ofxDatGui* cameraMenu;
+	ofxDatGuiLabel* cameraMenuLabel;
 
 	//Menu objet et transformation 3d
 	ofxDatGuiScrollView* objectScrollView;
