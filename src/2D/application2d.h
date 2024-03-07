@@ -119,6 +119,8 @@ public:
   
   void mouseDragged(int x, int y, int button);
 
+  void deleteSelected();
+
   bool isExporting = false;
 
   bool isDelete = false;
@@ -173,9 +175,7 @@ public:
 
 	void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
 
-	void calculHistogram();
-
-
+	void deleteAll();
 
 	
 };

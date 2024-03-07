@@ -426,6 +426,7 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 
     else if (buttonLabel == "Deleted")
     {
+        /*
         if (isDelete == true) {
             isDelete = false;
         }
@@ -433,13 +434,14 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         else {
         isDelete = true;
         this->onDeleted();
-        }
+        } */
+        this->deleteSelected();
         
     }
 
     else if (buttonLabel == "Deleted All")
     {
-        this->onDeletedAll();
+        this->deleteAll();
     }
 
     else if (buttonLabel == "Add Batman")
@@ -932,6 +934,31 @@ void Application2d::updateShapeFromUi() {
 
 void Application2d::updateUiFromShape() {
 
+}
+
+
+void Application2d::deleteSelected() {
+    if (renderer.objetActif != nullptr) {
+        renderer.vecteurObjets.erase(find(renderer.vecteurObjets.begin(), renderer.vecteurObjets.end(), renderer.objetActif));
+
+        imageScroller->remove(renderer.indexActif);
+        renderer.indexActif = -1;
+        renderer.objetActif = nullptr;
+    }
+}
+
+void Application2d::deleteAll() {
+
+    int taille = renderer.vecteurObjets.size() - 1;
+    
+        
+
+    renderer.vecteurObjets.clear();
+
+    imageScroller->clear();
+        renderer.indexActif = -1;
+        renderer.objetActif = nullptr; 
+    
 }
 
 
