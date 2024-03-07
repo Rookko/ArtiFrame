@@ -167,5 +167,6 @@ public:
 	void updateUiFromShape();
 
 	bool guiHit(int x, int y);
+
 	
 };

@@ -17,6 +17,10 @@ public:
 
 	virtual void draw(int offsetX, int offsetY) = 0;
 	virtual void rotate90() = 0;
+
+	void setColor(const ofColor& newColor) {
+		color = newColor;
+	}
 };
 
 #endif // !1
