@@ -13,6 +13,7 @@
 #include "regularPolygon.h"
 #include "square.h"
 #include "star.h"
+#include "histogramme.h"
 
 
 ofxDatGui* toolsGui;
@@ -31,6 +32,8 @@ ofPoint dragOrigine = { 0, 0, 0 };
 bool draggingObject;
 
 ofxDatGuiScrollView* imageScroller;
+
+Histogram* histogramme;
 
 void Application2d::setup(int buttonSize)
 {
@@ -78,6 +81,9 @@ void Application2d::setup(int buttonSize)
   heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
   shapeColorPicker = shapeGui->addColorPicker("Shape color", ofColor::aliceBlue);
   shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
+
+  //histogram
+  histogramme = new Histogram("Histogram", ofColor::black);
 
 
 
@@ -455,6 +461,10 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         this->addBatman();
     }
+
+    else if (buttonLabel == "Histogram") {
+
+    }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 }
 
@@ -727,6 +737,8 @@ void Application2d::import(string path) {
         renderer.objetActif = image;
         renderer.indexActif++;
 
+        calculHistogram();
+
     }
 }
 
@@ -735,6 +747,7 @@ void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
 
     renderer.objetActif = renderer.vecteurObjets.at(e.target->getIndex());
     renderer.indexActif = e.target->getIndex();
+    calculHistogram();
 
     if (renderer.objetActif != nullptr) {
         renderer.objetActif->setColor(color_picker_object);
@@ -835,7 +848,33 @@ bool Application2d::guiHit(int x, int y) {
 
 
 
+void Application2d::calculHistogram() {
+    ofLog() << "<app::calculHistogram>";
 
+    int redHist[256] = { 0 };
+    int blueHist[256] = { 0 };
+    int greenHist[256] = { 0 };
+
+    if (dynamic_cast<Image*>(renderer.objetActif) != nullptr) {
+        Image image = *dynamic_cast<Image*>(renderer.objetActif);
+        ofPixels pixels = image.dataImg.getPixels();
+        int largeurImage = image.dataImg.getWidth();
+        int hauteurImage = image.dataImg.getHeight();
+
+        for (int i = 0; i < hauteurImage; i++) {
+            for (int j = 0; j < largeurImage; j++) {
+                ofColor couleurPixel = pixels.getColor(j, i);
+                redHist[couleurPixel.r]++;
+                blueHist[couleurPixel.b]++;
+                greenHist[couleurPixel.g]++;
+            }
+        }
+    }
+    histogramme->setRedHist(redHist);
+    histogramme->setBlueHist(blueHist);
+    histogramme->setGreenHist(greenHist);
+
+}
 
 
 
@@ -928,6 +967,7 @@ void Application2d::addElementToRenderer(object2D* object) {
     renderer.vecteurObjets.push_back(object);
     renderer.objetActif = object;
     renderer.indexActif++;
+    calculHistogram();
 }
 
 void Application2d::updateShapeFromUi() {

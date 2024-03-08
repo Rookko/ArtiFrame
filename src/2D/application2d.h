@@ -175,7 +175,11 @@ public:
 
 	void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
 
+
 	void deleteAll();
+
+	void calculHistogram();
+
 
 	
 };
