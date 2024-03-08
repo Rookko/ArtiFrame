@@ -43,9 +43,6 @@ public:
   ofParameter<ofColor> color_picker_background;
   ofParameter<ofColor> color_picker_object;
   ofParameter<ofColor> color_outline_object;
-  //ofParameter<ofColor> color_picker_background_hsb;
-  //ofParameter<ofColor> color_picker_object_hsb;
-  //ofParameter<ofColor> color_outline_object_hsb;
 
   ofParameter<float> slider_scale;
   ofParameter<float> slider_height;
@@ -55,7 +52,6 @@ public:
 
   ofParameter<float> hue, saturation, brightness;
   ofParameter<float> redValue, greenValue, blueValue, aValue;
-  //ofColor color;
 
   ofParameter<string> textbox;
 

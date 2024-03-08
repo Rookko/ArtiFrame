@@ -82,7 +82,7 @@ void Application2d::setup(int buttonSize)
 
   textbox.set("", "");
 
-  button.setup("Scapiiishh Button");
+  button.setup("Scapiiishh");
   button.addListener(this, &Application2d::button_pressed);
   color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged); // Ajouter listener color_picker_object
   slider_height.addListener(this, &Application2d::onHeightChanged); // Ajouter listener slider_height
