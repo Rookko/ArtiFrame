@@ -310,10 +310,10 @@ void Application2d::keyReleased(int key)
         break;
 
     case 'u': // Pour "Layer UP 1x"
-        this->layerDown();
+        this->layerUP();
         break;
     case 'd': // Pour "Layer Down 1x"
-        this->layerUP();
+        this->layerDown();
         break;
 
     case 'm' : //Export
@@ -448,12 +448,12 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer UP")
     {
-        this->layerDown();
+        this->layerUP();
     }
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer Down")
     {
-        this->layerUP();
+        this->layerDown();
     }
     else if (buttonLabel == "Deleted")
     {
