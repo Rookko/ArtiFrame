@@ -86,10 +86,7 @@ void Application2d::setup(int buttonSize)
   shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
 
   //histogram
-  histogramme = new Histogram("Histogram", ofColor::black);
-  toolsGui = new ofxDatGui(300, 300);
-  toolsGui->addLabel("Histogramme");
-  toolsGui->addFolder(histogramme);
+
 
 
 
@@ -97,6 +94,12 @@ void Application2d::setup(int buttonSize)
   imageScroller->setWidth(255);
   imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
   imageScroller->onScrollViewEvent(this, &Application2d::onSelectImage);
+
+  histogramme = new Histogram("Histogram", ofColor::black);
+  toolsGui = new ofxDatGui(255, 255);
+  toolsGui->addLabel("Histogramme");
+  toolsGui->setPosition(ofGetWidth() - imageScroller->getWidth(), ofGetHeight() - (ofGetHeight() / 3));
+  toolsGui->addFolder(histogramme);
 
   renderer.offsetX1 = 0;
   renderer.offsetX2 = ofGetWidth() - imageScroller->getWidth();
