@@ -205,9 +205,9 @@ public:
 
 	bool guiHit(int x, int y);
 
-	void onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e);
+	// (Test#1)void onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e);
 
-	void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
+	// (Test#1)void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
 	void onColorPickerObjectChanged(ofColor& color);
 	void onHeightChanged(float& height);
 	void onWidthChanged(float& width);

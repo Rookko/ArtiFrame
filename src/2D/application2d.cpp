@@ -125,8 +125,8 @@ void Application2d::setup(int buttonSize)
 
   //menu pour les shape
   shapeGui = new ofxDatGui(300, 300);
-  shapeGui->addLabel("Menu des primitives");
-  shapeGui->addHeader("Slider");
+  // (Test#2)shapeGui->addLabel("Menu des primitives");
+  // (Test#2)shapeGui->addHeader("Slider");
   // Test#1 widthSlider = shapeGui->addSlider("Width", 0, 1000, 100);
   // Test#1 widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
   // Test#1 heightSlider = shapeGui->addSlider("Height", 0, 1000, 100);
@@ -452,7 +452,7 @@ void Application2d::showUi() {
     editMenu->setVisible(true);
     othersMenu->setVisible(true);
     header->setVisible(true);
-    shapeGui->setVisible(true);
+    // (Test#2)shapeGui->setVisible(true);
     histogramme->setVisible(true);
     toolsGui->setVisible(true);
 }
@@ -464,7 +464,7 @@ void Application2d::hideUi() {
     editMenu->setVisible(false);
     othersMenu->setVisible(false);
     header->setVisible(false);
-    shapeGui->setVisible(false);
+    // (Test#2)shapeGui->setVisible(false);
     histogramme->setVisible(false);
     toolsGui->setVisible(false);
 }
@@ -902,7 +902,7 @@ void Application2d::removeActiveObjectFromeVector() {
 void Application2d::mousePressed(int x, int y, int button) {
     ofLog() << "<app::mousePressed at:(" << x << ", " << y << ")>";
     ofLog() << "hitGUi test at (" << x << ", " << y << "): " << (guiHit(x,y) ? "true" : "false");
-    ofLog() << "shapeGui Position: (" << shapeGui->getPosition().x << ", " << shapeGui->getPosition().y << "), Taille: " << shapeGui->getWidth() << "x" << shapeGui->getHeight() << std::endl;
+    // (Test#2)ofLog() << "shapeGui Position: (" << shapeGui->getPosition().x << ", " << shapeGui->getPosition().y << "), Taille: " << shapeGui->getWidth() << "x" << shapeGui->getHeight() << std::endl;
     if (isDelete) {
         deleteSelected();
         isDelete = false;
