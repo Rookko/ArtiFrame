@@ -47,7 +47,7 @@ void Application2d::setup(int buttonSize)
   renderer.setup();
 
   gui.setup("Unlock Interface");
-  gui.setPosition(ofGetWidth() - ofGetWidth()*0.25f, ofGetHeight() - ofGetHeight()*0.95f);
+  gui.setPosition(ofGetWidth() - ofGetWidth()*0.24f, ofGetHeight() - ofGetHeight()*0.975f);
 
   group_draw.setup("Color Package");
 
@@ -1013,7 +1013,8 @@ void Application2d::addElementToRenderer(object2D* object) {
 void Application2d::updateShapeFromUi() {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr){
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        shape->fillColor = shapeColorPicker->getColor();
+        //shape->fillColor = shapeColorPicker->getColor();
+        shape->fillColor = color_picker_object.get();
         shape->height = heightSlider->getValue();
         shape->width = widthSlider->getValue();
     }
