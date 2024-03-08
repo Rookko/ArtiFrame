@@ -137,10 +137,10 @@ void Application2d::update()
       importButtonEvent(); // Pour "Import"
   }
   else if (keyPress[32] && keyPress['u']) {
-      layerDown(); // Pour "Layer UP rapide"
+      layerUP(); // Pour "Layer UP rapide"
   }
   else if (keyPress[32] && keyPress['d']) {
-      layerUP(); // Pour "Layer Down rapide"
+      layerDown(); // Pour "Layer Down rapide"
   }
   else if (keyPress['e'] && keyPress['s'] && keyPress['t'] && keyPress['r']) {
       easterEgg(); // Pour "EasterEgg"
