@@ -1,6 +1,9 @@
 #include "ofMain.h"
 #include "object.h"
 
+#pragma once
+
+
 class SpherePrimitive : public Object {
 public:
 

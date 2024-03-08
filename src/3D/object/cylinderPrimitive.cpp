@@ -22,7 +22,7 @@ void CylinderPrimitive::drawBoundingBoxOverride() {
 	scale = (scale * scaleFactor) / 2;
 	ofVec3f pos1 = cylinder->getPosition();
 	ofVec3f pos = { -pos1.x, pos1.y, -pos1.z };
-
+	//Calcul de vertex
 	ofVec3f v1 = { pos.x + scale.x, pos.y - scale.y, pos.z + scale.z };
 	ofVec3f v2 = { pos.x + scale.x, pos.y - scale.y, pos.z - scale.z };
 	ofVec3f v3 = pos - scale;
@@ -31,7 +31,7 @@ void CylinderPrimitive::drawBoundingBoxOverride() {
 	ofVec3f v6 = { pos.x + scale.x, pos.y + scale.y, pos.z - scale.z };
 	ofVec3f v7 = { pos.x - scale.x, pos.y + scale.y, pos.z - scale.z };
 	ofVec3f v8 = { pos.x - scale.x, pos.y + scale.y, pos.z + scale.z };
-
+	//Dessin des lignes pour la boite
 	ofDrawLine(v1, v4);
 	ofDrawLine(v1, v2);
 	ofDrawLine(v2, v3);

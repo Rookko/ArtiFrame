@@ -6,6 +6,7 @@
 #include "./3d/object/operation.h"
 #include "./3d/object/cylinderPrimitive.h"
 #include "./3d/object/spherePrimitive.h"
+//#include "./3d/object/cubePrimitive.h"
 #include "./3d/object/loadedFile.h"
 
 vector<Object*> everything;
@@ -623,3 +624,14 @@ void Application3d::deleteAll() {
         }
     }
 
+/*void Application3d::addCube() {
+    CubePrimitive* cubePrimitive = new CubePrimitive();
+    cubePrimitive->sphere = new ofSpherePrimitive();
+    cubePrimitive->sphere->setRadius(100);
+    cubePrimitive->sphere->setPosition({ 0, 0, 0 });
+
+    std::string filename = "sphere";
+    cubePrimitive->originalName = filename;
+    filename = getElementName(filename);
+    addObject(cubePrimitive, filename);
+}*/

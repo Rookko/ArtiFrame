@@ -1,6 +1,8 @@
 #include "object.h"
 #include "transformation.h"
 
+#pragma once
+
 class Operation
 {
 public:

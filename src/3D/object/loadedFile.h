@@ -1,6 +1,8 @@
 #include "ofMain.h"
 #include "object.h"
 
+#pragma once
+
 class LoadedFile : public Object {
 public:
 

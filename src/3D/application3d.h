@@ -76,6 +76,8 @@ public:
 
 	void deleteAll();
 
+	void addCube();
+
 
 	int optionWidth;
 	string renderMode = "Shader";
