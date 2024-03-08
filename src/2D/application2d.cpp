@@ -295,6 +295,13 @@ void Application2d::keyReleased(int key)
         }
         break;
 
+    case 'u': // Pour "Add Square"
+        this->layerUP();
+        break;
+    case 'd': // Pour "Add Square"
+        this->layerDown();
+        break;
+
         //Ajouter les autres AU DESSUS D'ICI
     }
 }
@@ -597,11 +604,11 @@ void Application2d::layerUP()
 {
     if (renderer.objetActif != nullptr) {
         // Si l'image est trouvée et n'est pas déjà en haut
-        if (renderer.indexActif < renderer.vecteurObjets.size() - 1 || renderer.indexActif > 0) {
+        if (renderer.indexActif < renderer.vecteurObjets.size() - 1) {
             // Échangez les positions de couche avec l'image suivante
-            imageScroller->swap(renderer.indexActif, renderer.indexActif - 1);
-            swap(renderer.vecteurObjets[renderer.indexActif], renderer.vecteurObjets[renderer.indexActif - 1]);
-            renderer.indexActif -= 1;
+            imageScroller->swap(renderer.indexActif, renderer.indexActif + 1);
+            swap(renderer.vecteurObjets[renderer.indexActif], renderer.vecteurObjets[renderer.indexActif + 1]);
+            renderer.indexActif += 1;
             renderer.objetActif = renderer.vecteurObjets.at(renderer.indexActif);
         }
     }
@@ -611,11 +618,11 @@ void Application2d::layerDown()
 {
     if (renderer.objetActif != nullptr) {
         // Si l'image est trouvée et n'est pas déjà en haut
-        if (renderer.indexActif < renderer.vecteurObjets.size()-1|| renderer.indexActif > 0) {
+        if (renderer.indexActif > 0) {
             // Échangez les positions de couche avec l'image suivante
-            imageScroller->swap(renderer.indexActif, renderer.indexActif + 1);
-            swap(renderer.vecteurObjets[renderer.indexActif], renderer.vecteurObjets[renderer.indexActif + 1]);
-            renderer.indexActif += 1;
+            imageScroller->swap(renderer.indexActif, renderer.indexActif - 1);
+            swap(renderer.vecteurObjets[renderer.indexActif], renderer.vecteurObjets[renderer.indexActif - 1]);
+            renderer.indexActif -= 1;
             renderer.objetActif = renderer.vecteurObjets.at(renderer.indexActif);
         }
     }
