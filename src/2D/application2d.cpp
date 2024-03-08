@@ -404,6 +404,8 @@ void Application2d::showUi() {
     othersMenu->setVisible(true);
     header->setVisible(true);
     shapeGui->setVisible(true);
+    histogramme->setVisible(true);
+    toolsGui->setVisible(true);
 }
 
 void Application2d::hideUi() {
@@ -414,6 +416,8 @@ void Application2d::hideUi() {
     othersMenu->setVisible(false);
     header->setVisible(false);
     shapeGui->setVisible(false);
+    histogramme->setVisible(false);
+    toolsGui->setVisible(false);
 }
 
 // Fonction utilisée lorsque bouton ou keycape sont pressés
