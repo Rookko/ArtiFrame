@@ -129,7 +129,7 @@ void Application2d::update()
       importButtonEvent(); // Pour "Import"
   }
   else if (keyPress[32] && keyPress['e']) {
-      saveRenderButtonEvent(); // Pour "Export"
+      saveRenderButtonEvent(); // Pour "Export"   
   }
   else if (keyPress[32] && keyPress['u']) {
       layerUP(); // Pour "Layer UP"
@@ -834,7 +834,7 @@ void Application2d::mousePressed(int x, int y, int button) {
     }
     else if (isRotate)
     {
-        //rotate
+        renderer.objetActif->rotate90();
     }
     else if (isExporting)
     {
