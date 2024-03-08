@@ -35,6 +35,7 @@ ofxDatGuiScrollView* imageScroller;
 
 Histogram* histogramme;
 bool afficherHistogram;
+ofxDatGuiFolder* histoFolder;
 
 void Application2d::setup(int buttonSize)
 {
@@ -86,6 +87,9 @@ void Application2d::setup(int buttonSize)
 
   //histogram
   histogramme = new Histogram("Histogram", ofColor::black);
+  toolsGui = new ofxDatGui(300, 300);
+  toolsGui->addLabel("Histogramme");
+  toolsGui->addFolder(histogramme);
 
 
 
