@@ -7,9 +7,6 @@
 
 ofxDatGui* toolsGui;
 
-ofxDatGui* shapeGui;
-bool draggingShapeGui;
-
 ofxDatGuiColorPicker* shapeColorPicker;
 ofxDatGuiSlider* widthSlider;
 ofxDatGuiSlider* heightSlider;
@@ -97,17 +94,6 @@ void Application2d::setup(int buttonSize)
 
   gui.add(&button);
 
-  //menu pour les shape
-  shapeGui = new ofxDatGui(300, 300);
-  // (Test#2)shapeGui->addLabel("Menu des primitives");
-  // (Test#2)shapeGui->addHeader("Slider");
-  widthSlider = shapeGui->addSlider("Width", 0, 1000, 100);
-  // Test#1 widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
-  // Test#1 heightSlider = shapeGui->addSlider("Height", 0, 1000, 100);
-  // Test#1 heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
-  shapeColorPicker = shapeGui->addColorPicker("Shape color", ofColor::aliceBlue);
-  // Test#1 shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
-
   imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
   imageScroller->setWidth(255);
   imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
@@ -182,10 +168,10 @@ void Application2d::draw()
 
   imageScroller->draw();
   if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
-      shapeGui->setVisible(true);
+      //shapeGui->setVisible(true);                                                             OLD UI stuff
   }
   else {
-      shapeGui->setVisible(false);
+     // shapeGui->setVisible(false);
   }
   float x = static_cast<float>(ofGetMouseX());
   float y = static_cast<float>(ofGetMouseY());
@@ -395,7 +381,6 @@ void Application2d::showUi() {
     editMenu->setVisible(true);
     othersMenu->setVisible(true);
     header->setVisible(true);
-    shapeGui->setVisible(true);
     histogramme->setVisible(true);
     toolsGui->setVisible(true);
 }
@@ -407,7 +392,6 @@ void Application2d::hideUi() {
     editMenu->setVisible(false);
     othersMenu->setVisible(false);
     header->setVisible(false);
-    shapeGui->setVisible(false);
     histogramme->setVisible(false);
     toolsGui->setVisible(false);
 }
@@ -846,7 +830,6 @@ void Application2d::mousePressed(int x, int y, int button) {
         isExporting = false;
     }
     else if (guiHit(x,y)) {
-        draggingShapeGui = true;
         draggingObject = false;
     }
     else {
@@ -872,19 +855,13 @@ void Application2d::mouseDragged(int x, int y, int button) {
 }
 
 bool Application2d::guiHit(int x, int y) {
-    
     bool guiHit;
 
-
-    if (shapeGui->getVisible()) {
-            guiHit = y > header->getPosition().y && y < header->getPosition().y + header->getHeight()
-            || (x > shapeGui->getPosition().x && x < shapeGui->getPosition().x + shapeGui->getWidth()
-                && y > shapeGui->getPosition().y && y < shapeGui->getPosition().y + shapeGui->getHeight() + 80);
-    }
-    else {
          guiHit = y > header->getPosition().y&& y < header->getPosition().y + header->getHeight();
-    }
+    
         return guiHit;
+
+
     
 }
 
@@ -1147,8 +1124,6 @@ void Application2d::updateUiFromShape() {
         slider_apex.addListener(this, &Application2d::onApexChanged);
         outline_object.addListener(this, &Application2d::onLineChanged);
         color_outline_object.addListener(this, &Application2d::onColorLineChanged);
-
-        uiUpdate = true;
     }
 }
 
