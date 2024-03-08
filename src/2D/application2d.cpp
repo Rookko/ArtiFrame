@@ -354,8 +354,8 @@ void Application2d::rezize2DTaskbar() {
     addMenu->setWidth(optionWidth);
     addMenu->setPosition(optionWidth*2, 0);
 
-    colorMenu->setWidth(optionWidth);
-    colorMenu->setPosition(optionWidth*3, 0);
+    histoMenu->setWidth(optionWidth);
+    histoMenu->setPosition(optionWidth*3, 0);
 
     othersMenu->setWidth(optionWidth);
     othersMenu->setPosition(optionWidth*5, 0);
@@ -378,7 +378,7 @@ void Application2d::windowResized(int w, int h)
 void Application2d::showUi() {
     fileMenu->setVisible(true);
     addMenu->setVisible(true);
-    colorMenu->setVisible(true);
+    histoMenu->setVisible(true);
     editMenu->setVisible(true);
     othersMenu->setVisible(true);
     header->setVisible(true);
@@ -388,7 +388,7 @@ void Application2d::showUi() {
 void Application2d::hideUi() {
     fileMenu->setVisible(false);
     addMenu->setVisible(false);
-    colorMenu->setVisible(false);
+    histoMenu->setVisible(false);
     editMenu->setVisible(false);
     othersMenu->setVisible(false);
     header->setVisible(false);
@@ -491,9 +491,6 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         this->addBatman();
     }
 
-    else if (buttonLabel == "Histogram") {
-        histogramme->draw();
-    }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 }
 
@@ -676,7 +673,7 @@ void Application2d::setup2DTaskbar()
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
     setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon", "Add Star", "Add Arrow" ,"Add Batman"});
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
-    setupMenu(colorMenu, "Color", optionWidth*3, { "Histogram" });
+    setupMenu(histoMenu, "Histogram", optionWidth*3, { "Test" });
 
     setupMenu(othersMenu, "Others", optionWidth*5, { "Test" });
     setupMenu(editMenu, "Edit", optionWidth * 4, { "Undo", "Redo", "Layer UP", "Layer Down", "Deleted", "Deleted All" });
@@ -1038,6 +1035,10 @@ void Application2d::updateUiFromShape() {
         //fillColorPicker->setColor(shape->fillColor);
         //outlineColorPicker->setColor(shape->outlineColor);
         //outlineToggle->setChecked(shape->outline);
+        color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged);
+        color_picker_object.set(shape->fillColor);
+        color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged);
+
     }
 }
 
