@@ -47,9 +47,6 @@ void Application2d::setup(int buttonSize)
   color_picker_background.set("Background RGB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
   color_picker_object.set("Object RGB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
   color_outline_object.set("Outline RGB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
-  //color_picker_background_hsb.set("Background HSB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
-  //color_picker_object_hsb.set("Object HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
-  //color_outline_object_hsb.set("Outline HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
 
   slider_scale.set("Scale", 1.0f, 0.0f, 100.0f);
   slider_height.set("Height", 100.0f, 0.0f, 1000.0f);
@@ -62,11 +59,6 @@ void Application2d::setup(int buttonSize)
   group_hsb.add(saturation.set("Saturation", 127, 0, 255));
   group_hsb.add(brightness.set("Brightness", 127, 0, 255));
   group_object.add(&group_hsb);
-  // RGB Sliders
-  //group_object.add(redValue.set("Red", 127, 0, 255));
-  //group_object.add(greenValue.set("Green", 127, 0, 255));
-  //group_object.add(blueValue.set("Blue", 127, 0, 255));
-  //group_object.add(aValue.set("Alpha", 127, 0, 255));
 
   // Listeners pour les changements
   hue.addListener(this, &Application2d::HSBtoRGB);
@@ -78,11 +70,8 @@ void Application2d::setup(int buttonSize)
   aValue.addListener(this, &Application2d::RGBtoHSB);
 
   group_background.add(color_picker_background);
-  //group_background.add(color_picker_background_hsb);
   group_object.add(color_picker_object);
-  //group_object.add(color_picker_object_hsb);
   group_object.add(color_outline_object);
-  //group_object.add(color_outline_object_hsb);
   group_trans_obj.add(slider_scale);
   group_trans_obj.add(slider_height);
   group_trans_obj.add(slider_width);
@@ -95,7 +84,6 @@ void Application2d::setup(int buttonSize)
 
 
   textbox.set("", "");
-  // (Test#3)gui.add(textbox);
 
   button.setup("Scapiiishh Button");
   button.addListener(this, &Application2d::button_pressed);
@@ -109,9 +97,6 @@ void Application2d::setup(int buttonSize)
 
   gui.add(&button);
 
-  // (Test#3)checkbox.setName("UwU");
-  // (Test#3)gui.add(checkbox);
-
   //menu pour les shape
   shapeGui = new ofxDatGui(300, 300);
   // (Test#2)shapeGui->addLabel("Menu des primitives");
@@ -122,11 +107,6 @@ void Application2d::setup(int buttonSize)
   // Test#1 heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
   shapeColorPicker = shapeGui->addColorPicker("Shape color", ofColor::aliceBlue);
   // Test#1 shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
-
-  //histogram
-
-
-
 
   imageScroller = new ofxDatGuiScrollView("Scroll view", 100);
   imageScroller->setWidth(255);
@@ -143,9 +123,6 @@ void Application2d::setup(int buttonSize)
   renderer.offsetX2 = ofGetWidth() - imageScroller->getWidth();
   renderer.offsetY1 = 0;
   renderer.offsetY2 = ofGetHeight();
-
-
-  // (Test#3)checkbox = true;
 
   basicCursor = new ofImage();
   basicCursor->load("cursors/basic_icon.png");
@@ -169,26 +146,16 @@ void Application2d::update()
   // (Test#3)renderer.object_scale = slider_scale;
   renderer.text = textbox;
 
-
   // Touche multiple ici avec space bar
   if (keyPress[32] && keyPress['i']) {
       importButtonEvent(); // Pour "Import"
   }
-  // (Test#3)else if (keyPress[32] && keyPress['e']) {
-      // (Test#3)saveRenderButtonEvent(); // Pour "Export"   
-  // (Test#3)}
   else if (keyPress[32] && keyPress['u']) {
       layerDown(); // Pour "Layer UP rapide"
   }
   else if (keyPress[32] && keyPress['d']) {
       layerUP(); // Pour "Layer Down rapide"
   }
-  // (Test#3)else if (keyPress[32] && keyPress['z']) {
-      // (Test#3)undoButton(); // Pour "Undo"
-  // (Test#3)}
-  // (Test#3)else if (keyPress[32] && keyPress['x']) {
-      // (Test#3)redoButton(); // Pour "Redo"
-  // (Test#3)}
   else if (keyPress['e'] && keyPress['s'] && keyPress['t'] && keyPress['r']) {
       easterEgg(); // Pour "EasterEgg"
   }
@@ -201,7 +168,6 @@ void Application2d::update()
   if (draggingObject && renderer.objetActif != nullptr) {
       renderer.objetActif->coordinates.x = ofGetMouseX() - dragOrigine.x + positionImageOrigine.x;
       renderer.objetActif->coordinates.y = ofGetMouseY() - dragOrigine.y + positionImageOrigine.y;
-
   }
 
   renderer.update();
@@ -257,7 +223,7 @@ void Application2d::draw()
 
 
 }
-//comon
+
 void Application2d::button_pressed()
 {
     // réinitialiser la zone de texte
@@ -313,18 +279,6 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
 // Pour ajouter une kyeSwitch, simplement ajouter la touche et la relier à ca fonction
 void Application2d::keyReleased(int key)
 {
-    // (Test#3)case 'b': // Pour "Add Batman"
-        // (Test#3)this->addBatman();
-        // (Test#3)break;if (key == OF_KEY_ALT) {
-        // (Test#3)isDelete = false;
-    // (Test#3)}
-    // (Test#3)else if (key == OF_KEY_SHIFT) {
-        // (Test#3)isRotate = false;
-    // (Test#3)}
-    // (Test#3)else if (key == 48) {
-        // (Test#3)isExporting = false;
-    // (Test#3)}
-
     keyPress[key] = false;
     if (key == 'o') // touche o fermer Unlock Interface
     {
@@ -367,7 +321,6 @@ void Application2d::keyReleased(int key)
         else {
             isDelete = true;
         }
-
         break;
 
     case 'u': // Pour "Layer UP 1x"
@@ -385,7 +338,6 @@ void Application2d::keyReleased(int key)
         else {
             isExporting = true;
         }
-
         break;
 
     case 't': //rotate
@@ -396,7 +348,6 @@ void Application2d::keyReleased(int key)
         else {
             isRotate = true;
         }
-
         break;
     }
 
@@ -427,7 +378,6 @@ void Application2d::rezize2DTaskbar() {
 
     headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
     headerLabel->setPosition(optionWidth * 6, 0);
-    
 }
 
 void Application2d::windowResized(int w, int h)
@@ -473,81 +423,58 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         this->saveRenderButtonEvent();
     }
-
     // Fonction pour importer un objet lorsque bouton Import cliqué.
     else if (buttonLabel == "Import")
     {
         this->importButtonEvent();
     }
-
     // Fonction pour ajouter un carré à la scène lorsque bouton Add Square cliqué.
     else if (buttonLabel == "Add Square")
     {
         this->onAddSquareEvent();
     }
-
     // Fonction pour ajouter un rectangle à la scène lorsque bouton Add Rectangle cliqué.
     else if (buttonLabel == "Add Rectangle")
     {
         this->onAddRectangleEvent();
     }
-
     // Fonction pour ajouter un Circle à la scène lorsque bouton Add Circle cliqué.
     else if (buttonLabel == "Add Circle")
     {
         this->onAddCircleleEvent();
     }
-
     // Fonction pour ajouter un Ellipsis à la scène lorsque bouton Add Ellipsis cliqué.
     else if (buttonLabel == "Add Ellipsis")
     {
         this->onAddEllipsisEvent();
     }
-
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Add Regular Polygon")
     {
         this->onAddRegularPolygonEvent();
     }
-
     else if (buttonLabel == "Add Star")
     {
         this->onAddStarEvent();
     }
-
     else if (buttonLabel == "Add Arrow")
     {
         this->onAddArrowEvent();
     }
-
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer UP")
     {
         this->layerDown();
     }
-
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer Down")
     {
-
         this->layerUP();
     }
-
     else if (buttonLabel == "Deleted")
     {
-        /* // (Test#3)
-        if (isDelete == true) {
-            isDelete = false;
-        }
-        
-        else {
-        isDelete = true;
-        this->onDeleted();
-        } // (Test#3)*/
         this->deleteSelected();
-        
     }
-
     else if (buttonLabel == "Deleted All")
     {
         this->deleteAll();
