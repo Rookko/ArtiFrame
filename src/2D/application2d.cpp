@@ -743,7 +743,7 @@ void Application2d::import(string path) {
         image->path = path;
         image->dataImg = dataImg;
         image->originalName = nomFichier;
-        nomFichier = getObjetName(nomFichier);
+        nomFichier = getElementName(nomFichier);
         image->name = nomFichier;
 
         imageScroller->add(nomFichier);
@@ -764,25 +764,9 @@ void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
     renderer.indexActif = e.target->getIndex();
     calculHistogram();
 
-    if (renderer.objetActif != nullptr) {
-        renderer.objetActif->setColor(color_picker_object);
-    }
     updateUiFromShape(); // <3 <3 <3 <3 Charles <3 <3 <3 UwU <3 <3
 }
 
-string Application2d::getObjetName(string nomFichier) {
-    int copie = 0;
-    for (object2D* objet : renderer.vecteurObjets) {
-        if (objet->originalName == nomFichier) {
-            copie++;
-        }
-    }
-
-    if (copie > 0) {
-        nomFichier += " (" + to_string(copie) + ") ";
-    }
-    return nomFichier;
-}
 
 void Application2d::dragEvent(ofDragInfo infoDrag) {
     ofLog() << "<app::ofDragInfo file[0]: " << infoDrag.files.at(0)
@@ -790,11 +774,6 @@ void Application2d::dragEvent(ofDragInfo infoDrag) {
     import(infoDrag.files.at(0));
 }
 
-void Application2d::addObjectToVector(object2D* objet) {
-    renderer.vecteurObjets.push_back(objet);
-    renderer.objetActif = objet;
-    renderer.indexActif++;
-}
 
 void Application2d::removeActiveObjectFromeVector() {
     if (renderer.objetActif != nullptr) {

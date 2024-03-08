@@ -136,11 +136,7 @@ public:
 
   void onSelectImage(ofxDatGuiScrollViewEvent e);
 
-  string getObjetName(string nomFichier);
-
   void dragEvent(ofDragInfo infoDrag);
-
-  void addObjectToVector(object2D* objet);
 
   void removeActiveObjectFromeVector();
 
