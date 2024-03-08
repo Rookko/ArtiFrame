@@ -1,7 +1,7 @@
 // ArtiFrame/ui/histogramme.cpp
 // Classe responsable de l'histogramme
 
-/*
+
 
 #include "histogramme.h"
 #include "ofMain.h"
@@ -58,6 +58,70 @@ void Histogram::setBlueHist(int bHistogram[])
     for (int i = 0; i < 256; i++) {
         bHist[i] = bHistogram[i];
     }
+}
+
+
+
+
+//DEUXIEME VERSION
+
+/*
+bool needsUpdateMax = true;
+int redMax = 1, greenMax = 1, blueMax = 1;
+
+void Histogram::updateMax() {
+    for (int i = 0; i < 256; i++) {
+        redMax = std::max(redMax, rHist[i]);
+        greenMax = std::max(greenMax, gHist[i]);
+        blueMax = std::max(blueMax, bHist[i]);
+    }
+    needsUpdateMax = false;
+}
+
+void Histogram::draw() {
+    if (ofxDatGuiFolder::mIsExpanded) {
+        if (needsUpdateMax) {
+            updateMax();
+        }
+
+        ofDrawRectangle(getX(), getY(), getWidth(), getHeight() + getWidth());
+        int bottom = getY() + getWidth() + getHeight();
+
+        // Simplification des appels de fonction répétés
+        float width = getWidth();
+        // Dessin des histogrammes avec des boucles simplifiées
+        drawHistogram(rHist, redMax, ofColor(255, 0, 0, 127), bottom, width);
+        drawHistogram(gHist, greenMax, ofColor(0, 255, 0, 127), bottom, width);
+        drawHistogram(bHist, blueMax, ofColor(0, 0, 255, 127), bottom, width);
+
+        ofSetColor(255, 255, 255, 255); // Restaurer la couleur par défaut
+    }
+    ofxDatGuiFolder::draw();
+}
+
+void Histogram::drawHistogram(const int hist[], int maxVal, ofColor color, int bottom, float width) {
+    ofSetColor(color);
+    for (int i = 0; i < 256; i++) {
+        if (hist[i] > 0) { // Dessiner seulement si la valeur est > 0 pour optimiser
+            float height = hist[i] * width / maxVal;
+            ofDrawLine(i, bottom, i, bottom - height);
+        }
+    }
+}
+
+void Histogram::setRedHist(int rHistogram[]) {
+    std::copy(rHistogram, rHistogram + 256, rHist);
+    needsUpdateMax = true;
+}
+
+void Histogram::setGreenHist(int gHistogram[]) {
+    std::copy(gHistogram, gHistogram + 256, gHist);
+    needsUpdateMax = true;
+}
+
+void Histogram::setBlueHist(int bHistogram[]) {
+    std::copy(bHistogram, bHistogram + 256, bHist);
+    needsUpdateMax = true;
 }
 
 */
