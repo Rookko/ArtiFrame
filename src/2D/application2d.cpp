@@ -1,19 +1,8 @@
 // ArtiFrame/2d/application2d.cpp
 // Classe principale de l'application 2D.
 
-
-
 #include "application2d.h"
 #include <algorithm> // Pour std::min
-#include "image.h";
-#include "arrow.h"
-#include "circle.h"
-#include "ellipsis.h"
-#include "rectangle.h"
-#include "regularPolygon.h"
-#include "square.h"
-#include "star.h"
-#include "histogramme.h"
 
 
 ofxDatGui* toolsGui;
@@ -22,8 +11,8 @@ ofxDatGui* shapeGui;
 bool draggingShapeGui;
 
 ofxDatGuiColorPicker* shapeColorPicker;
-// Test#1 ofxDatGuiSlider* widthSlider;
-// Test#1 ofxDatGuiSlider* heightSlider;
+ofxDatGuiSlider* widthSlider;
+ofxDatGuiSlider* heightSlider;
 
 ofPoint position;
 ofPoint positionImageOrigine = { 0,0,0 };
@@ -105,8 +94,8 @@ void Application2d::setup(int buttonSize)
   gui.add(&group_trans_obj);
 
 
-  textbox.set("Text", "[{-_-}] ZZZzz zz z...");
-  gui.add(textbox);
+  textbox.set("", "");
+  // (Test#3)gui.add(textbox);
 
   button.setup("Scapiiishh Button");
   button.addListener(this, &Application2d::button_pressed);
@@ -120,14 +109,14 @@ void Application2d::setup(int buttonSize)
 
   gui.add(&button);
 
-  checkbox.setName("UwU");
-  gui.add(checkbox);
+  // (Test#3)checkbox.setName("UwU");
+  // (Test#3)gui.add(checkbox);
 
   //menu pour les shape
   shapeGui = new ofxDatGui(300, 300);
   // (Test#2)shapeGui->addLabel("Menu des primitives");
   // (Test#2)shapeGui->addHeader("Slider");
-  // Test#1 widthSlider = shapeGui->addSlider("Width", 0, 1000, 100);
+  widthSlider = shapeGui->addSlider("Width", 0, 1000, 100);
   // Test#1 widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
   // Test#1 heightSlider = shapeGui->addSlider("Height", 0, 1000, 100);
   // Test#1 heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
@@ -144,9 +133,9 @@ void Application2d::setup(int buttonSize)
   imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
   imageScroller->onScrollViewEvent(this, &Application2d::onSelectImage);
 
-  histogramme = new Histogram("Histogram", ofColor::black);
+  histogramme = new Histogram("Open/Close", ofColor::black);
   toolsGui = new ofxDatGui(255, 255);
-  toolsGui->addLabel("Histogramme");
+  toolsGui->addLabel("Histogram");
   toolsGui->setPosition(ofGetWidth() - imageScroller->getWidth(), ofGetHeight() - (ofGetHeight() / 3));
   toolsGui->addFolder(histogramme);
 
@@ -156,7 +145,7 @@ void Application2d::setup(int buttonSize)
   renderer.offsetY2 = ofGetHeight();
 
 
-  checkbox = true;
+  // (Test#3)checkbox = true;
 
   basicCursor = new ofImage();
   basicCursor->load("cursors/basic_icon.png");
@@ -176,8 +165,8 @@ void Application2d::update()
   imageScroller->update();
   // assigner les états courants de l'interface
   renderer.background_color = color_picker_background;
-  renderer.object_color = color_picker_object;
-  renderer.object_scale = slider_scale;
+  // (Test#3)renderer.object_color = color_picker_object;
+  // (Test#3)renderer.object_scale = slider_scale;
   renderer.text = textbox;
 
 
@@ -185,21 +174,21 @@ void Application2d::update()
   if (keyPress[32] && keyPress['i']) {
       importButtonEvent(); // Pour "Import"
   }
-  else if (keyPress[32] && keyPress['e']) {
-      saveRenderButtonEvent(); // Pour "Export"   
-  }
+  // (Test#3)else if (keyPress[32] && keyPress['e']) {
+      // (Test#3)saveRenderButtonEvent(); // Pour "Export"   
+  // (Test#3)}
   else if (keyPress[32] && keyPress['u']) {
-      layerUP(); // Pour "Layer UP"
+      layerDown(); // Pour "Layer UP rapide"
   }
   else if (keyPress[32] && keyPress['d']) {
-      layerDown(); // Pour "Layer Down"
+      layerUP(); // Pour "Layer Down rapide"
   }
-  else if (keyPress[32] && keyPress['z']) {
-      undoButton(); // Pour "Undo"
-  }
-  else if (keyPress[32] && keyPress['x']) {
-      redoButton(); // Pour "Redo"
-  }
+  // (Test#3)else if (keyPress[32] && keyPress['z']) {
+      // (Test#3)undoButton(); // Pour "Undo"
+  // (Test#3)}
+  // (Test#3)else if (keyPress[32] && keyPress['x']) {
+      // (Test#3)redoButton(); // Pour "Redo"
+  // (Test#3)}
   else if (keyPress['e'] && keyPress['s'] && keyPress['t'] && keyPress['r']) {
       easterEgg(); // Pour "EasterEgg"
   }
@@ -272,7 +261,7 @@ void Application2d::draw()
 void Application2d::button_pressed()
 {
     // réinitialiser la zone de texte
-    textbox.set("Text", "(-.-)Zzz...");
+    textbox.set("", "");
 
     ofLog() << "<button pressed>";
 }
@@ -324,18 +313,20 @@ void Application2d::setupMenu(ofxDatGui*& menu, const std::string& title, int po
 // Pour ajouter une kyeSwitch, simplement ajouter la touche et la relier à ca fonction
 void Application2d::keyReleased(int key)
 {
-    if (key == OF_KEY_ALT) {
-        isDelete = false;
-    }
-    else if (key == OF_KEY_SHIFT) {
-        isRotate = false;
-    }
-    else if (key == 48) {
-        isExporting = false;
-    }
+    // (Test#3)case 'b': // Pour "Add Batman"
+        // (Test#3)this->addBatman();
+        // (Test#3)break;if (key == OF_KEY_ALT) {
+        // (Test#3)isDelete = false;
+    // (Test#3)}
+    // (Test#3)else if (key == OF_KEY_SHIFT) {
+        // (Test#3)isRotate = false;
+    // (Test#3)}
+    // (Test#3)else if (key == 48) {
+        // (Test#3)isExporting = false;
+    // (Test#3)}
 
     keyPress[key] = false;
-    if (key == 'i') // touche u
+    if (key == 'o') // touche o fermer Unlock Interface
     {
         checkbox = !checkbox;
         ofLog() << "<toggle ui: " << checkbox << ">";
@@ -362,6 +353,12 @@ void Application2d::keyReleased(int key)
     case 'b': // Pour "Add Batman"
         this->addBatman();
         break;
+    case 'w': // Pour "Add Arrow"
+        this->onAddArrowEvent();
+        break;
+    case 'q': // Pour "Add Star"
+        this->onAddStarEvent();
+        break;
     case 127: // Pour "Deleted"
         if (isDelete == true) {
             isDelete = false;
@@ -373,15 +370,14 @@ void Application2d::keyReleased(int key)
 
         break;
 
-    case 'u': // Pour "Add Square"
-        this->layerUP();
-        break;
-    case 'd': // Pour "Add Square"
+    case 'u': // Pour "Layer UP 1x"
         this->layerDown();
+        break;
+    case 'd': // Pour "Layer Down 1x"
+        this->layerUP();
         break;
 
     case 'm' : //Export
-    {
         if (isExporting == true) {
             isExporting = false;
         }
@@ -391,10 +387,8 @@ void Application2d::keyReleased(int key)
         }
 
         break;
-    }
 
     case 't': //rotate
-    {
         if (isRotate == true) {
             isRotate = false;
         }
@@ -407,7 +401,6 @@ void Application2d::keyReleased(int key)
     }
 
         //Ajouter les autres AU DESSUS D'ICI
-    }
 }
 
 void Application2d::rezize2DTaskbar() {
@@ -424,13 +417,13 @@ void Application2d::rezize2DTaskbar() {
     addMenu->setPosition(optionWidth*2, 0);
 
     histoMenu->setWidth(optionWidth);
-    histoMenu->setPosition(optionWidth*3, 0);
+    histoMenu->setPosition(optionWidth*4, 0);
 
     othersMenu->setWidth(optionWidth);
     othersMenu->setPosition(optionWidth*5, 0);
 
     editMenu->setWidth(optionWidth);
-    editMenu->setPosition(optionWidth * 4, 0);
+    editMenu->setPosition(optionWidth * 3, 0);
 
     headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
     headerLabel->setPosition(optionWidth * 6, 0);
@@ -452,7 +445,7 @@ void Application2d::showUi() {
     editMenu->setVisible(true);
     othersMenu->setVisible(true);
     header->setVisible(true);
-    // (Test#2)shapeGui->setVisible(true);
+    shapeGui->setVisible(true);
     histogramme->setVisible(true);
     toolsGui->setVisible(true);
 }
@@ -464,7 +457,7 @@ void Application2d::hideUi() {
     editMenu->setVisible(false);
     othersMenu->setVisible(false);
     header->setVisible(false);
-    // (Test#2)shapeGui->setVisible(false);
+    shapeGui->setVisible(false);
     histogramme->setVisible(false);
     toolsGui->setVisible(false);
 }
@@ -530,19 +523,19 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer UP")
     {
-        this->layerUP();
+        this->layerDown();
     }
 
     // Fonction pour ajouter un Regular Polygon à la scène lorsque bouton Add Regular Polygon cliqué.
     else if (buttonLabel == "Layer Down")
     {
 
-        this->layerDown();
+        this->layerUP();
     }
 
     else if (buttonLabel == "Deleted")
     {
-        /*
+        /* // (Test#3)
         if (isDelete == true) {
             isDelete = false;
         }
@@ -550,7 +543,7 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         else {
         isDelete = true;
         this->onDeleted();
-        } */
+        } // (Test#3)*/
         this->deleteSelected();
         
     }
@@ -559,10 +552,21 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         this->deleteAll();
     }
-
-    else if (buttonLabel == "Add Batman")
+    else if (buttonLabel == "Start")
     {
-        this->addBatman();
+        startMusic();
+    }
+    else if (buttonLabel == "Play")
+    {
+        resumeMusic();
+    }
+    else if (buttonLabel == "Pause")
+    {
+        pauseMusic();
+    }
+    else if (buttonLabel == "Restart")
+    {
+        restartMusic();
     }
 
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
@@ -596,7 +600,6 @@ void Application2d::saveRenderButtonEvent() {
 
 void Application2d::onAddSquareEvent() {
     // Appel la fonction rectangle de la classe Primitive
-    // Création d'une instance de Primitive2D en tant que carré
     Square* square = new Square();
     string filename = "square";
     square->originalName = filename;
@@ -709,7 +712,6 @@ void Application2d::importButtonEvent()
 }
 
 
-
 void Application2d::layerUP()
 {
     if (renderer.objetActif != nullptr) {
@@ -745,12 +747,12 @@ void Application2d::setup2DTaskbar()
     // Configure le menu 'File' avec un bouton 'Export'.
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import"});
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon", "Add Star", "Add Arrow" ,"Add Batman"});
+    setupMenu(addMenu, "Add", optionWidth*2, { "Add Square", "Add Rectangle", "Add Circle", "Add Ellipsis", "Add Regular Polygon", "Add Star", "Add Arrow"});
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
-    setupMenu(histoMenu, "Histogram", optionWidth*3, { "Test" });
+    setupMenu(histoMenu, "Music", optionWidth*4, { "Start", "Pause", "Play", "Restart" });
 
     setupMenu(othersMenu, "Others", optionWidth*5, { "Test" });
-    setupMenu(editMenu, "Edit", optionWidth * 4, { "Undo", "Redo", "Layer UP", "Layer Down", "Deleted", "Deleted All" });
+    setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Layer UP", "Layer Down", "Deleted", "Deleted All" });
 
     header = new ofxDatGui(ofGetWidth() - optionWidth * 6, 0);
     headerLabel = header->addLabel("ArtiFrame 2D");
@@ -1004,7 +1006,7 @@ void Application2d::RGBtoHSB(float& value) {
     saturation.set(color.getSaturation());
     brightness.set(color.getBrightness());
 
-    //ofLogNotice("RGBtoHSB") << "Mise à jour des valeurs HSB basée sur RGB";
+    ofLogNotice("RGBtoHSB") << "Mise à jour des valeurs HSB basée sur RGB";
 
     ignoreRGB = false;
     updateColorPickerObject();
@@ -1023,7 +1025,7 @@ void Application2d::HSBtoRGB(float& value) {
 
     
 
-    //ofLogNotice("HSBtoRGB") << "Mise à jour des valeurs RGB et color_picker_object basée sur HSB";
+    ofLogNotice("HSBtoRGB") << "Mise à jour des valeurs RGB et color_picker_object basée sur HSB";
 
     ignoreRGB = false;
     updateColorPickerObject();
@@ -1034,22 +1036,58 @@ void Application2d::updateColorPickerObject() {
         //std::cout << "updateColorPickerObject skipped due to ignoreRGB" << std::endl;
         return;
     }
-    //std::cout << "Updating color_picker_object" << std::endl;
+    std::cout << "Updating color_picker_object" << std::endl;
 
     ofColor newColor(redValue, greenValue, blueValue, aValue);
     color_picker_object = newColor;
-
-    //ignoreRGB = true;
-    //ofColor newColor(redValue.get(), greenValue.get(), blueValue.get(), aValue.get());
-    //color_picker_object.set(newColor);
-    //ignoreRGB = false;
 }
 
+// Démarrer ou reprendre la musique
+void Application2d::startMusic(const std::string& filePath) {
+    if (!mySound.isPlaying()) {
+        mySound.load(filePath); // Charge le fichier
+        mySound.play(); // Joue le fichier
+        isMusicPaused = false; // Réinitialise l'état de pause
+    }
+    else if (isMusicPaused) {
+        // Si la musique est en pause, la reprendre
+        mySound.setPaused(false);
+        isMusicPaused = false;
+    }
+}
+
+// Mettre la musique en pause
+void Application2d::pauseMusic() {
+    if (mySound.isPlaying() && !isMusicPaused) {
+        mySound.setPaused(true);
+        isMusicPaused = true; // Met à jour l'état de pause
+    }
+}
+
+// Reprendre la musique après une pause
+void Application2d::resumeMusic() {
+    if (mySound.isPlaying() && isMusicPaused) {
+        mySound.setPaused(false);
+        isMusicPaused = false; // Réinitialise l'état de pause
+    }
+}
+
+void Application2d::restartMusic() {
+    if (mySound.isPlaying() || isMusicPaused) {
+        // Arrête la musique en cours pour s'assurer qu'elle peut être redémarrée proprement
+        mySound.stop();
+
+        // Remet la lecture audio au début et joue le son
+        mySound.play();
+
+        // Réinitialise l'état de pause
+        isMusicPaused = false;
+    }
+}
 
 void Application2d::onHeightChanged(float& height) {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        //shape->height = slider_height.get();
         shape->height = height;
     }
 }
@@ -1057,11 +1095,9 @@ void Application2d::onHeightChanged(float& height) {
 void Application2d::onWidthChanged(float& width) {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        //shape->width = slider_width.get();
         shape->width = width;
     }
 }
-
 
 void Application2d::onScaleChanged(float& scale) {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
@@ -1084,18 +1120,14 @@ void Application2d::onScaleChanged(float& scale) {
 void Application2d::onApexChanged(int& apex) {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        //shape->width = slider_width.get();
         shape->nbApex = apex;
-        //apexCountSlider->setValue(shape->nbApex);
     }
 }
 
 void Application2d::onLineChanged(bool& largeur) {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        //shape->width = slider_width.get();
         shape->outline = largeur;
-        //apexCountSlider->setValue(shape->nbApex);
     }
 }
 
@@ -1105,11 +1137,6 @@ void Application2d::onColorLineChanged(ofColor& color) {
         shape->outlineColor = color;
     }
 }
-//outlineColorPicker->setColor(shape->outlineColor);
-
-
-
-
 
 /* Test deleted #1
 void Application2d::onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e) {
@@ -1120,21 +1147,13 @@ void Application2d::onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e) {
     updateShapeFromUi();
 }
 */
-/*
-void Application2d::onColorPickerObjectChanged(ofColor& color) {
-    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
-        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        shape->fillColor = color_picker_object.get();
-    }
-}
-*/
 
 void Application2d::onColorPickerObjectChanged(ofColor& color) {
     // Vérifie si la mise à jour provient d'une interaction avec color_picker_object pour éviter les boucles
     if (ignoreRGB) return;
     ignoreRGB = true;
 
-    //std::cout << "Color Picker Changed: " << color << std::endl;
+    std::cout << "Color Picker Changed: " << color << std::endl;
 
     redValue.set(color.r);
     greenValue.set(color.g);
@@ -1150,13 +1169,8 @@ void Application2d::onColorPickerObjectChanged(ofColor& color) {
     }
 
     ignoreRGB = false; // Réinitialise le drapeau pour permettre d'autres mises à jour
-    //updateColorPickerObject();
     RGBtoHSB(fictif);
 }
-
-
-
-
 
 string Application2d::getElementName(string filename) {
     int duplicate = 0;
@@ -1180,27 +1194,12 @@ void Application2d::addElementToRenderer(object2D* object) {
 }
 
 void Application2d::updateShapeFromUi() {
-    /*
-    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr){
-        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        shape->height = heightSlider->getValue();
-        shape->width = widthSlider->getValue();
-        shape->height = slider_height.get();
-        shape->width = slider_width.get();
-    }
-    */
+    
 }
 
 void Application2d::updateUiFromShape() {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        //widthSlider->setValue(shape->width);
-        //heightSlider->setValue(shape->height);
-        //apexCountSlider->setValue(shape->nbApex);
-        //fillColorPicker->setColor(shape->fillColor);
-        //outlineColorPicker->setColor(shape->outlineColor);
-        //outlineToggle->setChecked(shape->outline);
-        //color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged);
         slider_height.removeListener(this, &Application2d::onHeightChanged);
         slider_width.removeListener(this, &Application2d::onWidthChanged);
         slider_scale.removeListener(this, &Application2d::onScaleChanged);
@@ -1215,9 +1214,6 @@ void Application2d::updateUiFromShape() {
         slider_apex.set(shape->nbApex);
         outline_object.set(shape->outline);
         color_outline_object.set(shape->outlineColor);
-        //shape->height = (slider_height.get()) * scale / 10;
-        //shape->width = (slider_width.get()) * scale / 10;
-        //color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged);
         slider_height.addListener(this, &Application2d::onHeightChanged);
         slider_width.addListener(this, &Application2d::onWidthChanged);
         slider_scale.addListener(this, &Application2d::onScaleChanged);
@@ -1225,8 +1221,6 @@ void Application2d::updateUiFromShape() {
         outline_object.addListener(this, &Application2d::onLineChanged);
         color_outline_object.addListener(this, &Application2d::onColorLineChanged);
 
-        //slider_height.set(shape->height);
-        //slider_width.set(shape->width);
         uiUpdate = true;
     }
 }

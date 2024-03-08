@@ -1,16 +1,24 @@
 // ArtiFrame/2d/application2d.h
 // Classe principale de l'application 2D.
 
-//TEST VINCE GIT
-
 #pragma once
 
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxDatGui.h"
 #include "object2D.h";
-
+#include "image.h";
+#include "arrow.h"
+#include "circle.h"
+#include "ellipsis.h"
+#include "rectangle.h"
+#include "regularPolygon.h"
+#include "square.h"
+#include "star.h"
+#include "histogramme.h"
 #include "renderer2d.h"
+#include "ofSoundPlayer.h"
+
 
 class Application2d : public ofBaseApp
 {
@@ -21,6 +29,9 @@ class Application2d : public ofBaseApp
 	};
 public:
   Renderer2d renderer;
+
+  ofSoundPlayer mySound;
+  bool isMusicPaused = false;
   
   ofxPanel gui;
 
@@ -147,6 +158,11 @@ public:
   void HSBtoRGB(float& value);
 
   void updateColorPickerObject();
+
+  void startMusic(const std::string& filePath = "musique.mp3");
+  void pauseMusic();
+  void resumeMusic();
+  void restartMusic();
 
   bool isExporting = false;
   bool isDelete = false;
