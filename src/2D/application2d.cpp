@@ -22,8 +22,8 @@ ofxDatGui* shapeGui;
 bool draggingShapeGui;
 
 ofxDatGuiColorPicker* shapeColorPicker;
-ofxDatGuiSlider* widthSlider;
-ofxDatGuiSlider* heightSlider;
+// Test#1 ofxDatGuiSlider* widthSlider;
+// Test#1 ofxDatGuiSlider* heightSlider;
 
 ofPoint position;
 ofPoint positionImageOrigine = { 0,0,0 };
@@ -53,13 +53,14 @@ void Application2d::setup(int buttonSize)
   group_object.setup("Object Package");
   group_background.setup("Background Package");
   group_trans_obj.setup("Object Tranformations");
+  group_hsb.setup("Object HSB Color");
 
   color_picker_background.set("Background RGB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
   color_picker_object.set("Object RGB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
   color_outline_object.set("Outline RGB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
-  color_picker_background_hsb.set("Background HSB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
-  color_picker_object_hsb.set("Object HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
-  color_outline_object_hsb.set("Outline HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  //color_picker_background_hsb.set("Background HSB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
+  //color_picker_object_hsb.set("Object HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  //color_outline_object_hsb.set("Outline HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
 
   slider_scale.set("Scale", 1.0f, 0.0f, 100.0f);
   slider_height.set("Height", 100.0f, 0.0f, 1000.0f);
@@ -67,12 +68,32 @@ void Application2d::setup(int buttonSize)
   slider_apex.set("Apex", 5, 3, 40);
   outline_object.setName("Object Outline");
 
+  // HSB Sliders
+  group_hsb.add(hue.set("Hue", 127, 0, 255));
+  group_hsb.add(saturation.set("Saturation", 127, 0, 255));
+  group_hsb.add(brightness.set("Brightness", 127, 0, 255));
+  group_object.add(&group_hsb);
+  // RGB Sliders
+  //group_object.add(redValue.set("Red", 127, 0, 255));
+  //group_object.add(greenValue.set("Green", 127, 0, 255));
+  //group_object.add(blueValue.set("Blue", 127, 0, 255));
+  //group_object.add(aValue.set("Alpha", 127, 0, 255));
+
+  // Listeners pour les changements
+  hue.addListener(this, &Application2d::HSBtoRGB);
+  saturation.addListener(this, &Application2d::HSBtoRGB);
+  brightness.addListener(this, &Application2d::HSBtoRGB);
+  redValue.addListener(this, &Application2d::RGBtoHSB);
+  greenValue.addListener(this, &Application2d::RGBtoHSB);
+  blueValue.addListener(this, &Application2d::RGBtoHSB);
+  aValue.addListener(this, &Application2d::RGBtoHSB);
+
   group_background.add(color_picker_background);
-  group_background.add(color_picker_background_hsb);
+  //group_background.add(color_picker_background_hsb);
   group_object.add(color_picker_object);
-  group_object.add(color_picker_object_hsb);
+  //group_object.add(color_picker_object_hsb);
   group_object.add(color_outline_object);
-  group_object.add(color_outline_object_hsb);
+  //group_object.add(color_outline_object_hsb);
   group_trans_obj.add(slider_scale);
   group_trans_obj.add(slider_height);
   group_trans_obj.add(slider_width);
@@ -106,12 +127,12 @@ void Application2d::setup(int buttonSize)
   shapeGui = new ofxDatGui(300, 300);
   shapeGui->addLabel("Menu des primitives");
   shapeGui->addHeader("Slider");
-  widthSlider = shapeGui->addSlider("Width", 0, 1000, 100);
-  widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
-  heightSlider = shapeGui->addSlider("Height", 0, 1000, 100);
-  heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
+  // Test#1 widthSlider = shapeGui->addSlider("Width", 0, 1000, 100);
+  // Test#1 widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
+  // Test#1 heightSlider = shapeGui->addSlider("Height", 0, 1000, 100);
+  // Test#1 heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
   shapeColorPicker = shapeGui->addColorPicker("Shape color", ofColor::aliceBlue);
-  shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
+  // Test#1 shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
 
   //histogram
 
@@ -180,7 +201,7 @@ void Application2d::update()
       redoButton(); // Pour "Redo"
   }
   else if (keyPress['e'] && keyPress['s'] && keyPress['t'] && keyPress['r']) {
-      esterEgg(); // Pour "EsterEgg"
+      easterEgg(); // Pour "EasterEgg"
   }
   else if (keyPress[127] && keyPress['a']) {
       deleteAll(); // Pour "Deleted All" DEL + a
@@ -267,6 +288,14 @@ void Application2d::exit()
     slider_apex.removeListener(this, &Application2d::onApexChanged); // Ajouter listener slider_apex
     outline_object.removeListener(this, &Application2d::onLineChanged); // Ajouter listener outline_object
     color_outline_object.removeListener(this, &Application2d::onColorLineChanged); // Ajouter listener color_outline_object
+    // Listeners pour les changements
+    hue.removeListener(this, &Application2d::HSBtoRGB);
+    saturation.removeListener(this, &Application2d::HSBtoRGB);
+    brightness.removeListener(this, &Application2d::HSBtoRGB);
+    redValue.removeListener(this, &Application2d::RGBtoHSB);
+    greenValue.removeListener(this, &Application2d::RGBtoHSB);
+    blueValue.removeListener(this, &Application2d::RGBtoHSB);
+    aValue.removeListener(this, &Application2d::RGBtoHSB);
 
     ofLog() << "<app::exit>";
 }
@@ -307,7 +336,7 @@ void Application2d::keyReleased(int key)
     }
 
     keyPress[key] = false;
-    if (key == 117) // touche u
+    if (key == 'i') // touche u
     {
         checkbox = !checkbox;
         ofLog() << "<toggle ui: " << checkbox << ">";
@@ -765,8 +794,10 @@ void Application2d::keyPressed(int key)
 }
 
 
-void Application2d::esterEgg() {
-    textbox.set("Text", "PipiCaca hihi");
+void Application2d::easterEgg() {
+    textbox.set("Text", "SQUAPISSSSHHHH");
+    string url = "https://www.youtube.com/watch?v=iik25wqIuFo";
+    ofLaunchBrowser(url);
 }
 
 
@@ -962,12 +993,56 @@ void Application2d::calculHistogram() {
 }
 
 
-void Application2d::RGBtoHSB() {
+void Application2d::RGBtoHSB(float& value) {
+    if (ignoreRGB) return;
 
+    ignoreRGB = true;
+
+    // Utilisez "value" si nécessaire pour la logique spécifique ou ignorez-le
+    ofColor color(redValue.get(), greenValue.get(), blueValue.get());
+    hue.set(color.getHue());
+    saturation.set(color.getSaturation());
+    brightness.set(color.getBrightness());
+
+    //ofLogNotice("RGBtoHSB") << "Mise à jour des valeurs HSB basée sur RGB";
+
+    ignoreRGB = false;
+    updateColorPickerObject();
+}
+void Application2d::HSBtoRGB(float& value) {
+    if (ignoreRGB) return;
+
+    ignoreRGB = true;
+
+    // Utilisez "value" si nécessaire pour la logique spécifique ou ignorez-le
+    ofColor color = ofColor::fromHsb(hue.get(), saturation.get(), brightness.get());
+    redValue.set(color.r);
+    greenValue.set(color.g);
+    blueValue.set(color.b);
+    aValue.set(color.a); // Selon votre logique d'application
+
+    
+
+    //ofLogNotice("HSBtoRGB") << "Mise à jour des valeurs RGB et color_picker_object basée sur HSB";
+
+    ignoreRGB = false;
+    updateColorPickerObject();
 }
 
-void Application2d::HSBtoRGB() {
+void Application2d::updateColorPickerObject() {
+    if (ignoreRGB) {
+        //std::cout << "updateColorPickerObject skipped due to ignoreRGB" << std::endl;
+        return;
+    }
+    //std::cout << "Updating color_picker_object" << std::endl;
 
+    ofColor newColor(redValue, greenValue, blueValue, aValue);
+    color_picker_object = newColor;
+
+    //ignoreRGB = true;
+    //ofColor newColor(redValue.get(), greenValue.get(), blueValue.get(), aValue.get());
+    //color_picker_object.set(newColor);
+    //ignoreRGB = false;
 }
 
 
@@ -1036,7 +1111,7 @@ void Application2d::onColorLineChanged(ofColor& color) {
 
 
 
-
+/* Test deleted #1
 void Application2d::onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e) {
     updateShapeFromUi();
 }
@@ -1044,15 +1119,40 @@ void Application2d::onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e) {
 void Application2d::onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e) {
     updateShapeFromUi();
 }
-
+*/
+/*
 void Application2d::onColorPickerObjectChanged(ofColor& color) {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
         shape->fillColor = color_picker_object.get();
     }
-    //updateShapeFromUi();
 }
+*/
 
+void Application2d::onColorPickerObjectChanged(ofColor& color) {
+    // Vérifie si la mise à jour provient d'une interaction avec color_picker_object pour éviter les boucles
+    if (ignoreRGB) return;
+    ignoreRGB = true;
+
+    //std::cout << "Color Picker Changed: " << color << std::endl;
+
+    redValue.set(color.r);
+    greenValue.set(color.g);
+    blueValue.set(color.b);
+    aValue.set(color.a);
+    float fictif = 0; // Paramètre fictif, puisque la valeur n'est pas utilisée dans la fonction
+    
+
+    // Logique spécifique à votre application pour mettre à jour la couleur de remplissage d'une forme
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        shape->fillColor = color; // Utilisez directement la couleur passée en paramètre
+    }
+
+    ignoreRGB = false; // Réinitialise le drapeau pour permettre d'autres mises à jour
+    //updateColorPickerObject();
+    RGBtoHSB(fictif);
+}
 
 
 
@@ -1100,7 +1200,7 @@ void Application2d::updateUiFromShape() {
         //fillColorPicker->setColor(shape->fillColor);
         //outlineColorPicker->setColor(shape->outlineColor);
         //outlineToggle->setChecked(shape->outline);
-        color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged);
+        //color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged);
         slider_height.removeListener(this, &Application2d::onHeightChanged);
         slider_width.removeListener(this, &Application2d::onWidthChanged);
         slider_scale.removeListener(this, &Application2d::onScaleChanged);
@@ -1108,6 +1208,7 @@ void Application2d::updateUiFromShape() {
         outline_object.removeListener(this, &Application2d::onLineChanged);
         color_outline_object.removeListener(this, &Application2d::onColorLineChanged);
         color_picker_object.set(shape->fillColor);
+        updateColorPickerObject();
         slider_height.set(shape->height);
         slider_width.set(shape->width);
         slider_scale.set(10);
@@ -1116,7 +1217,7 @@ void Application2d::updateUiFromShape() {
         color_outline_object.set(shape->outlineColor);
         //shape->height = (slider_height.get()) * scale / 10;
         //shape->width = (slider_width.get()) * scale / 10;
-        color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged);
+        //color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged);
         slider_height.addListener(this, &Application2d::onHeightChanged);
         slider_width.addListener(this, &Application2d::onWidthChanged);
         slider_scale.addListener(this, &Application2d::onScaleChanged);

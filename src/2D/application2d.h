@@ -27,19 +27,24 @@ public:
   ofxGuiGroup group_background;
   ofxGuiGroup group_object;
   ofxGuiGroup group_trans_obj;
+  ofxGuiGroup group_hsb;
 
   ofParameter<ofColor> color_picker_background;
   ofParameter<ofColor> color_picker_object;
   ofParameter<ofColor> color_outline_object;
-  ofParameter<ofColor> color_picker_background_hsb;
-  ofParameter<ofColor> color_picker_object_hsb;
-  ofParameter<ofColor> color_outline_object_hsb;
+  //ofParameter<ofColor> color_picker_background_hsb;
+  //ofParameter<ofColor> color_picker_object_hsb;
+  //ofParameter<ofColor> color_outline_object_hsb;
 
   ofParameter<float> slider_scale;
   ofParameter<float> slider_height;
   ofParameter<float> slider_width;
   ofParameter<int> slider_apex;
   ofParameter<bool> outline_object;
+
+  ofParameter<float> hue, saturation, brightness;
+  ofParameter<float> redValue, greenValue, blueValue, aValue;
+  //ofColor color;
 
   ofParameter<string> textbox;
 
@@ -104,7 +109,7 @@ public:
 
   void keyPressed(int key);
 
-  void esterEgg();
+  void easterEgg();
 
   void onDeleted();
 
@@ -137,9 +142,11 @@ public:
   void deleteSelected();
 
   // Nouvelles fonctions pour la conversion
-  void RGBtoHSB();
+  void RGBtoHSB(float& value);
 
-  void HSBtoRGB();
+  void HSBtoRGB(float& value);
+
+  void updateColorPickerObject();
 
   bool isExporting = false;
   bool isDelete = false;
@@ -148,6 +155,7 @@ public:
   bool isMoving = false;
   bool uiUpdate = false;
   bool isScaling = false;
+  bool ignoreRGB = false;
 
   float originalHeight = 100.0f; // Valeur initiale
   float originalWidth = 150.0f;  // Valeur initiale
