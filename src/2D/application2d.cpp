@@ -146,7 +146,7 @@ void Application2d::update()
       esterEgg(); // Pour "EsterEgg"
   }
   else if (keyPress[127] && keyPress['a']) {
-      onDeletedAll(); // Pour "Deleted All" DEL + a
+      deleteAll(); // Pour "Deleted All" DEL + a
   }
   
   //Ajouter les autres AU DESSUS D'ICI
@@ -297,8 +297,8 @@ void Application2d::keyReleased(int key)
 
         else {
             isDelete = true;
-            this->onDeleted();
         }
+
         break;
 
     case 'u': // Pour "Add Square"
@@ -801,7 +801,15 @@ void Application2d::mousePressed(int x, int y, int button) {
     ofLog() << "<app::mousePressed at:(" << x << ", " << y << ")>";
     ofLog() << "hitGUi test at (" << x << ", " << y << "): " << (guiHit(x,y) ? "true" : "false");
     ofLog() << "shapeGui Position: (" << shapeGui->getPosition().x << ", " << shapeGui->getPosition().y << "), Taille: " << shapeGui->getWidth() << "x" << shapeGui->getHeight() << std::endl;
-    if (guiHit(x,y)) {
+    if (isDelete) {
+        deleteSelected();
+        isDelete = false;
+    }
+    else if (isRotate)
+    {
+        //rotate
+    }
+    else if (guiHit(x,y)) {
         draggingShapeGui = true;
         draggingObject = false;
     }
