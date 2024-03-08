@@ -142,7 +142,7 @@ void Application2d::update()
   else if (keyPress[32] && keyPress['d']) {
       layerDown(); // Pour "Layer Down rapide"
   }
-  else if (keyPress['e'] && keyPress['s'] && keyPress['t'] && keyPress['r']) {
+  else if (keyPress['h'] && keyPress['j'] && keyPress['k']) {
       easterEgg(); // Pour "EasterEgg"
   }
   else if (keyPress[127] && keyPress['a']) {
