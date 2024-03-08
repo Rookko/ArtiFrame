@@ -28,7 +28,6 @@ public:
 
   ofParameter<ofColor> color_picker_background;
   ofParameter<ofColor> color_picker_object;
-  ofColor testColor;
 
   ofParameter<float> slider_stroke_weight;
 
@@ -175,6 +174,7 @@ public:
 	void onUpdateShapeSliderEvent(ofxDatGuiSliderEvent e);
 
 	void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
+	void onColorPickerObjectChanged(ofColor& color);
 
 
 	void deleteAll();

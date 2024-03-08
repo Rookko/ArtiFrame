@@ -67,6 +67,7 @@ void Application2d::setup(int buttonSize)
 
   button.setup("Scapiiishh Button");
   button.addListener(this, &Application2d::button_pressed);
+  color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged); // Ajouter listener color_picker_object
   gui.add(&button);
 
   checkbox.setName("UwU");
@@ -224,6 +225,7 @@ void Application2d::button_pressed()
 void Application2d::exit()
 {
     button.removeListener(this, &Application2d::button_pressed);
+    color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged); // Retrait listener color_picker_object
 
     ofLog() << "<app::exit>";
 }
@@ -983,6 +985,13 @@ void Application2d::onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e) {
     updateShapeFromUi();
 }
 
+void Application2d::onColorPickerObjectChanged(ofColor& color) {
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        shape->fillColor = color_picker_object.get();
+    }
+    //updateShapeFromUi();
+}
 
 
 
@@ -1014,14 +1023,22 @@ void Application2d::updateShapeFromUi() {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr){
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
         //shape->fillColor = shapeColorPicker->getColor();
-        shape->fillColor = color_picker_object.get();
+        //shape->fillColor = color_picker_object.get();
         shape->height = heightSlider->getValue();
         shape->width = widthSlider->getValue();
     }
 }
 
 void Application2d::updateUiFromShape() {
-
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        widthSlider->setValue(shape->width);
+        heightSlider->setValue(shape->height);
+        //apexCountSlider->setValue(shape->nbApex);
+        //fillColorPicker->setColor(shape->fillColor);
+        //outlineColorPicker->setColor(shape->outlineColor);
+        //outlineToggle->setChecked(shape->outline);
+    }
 }
 
 
