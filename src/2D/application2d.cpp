@@ -34,6 +34,7 @@ bool draggingObject;
 ofxDatGuiScrollView* imageScroller;
 
 Histogram* histogramme;
+bool afficherHistogram;
 
 void Application2d::setup(int buttonSize)
 {
@@ -463,7 +464,7 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     }
 
     else if (buttonLabel == "Histogram") {
-
+        histogramme->draw();
     }
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 }
