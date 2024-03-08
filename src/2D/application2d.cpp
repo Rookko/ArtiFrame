@@ -380,6 +380,7 @@ void Application2d::windowResized(int w, int h)
   rezize2DTaskbar();
   ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
   imageScroller->setPosition(ofGetWidth() - 255, header->getHeight() - 1);
+  toolsGui->setPosition(ofGetWidth() - imageScroller->getWidth(), ofGetHeight() - (ofGetHeight() / 3));
 }
 
 void Application2d::showUi() {

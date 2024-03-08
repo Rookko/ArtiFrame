@@ -5,6 +5,7 @@
 
 #include "histogramme.h"
 #include "ofMain.h"
+#include "application2d.h"
 
 void Histogram::draw()
 {
@@ -19,23 +20,26 @@ void Histogram::draw()
             blueMax = max(blueMax, bHist[i]);
         }
 
-        int bottom = ofxDatGuiFolder::getY() + ofxDatGuiFolder::getWidth() + ofxDatGuiFolder::getHeight();
+        int bottom = ofxDatGuiFolder::getY() + ofxDatGuiFolder::getWidth() + ofxDatGuiFolder::getHeight() * 1.45;
+
+        int largeur = ofxDatGuiFolder::getX();
 
         //Draw the histograms
         ofSetColor(255, 0, 0, 127);
         for (int i = 0; i < 256; i++) {
-            ofDrawLine(i, bottom, i, bottom - rHist[i] * ofxDatGuiFolder::getWidth() / redMax);
+            ofDrawLine( i + largeur, bottom, i + largeur, bottom - rHist[i] * ofxDatGuiFolder::getWidth() / redMax);
         }
         ofSetColor(0, 255, 0, 127);
         for (int i = 0; i < 256; i++) {
-            ofDrawLine(i, bottom, i, bottom - gHist[i] * ofxDatGuiFolder::getWidth() / greenMax);
+            ofDrawLine(i + largeur, bottom, i + largeur, bottom - gHist[i] * ofxDatGuiFolder::getWidth() / greenMax);
         }
         ofSetColor(0, 0, 255, 127);
         for (int i = 0; i < 256; i++) {
-            ofDrawLine(i, bottom, i, bottom - bHist[i] * ofxDatGuiFolder::getWidth() / blueMax);
+            ofDrawLine(i + largeur, bottom, i + largeur, bottom - bHist[i] * ofxDatGuiFolder::getWidth() / blueMax);
         }
         ofSetColor(255, 255, 255, 255);
     }
+    
     ofxDatGuiFolder::draw();
 }
 
