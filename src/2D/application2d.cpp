@@ -321,6 +321,19 @@ void Application2d::keyReleased(int key)
         break;
     }
 
+    case 't': //rotate
+    {
+        if (isRotate == true) {
+            isRotate = false;
+        }
+
+        else {
+            isRotate = true;
+        }
+
+        break;
+    }
+
         //Ajouter les autres AU DESSUS D'ICI
     }
 }
