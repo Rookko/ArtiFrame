@@ -6,7 +6,7 @@
 #include "./3d/object/operation.h"
 #include "./3d/object/cylinderPrimitive.h"
 #include "./3d/object/spherePrimitive.h"
-//#include "./3d/object/cubePrimitive.h"
+#include "./3d/object/cubePrimitive.h"
 #include "./3d/object/loadedFile.h"
 
 vector<Object*> everything;
@@ -227,6 +227,12 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         import();
     }
+
+    // Fonction pour ajouter un carré à la scène lorsque bouton Add Sphere cliqué.
+    else if (buttonLabel == "Add Cube")
+    {
+        addCube();
+    }
     // Fonction pour ajouter un carré à la scène lorsque bouton Add Sphere cliqué.
     else if (buttonLabel == "Add Sphere")
     {
@@ -295,7 +301,7 @@ void Application3d::setup3DTaskbar()
     // Configure le menu 'File' avec un bouton 'Export'.
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import" });
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth * 2, { "Add Sphere", "Add Cylinder", "Add Monkey" });
+    setupMenu(addMenu, "Add", optionWidth * 2, {"Add Cube", "Add Sphere", "Add Cylinder", "Add Monkey" });
 
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Deleted", "Deleted All" });
 
@@ -624,14 +630,16 @@ void Application3d::deleteAll() {
         }
     }
 
-/*void Application3d::addCube() {
+void Application3d::addCube() {
     CubePrimitive* cubePrimitive = new CubePrimitive();
-    cubePrimitive->sphere = new ofSpherePrimitive();
-    cubePrimitive->sphere->setRadius(100);
-    cubePrimitive->sphere->setPosition({ 0, 0, 0 });
+    cubePrimitive->cube = new ofBoxPrimitive();
+    cubePrimitive->cube->setDepth(100);
+    cubePrimitive->cube->setWidth(100);
+    cubePrimitive->cube->setHeight(100);
+    cubePrimitive->cube->setPosition({ 0, 0, 0 });
 
-    std::string filename = "sphere";
+    std::string filename = "cube";
     cubePrimitive->originalName = filename;
     filename = getElementName(filename);
     addObject(cubePrimitive, filename);
-}*/
+}
