@@ -56,20 +56,28 @@ void Application2d::setup(int buttonSize)
 
   color_picker_background.set("Background RGB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
   color_picker_object.set("Object RGB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  color_outline_object.set("Outline RGB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
   color_picker_background_hsb.set("Background HSB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
   color_picker_object_hsb.set("Object HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  color_outline_object_hsb.set("Outline HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
 
-  slider_scale.set("Scale", 1.0f, 0.0f, 10.0f);
-  slider_height.set("Height", 1.0f, 0.0f, 10.0f);
-  slider_width.set("Width", 1.0f, 0.0f, 10.0f);
+  slider_scale.set("Scale", 1.0f, 0.0f, 100.0f);
+  slider_height.set("Height", 100.0f, 0.0f, 1000.0f);
+  slider_width.set("Width", 100.0f, 0.0f, 1000.0f);
+  slider_apex.set("Apex", 5, 3, 40);
+  outline_object.setName("Object Outline");
 
   group_background.add(color_picker_background);
   group_background.add(color_picker_background_hsb);
   group_object.add(color_picker_object);
   group_object.add(color_picker_object_hsb);
+  group_object.add(color_outline_object);
+  group_object.add(color_outline_object_hsb);
   group_trans_obj.add(slider_scale);
   group_trans_obj.add(slider_height);
   group_trans_obj.add(slider_width);
+  group_trans_obj.add(slider_apex);
+  group_trans_obj.add(outline_object);
 
   gui.add(&group_background);
   gui.add(&group_object);
@@ -82,6 +90,13 @@ void Application2d::setup(int buttonSize)
   button.setup("Scapiiishh Button");
   button.addListener(this, &Application2d::button_pressed);
   color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged); // Ajouter listener color_picker_object
+  slider_height.addListener(this, &Application2d::onHeightChanged); // Ajouter listener slider_height
+  slider_width.addListener(this, &Application2d::onWidthChanged); // Ajouter listener slider_width
+  slider_scale.addListener(this, &Application2d::onScaleChanged); // Ajouter listener slider_scale
+  slider_apex.addListener(this, &Application2d::onApexChanged); // Ajouter listener slider_apex
+  outline_object.addListener(this, &Application2d::onLineChanged); // Ajouter listener outline_object
+  color_outline_object.addListener(this, &Application2d::onColorLineChanged); // Ajouter listener color_outline_object
+
   gui.add(&button);
 
   checkbox.setName("UwU");
@@ -246,6 +261,12 @@ void Application2d::exit()
 {
     button.removeListener(this, &Application2d::button_pressed);
     color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged); // Retrait listener color_picker_object
+    slider_height.removeListener(this, &Application2d::onHeightChanged); // Retirer listener slider_height
+    slider_width.removeListener(this, &Application2d::onWidthChanged); // Retirer listener slider_width
+    slider_scale.removeListener(this, &Application2d::onScaleChanged); // Retirer listener slider_scale
+    slider_apex.removeListener(this, &Application2d::onApexChanged); // Ajouter listener slider_apex
+    outline_object.removeListener(this, &Application2d::onLineChanged); // Ajouter listener outline_object
+    color_outline_object.removeListener(this, &Application2d::onColorLineChanged); // Ajouter listener color_outline_object
 
     ofLog() << "<app::exit>";
 }
@@ -803,7 +824,6 @@ void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
     if (renderer.objetActif != nullptr) {
         renderer.objetActif->setColor(color_picker_object);
     }
-    
     updateUiFromShape(); // <3 <3 <3 <3 Charles <3 <3 <3 UwU <3 <3
 }
 
@@ -951,51 +971,66 @@ void Application2d::HSBtoRGB() {
 }
 
 
+void Application2d::onHeightChanged(float& height) {
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        //shape->height = slider_height.get();
+        shape->height = height;
+    }
+}
+
+void Application2d::onWidthChanged(float& width) {
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        //shape->width = slider_width.get();
+        shape->width = width;
+    }
+}
 
 
+void Application2d::onScaleChanged(float& scale) {
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        if (!isScaling) {
+            isScaling = true;
 
+            slider_height.set(originalHeight * scale / 10.0);
+            slider_width.set(originalWidth * scale / 10.0);
 
+            isScaling = false;
+        }
 
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        shape->height = (slider_height.get()) * scale/10;
+        shape->width = (slider_width.get()) * scale/10;
 
+    }
+}
 
+void Application2d::onApexChanged(int& apex) {
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        //shape->width = slider_width.get();
+        shape->nbApex = apex;
+        //apexCountSlider->setValue(shape->nbApex);
+    }
+}
 
+void Application2d::onLineChanged(bool& largeur) {
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        //shape->width = slider_width.get();
+        shape->outline = largeur;
+        //apexCountSlider->setValue(shape->nbApex);
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void Application2d::onColorLineChanged(ofColor& color) {
+    if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
+        Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
+        shape->outlineColor = color;
+    }
+}
+//outlineColorPicker->setColor(shape->outlineColor);
 
 
 
@@ -1045,27 +1080,52 @@ void Application2d::addElementToRenderer(object2D* object) {
 }
 
 void Application2d::updateShapeFromUi() {
+    /*
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr){
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        //shape->fillColor = shapeColorPicker->getColor();
-        //shape->fillColor = color_picker_object.get();
         shape->height = heightSlider->getValue();
         shape->width = widthSlider->getValue();
+        shape->height = slider_height.get();
+        shape->width = slider_width.get();
     }
+    */
 }
 
 void Application2d::updateUiFromShape() {
     if (dynamic_cast<Shape*>(renderer.objetActif) != nullptr) {
         Shape* shape = dynamic_cast<Shape*>(renderer.objetActif);
-        widthSlider->setValue(shape->width);
-        heightSlider->setValue(shape->height);
+        //widthSlider->setValue(shape->width);
+        //heightSlider->setValue(shape->height);
         //apexCountSlider->setValue(shape->nbApex);
         //fillColorPicker->setColor(shape->fillColor);
         //outlineColorPicker->setColor(shape->outlineColor);
         //outlineToggle->setChecked(shape->outline);
         color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged);
+        slider_height.removeListener(this, &Application2d::onHeightChanged);
+        slider_width.removeListener(this, &Application2d::onWidthChanged);
+        slider_scale.removeListener(this, &Application2d::onScaleChanged);
+        slider_apex.removeListener(this, &Application2d::onApexChanged);
+        outline_object.removeListener(this, &Application2d::onLineChanged);
+        color_outline_object.removeListener(this, &Application2d::onColorLineChanged);
         color_picker_object.set(shape->fillColor);
+        slider_height.set(shape->height);
+        slider_width.set(shape->width);
+        slider_scale.set(10);
+        slider_apex.set(shape->nbApex);
+        outline_object.set(shape->outline);
+        color_outline_object.set(shape->outlineColor);
+        //shape->height = (slider_height.get()) * scale / 10;
+        //shape->width = (slider_width.get()) * scale / 10;
         color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged);
+        slider_height.addListener(this, &Application2d::onHeightChanged);
+        slider_width.addListener(this, &Application2d::onWidthChanged);
+        slider_scale.addListener(this, &Application2d::onScaleChanged);
+        slider_apex.addListener(this, &Application2d::onApexChanged);
+        outline_object.addListener(this, &Application2d::onLineChanged);
+        color_outline_object.addListener(this, &Application2d::onColorLineChanged);
+
+        //slider_height.set(shape->height);
+        //slider_width.set(shape->width);
         uiUpdate = true;
     }
 }

@@ -30,12 +30,16 @@ public:
 
   ofParameter<ofColor> color_picker_background;
   ofParameter<ofColor> color_picker_object;
+  ofParameter<ofColor> color_outline_object;
   ofParameter<ofColor> color_picker_background_hsb;
   ofParameter<ofColor> color_picker_object_hsb;
+  ofParameter<ofColor> color_outline_object_hsb;
 
   ofParameter<float> slider_scale;
   ofParameter<float> slider_height;
   ofParameter<float> slider_width;
+  ofParameter<int> slider_apex;
+  ofParameter<bool> outline_object;
 
   ofParameter<string> textbox;
 
@@ -138,12 +142,17 @@ public:
   void HSBtoRGB();
 
   bool isExporting = false;
-
   bool isDelete = false;
   bool isDragging = false;
   bool isRotate = false;
   bool isMoving = false;
   bool uiUpdate = false;
+  bool isScaling = false;
+
+  float originalHeight = 100.0f; // Valeur initiale
+  float originalWidth = 150.0f;  // Valeur initiale
+  float newHeight;
+  float newWidth;
 
   ofImage* basicCursor;
   ofImage* moveCursor;
@@ -192,7 +201,12 @@ public:
 
 	void onUpdateShapeColorEvent(ofxDatGuiColorPickerEvent e);
 	void onColorPickerObjectChanged(ofColor& color);
-
+	void onHeightChanged(float& height);
+	void onWidthChanged(float& width);
+	void onScaleChanged(float& scale);
+	void onApexChanged(int& apex);
+	void onLineChanged(bool& largeur);
+	void onColorLineChanged(ofColor& color);
 
 	void deleteAll();
 
