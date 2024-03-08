@@ -232,7 +232,6 @@ void Application2d::draw()
   else {
       shapeGui->setVisible(false);
   }
-
   float x = static_cast<float>(ofGetMouseX());
   float y = static_cast<float>(ofGetMouseY());
   
@@ -946,6 +945,8 @@ void Application2d::mouseDragged(int x, int y, int button) {
 bool Application2d::guiHit(int x, int y) {
     
     bool guiHit;
+
+
     if (shapeGui->getVisible()) {
             guiHit = y > header->getPosition().y && y < header->getPosition().y + header->getHeight()
             || (x > shapeGui->getPosition().x && x < shapeGui->getPosition().x + shapeGui->getWidth()
@@ -957,7 +958,6 @@ bool Application2d::guiHit(int x, int y) {
         return guiHit;
     
 }
-
 
 
 
