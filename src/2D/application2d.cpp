@@ -308,6 +308,19 @@ void Application2d::keyReleased(int key)
         this->layerDown();
         break;
 
+    case 'm' : //Export
+    {
+        if (isExporting == true) {
+            isExporting = false;
+        }
+
+        else {
+            isExporting = true;
+        }
+
+        break;
+    }
+
         //Ajouter les autres AU DESSUS D'ICI
     }
 }
@@ -808,6 +821,11 @@ void Application2d::mousePressed(int x, int y, int button) {
     else if (isRotate)
     {
         //rotate
+    }
+    else if (isExporting)
+    {
+        saveRenderButtonEvent();
+        isExporting = false;
     }
     else if (guiHit(x,y)) {
         draggingShapeGui = true;
