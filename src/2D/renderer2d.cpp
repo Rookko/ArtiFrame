@@ -25,7 +25,7 @@ void Renderer2d::update()
 {
   // paramètres des outils de dessin
   ofSetColor(object_color);
-  ofSetLineWidth(stroke_weight);
+  ofSetLineWidth(object_scale);
 
   // résolution du rectangle qui délimite la zone de texte
   bounding_box = font.getStringBoundingBox(text, 0, 0);

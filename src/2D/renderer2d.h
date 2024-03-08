@@ -31,7 +31,7 @@ public:
 
   string text;
 
-  float stroke_weight;
+  float object_scale;
 
   float line_offset;
 

@@ -24,18 +24,29 @@ public:
   
   ofxPanel gui;
 
-  ofxGuiGroup group_draw;
+  ofxGuiGroup group_background;
+  ofxGuiGroup group_object;
+  ofxGuiGroup group_trans_obj;
 
   ofParameter<ofColor> color_picker_background;
   ofParameter<ofColor> color_picker_object;
+  ofParameter<ofColor> color_picker_background_hsb;
+  ofParameter<ofColor> color_picker_object_hsb;
 
-  ofParameter<float> slider_stroke_weight;
+  ofParameter<float> slider_scale;
+  ofParameter<float> slider_height;
+  ofParameter<float> slider_width;
 
   ofParameter<string> textbox;
 
   ofParameter<bool> checkbox;
 
   ofxButton button;
+
+  // Pour l'onglet HSB
+  ofParameter<float> slider_hue;
+  ofParameter<float> slider_saturation;
+  ofParameter<float> slider_brightness;
 
   void setup(int buttonSize);
   void update();
@@ -121,12 +132,18 @@ public:
 
   void deleteSelected();
 
+  // Nouvelles fonctions pour la conversion
+  void RGBtoHSB();
+
+  void HSBtoRGB();
+
   bool isExporting = false;
 
   bool isDelete = false;
   bool isDragging = false;
   bool isRotate = false;
   bool isMoving = false;
+  bool uiUpdate = false;
 
   ofImage* basicCursor;
   ofImage* moveCursor;

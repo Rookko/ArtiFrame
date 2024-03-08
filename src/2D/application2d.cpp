@@ -50,18 +50,31 @@ void Application2d::setup(int buttonSize)
   gui.setup("Unlock Interface");
   gui.setPosition(ofGetWidth() - ofGetWidth()*0.24f, ofGetHeight() - ofGetHeight()*0.975f);
 
-  group_draw.setup("Color Package");
+  group_object.setup("Object Package");
+  group_background.setup("Background Package");
+  group_trans_obj.setup("Object Tranformations");
 
-  color_picker_background.set("Background Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
-  color_picker_object.set("Selected Object Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  color_picker_background.set("Background RGB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
+  color_picker_object.set("Object RGB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
+  color_picker_background_hsb.set("Background HSB Color", ofColor(31), ofColor(0, 0), ofColor(255, 255));
+  color_picker_object_hsb.set("Object HSB Color", ofColor(255), ofColor(0, 0), ofColor(255, 255));
 
-  slider_stroke_weight.set("Selected Object Scale", 4.0f, 0.0f, 20.0f);
+  slider_scale.set("Scale", 1.0f, 0.0f, 10.0f);
+  slider_height.set("Height", 1.0f, 0.0f, 10.0f);
+  slider_width.set("Width", 1.0f, 0.0f, 10.0f);
 
-  group_draw.add(color_picker_background);
-  group_draw.add(color_picker_object);
-  group_draw.add(slider_stroke_weight);
+  group_background.add(color_picker_background);
+  group_background.add(color_picker_background_hsb);
+  group_object.add(color_picker_object);
+  group_object.add(color_picker_object_hsb);
+  group_trans_obj.add(slider_scale);
+  group_trans_obj.add(slider_height);
+  group_trans_obj.add(slider_width);
 
-  gui.add(&group_draw);
+  gui.add(&group_background);
+  gui.add(&group_object);
+  gui.add(&group_trans_obj);
+
 
   textbox.set("Text", "[{-_-}] ZZZzz zz z...");
   gui.add(textbox);
@@ -78,9 +91,9 @@ void Application2d::setup(int buttonSize)
   shapeGui = new ofxDatGui(300, 300);
   shapeGui->addLabel("Menu des primitives");
   shapeGui->addHeader("Slider");
-  widthSlider = shapeGui->addSlider("Width", 0, 1000, 1000);
+  widthSlider = shapeGui->addSlider("Width", 0, 1000, 100);
   widthSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
-  heightSlider = shapeGui->addSlider("Height", 0, 1000, 1000);
+  heightSlider = shapeGui->addSlider("Height", 0, 1000, 100);
   heightSlider->onSliderEvent(this, &Application2d::onUpdateShapeSliderEvent);
   shapeColorPicker = shapeGui->addColorPicker("Shape color", ofColor::aliceBlue);
   shapeColorPicker->onColorPickerEvent(this, &Application2d::onUpdateShapeColorEvent);
@@ -128,7 +141,7 @@ void Application2d::update()
   // assigner les états courants de l'interface
   renderer.background_color = color_picker_background;
   renderer.object_color = color_picker_object;
-  renderer.stroke_weight = slider_stroke_weight;
+  renderer.object_scale = slider_scale;
   renderer.text = textbox;
 
 
@@ -786,7 +799,8 @@ void Application2d::onSelectImage(ofxDatGuiScrollViewEvent e) {
     if (renderer.objetActif != nullptr) {
         renderer.objetActif->setColor(color_picker_object);
     }
-
+    
+    updateUiFromShape(); // <3 <3 <3 <3 Charles <3 <3 <3 UwU <3 <3
 }
 
 string Application2d::getObjetName(string nomFichier) {
@@ -924,11 +938,13 @@ void Application2d::calculHistogram() {
 }
 
 
+void Application2d::RGBtoHSB() {
 
+}
 
+void Application2d::HSBtoRGB() {
 
-
-
+}
 
 
 
@@ -1046,7 +1062,7 @@ void Application2d::updateUiFromShape() {
         color_picker_object.removeListener(this, &Application2d::onColorPickerObjectChanged);
         color_picker_object.set(shape->fillColor);
         color_picker_object.addListener(this, &Application2d::onColorPickerObjectChanged);
-
+        uiUpdate = true;
     }
 }
 
