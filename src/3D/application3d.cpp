@@ -206,7 +206,7 @@ void Application3d::rezize3DTaskbar() {
     renderMenu->setPosition(optionWidth * 4, 0);
 
     headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
-    headerLabel->setPosition(optionWidth * 6, 0);
+    headerLabel->setPosition((optionWidth * 6)+1, 0);
 
 
     cameraMenu->setWidth(optionWidth);
@@ -319,7 +319,7 @@ void Application3d::setup3DTaskbar()
     headerLabel = header->addLabel("ArtiFrame 3D");
     headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
     headerLabel->setWidth(ofGetWidth() - optionWidth * 6);
-    headerLabel->setPosition(optionWidth * 6, 0);
+    headerLabel->setPosition((optionWidth * 6)+1, 0);
     headerLabel->setStripeVisible(false);
 }
 
