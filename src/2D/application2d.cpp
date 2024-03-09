@@ -356,14 +356,13 @@ void Application2d::rezize2DTaskbar() {
     histoMenu->setWidth(optionWidth);
     histoMenu->setPosition(optionWidth*4, 0);
 
-    othersMenu->setWidth(optionWidth);
-    othersMenu->setPosition(optionWidth*5, 0);
+
 
     editMenu->setWidth(optionWidth);
     editMenu->setPosition(optionWidth * 3, 0);
 
     headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
-    headerLabel->setPosition(optionWidth * 6, 0);
+    headerLabel->setPosition((optionWidth * 5) + 1, 0);
 }
 
 void Application2d::windowResized(int w, int h)
@@ -379,7 +378,6 @@ void Application2d::showUi() {
     addMenu->setVisible(true);
     histoMenu->setVisible(true);
     editMenu->setVisible(true);
-    othersMenu->setVisible(true);
     header->setVisible(true);
     histogramme->setVisible(true);
     toolsGui->setVisible(true);
@@ -390,7 +388,6 @@ void Application2d::hideUi() {
     addMenu->setVisible(false);
     histoMenu->setVisible(false);
     editMenu->setVisible(false);
-    othersMenu->setVisible(false);
     header->setVisible(false);
     histogramme->setVisible(false);
     toolsGui->setVisible(false);
@@ -485,7 +482,6 @@ void Application2d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 
 void Application2d::saveRenderButtonEvent() {
     // Open a file dialog to get the desired file path and name
-
     ofFileDialogResult result = ofSystemLoadDialog("Select a folder", true);
     if (result.bSuccess) {
         string folderPath = result.filePath;
@@ -493,7 +489,7 @@ void Application2d::saveRenderButtonEvent() {
 
         // Create an ofImage and grab the screen
         ofImage image;
-        image.grabScreen(0, 60, ofGetWidth(), ofGetHeight() - 60);
+        image.grabScreen(0, header->getHeight(), ofGetWidth() - 255, ofGetHeight() - 60);
         // Save the image to the specified folder with a default name 
         string defaultFileName = "render.png";
         folderPath = ofFilePath::addTrailingSlash(folderPath);
@@ -535,7 +531,6 @@ void Application2d::onAddRectangleEvent() {
 
     addElementToRenderer(rectangle);
     updateUiFromShape();
-
 }
 
 void Application2d::onAddCircleleEvent() {
@@ -662,14 +657,13 @@ void Application2d::setup2DTaskbar()
     // Ajouter optionWidth a chaque nouveau bouton pour le décaller
     setupMenu(histoMenu, "Music", optionWidth*4, { "Start", "Pause", "Play", "Restart" });
 
-    setupMenu(othersMenu, "Others", optionWidth*5, { "Test" });
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Layer UP", "Layer Down", "Deleted", "Deleted All" });
 
-    header = new ofxDatGui(ofGetWidth() - optionWidth * 6, 0);
+    header = new ofxDatGui(ofGetWidth() - optionWidth * 5, 0);
     headerLabel = header->addLabel("ArtiFrame 2D");
     headerLabel->setLabelAlignment(ofxDatGuiAlignment::CENTER);
-    headerLabel->setWidth(ofGetWidth() - optionWidth * 6);
-    headerLabel->setPosition(optionWidth * 6, 0);
+    headerLabel->setWidth(ofGetWidth() - optionWidth * 5);
+    headerLabel->setPosition((optionWidth * 5)+1, 0);
     headerLabel->setStripeVisible(false);
 }
 

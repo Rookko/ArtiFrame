@@ -188,8 +188,6 @@ public:
 	ofxDatGui* histoMenu;
 	ofxDatGuiFolder* histoMenuFolder;
 
-	ofxDatGui* othersMenu;
-	ofxDatGuiFolder* othersMenuFolder;
 
 	ofxDatGui* editMenu;
 	ofxDatGuiFolder* editMenuFolder;

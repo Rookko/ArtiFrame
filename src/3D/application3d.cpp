@@ -9,8 +9,8 @@
 #include "./3d/object/cubePrimitive.h"
 #include "./3d/object/loadedFile.h"
 
-vector<Object*> everything;
-vector<Object*> selection;
+vector<Object*> allObject;
+vector<Object*> selectionObjet;
 stack<Operation*> history;
 stack<Operation*> historyUndone;
 
@@ -42,6 +42,11 @@ void Application3d::setup(int buttonSize) {
     ofxDatGuiButton* applyButton = transformationMenu->addButton("Apply");
     applyButton->onButtonEvent(this, &Application3d::onApplyTransformationEvent);
 
+    transformationDropdown->onDropdownEvent([&](ofxDatGuiDropdownEvent e) {});   //Remove  [WARNING] :: Event Handler Not Set form console
+    xAxisSlider->onSliderEvent([&](ofxDatGuiSliderEvent e) { });
+    yAxisSlider->onSliderEvent([&](ofxDatGuiSliderEvent e) { });
+    zAxisSlider->onSliderEvent([&](ofxDatGuiSliderEvent e) {});
+
     transformationMenu->addLabel("|Animation Menu|");
     ofxDatGuiButton* enableTurntableBtn = transformationMenu->addButton("Enable Turntable");
     enableTurntableBtn->onButtonEvent(this, &Application3d::onEnableTurntable);
@@ -60,7 +65,7 @@ void Application3d::setup(int buttonSize) {
 }
 
 void Application3d::draw() {
-    renderer.draw(getRenderMode(), selection);
+    renderer.draw(getRenderMode(), selectionObjet);
 
     objectScrollView->draw();
     selectionScrollView->setHeight(selectionScrollView->getNumItems() * 26);
@@ -92,13 +97,13 @@ void Application3d::update() {
 
 
 
-    for (int i = 0; i < everything.size(); i++) {
+    for (int i = 0; i < allObject.size(); i++) {
         selectionScrollView->remove(0);
     }
 
 
 
-    for (Object* object : everything) {
+    for (Object* object : allObject) {
         object->selected = false;
 
         if (object->rotation_animation)
@@ -115,7 +120,7 @@ void Application3d::update() {
         }
     }
 
-    for (Object* object : selection) {
+    for (Object* object : selectionObjet) {
         selectionScrollView->add(object->name);
         object->selected = true;
     }
@@ -218,9 +223,9 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     // Fonction pour exporter la scène lorsque bouton Export cliqué.
     if (buttonLabel == "Export")
     {
-        hideUi();
-        exportRender();
-        showUi();
+       // hideUi();
+      //  exportRender();
+      //  showUi();
     }
     // Fonction pour importer un objet lorsque bouton Import cliqué.
     else if (buttonLabel == "Import")
@@ -367,12 +372,12 @@ void Application3d::onObjectSelection(ofxDatGuiScrollViewEvent e) {
 
 
 
-    Object* obj = everything.at(e.target->getIndex());
-    if (find(selection.begin(), selection.end(), obj) != selection.end()) {
-        selection.erase(std::find(selection.begin(), selection.end(), obj));
+    Object* obj = allObject.at(e.target->getIndex());
+    if (find(selectionObjet.begin(), selectionObjet.end(), obj) != selectionObjet.end()) {
+        selectionObjet.erase(std::find(selectionObjet.begin(), selectionObjet.end(), obj));
     }
     else {
-        selection.push_back(obj);
+        selectionObjet.push_back(obj);
     }
 }
 
@@ -395,7 +400,7 @@ void Application3d::onApplyTransformationEvent(ofxDatGuiButtonEvent e) {
         transformation->scaleZ = zAxisSlider->getValue();
     }
     Operation* operation = new Operation();
-    operation->targets = selection;
+    operation->targets = selectionObjet;
     operation->transformation = transformation;
     operation->apply();
     history.push(operation);
@@ -429,12 +434,12 @@ void Application3d::addSphere() {
 
 
 void Application3d::addObject(Object* object, string filename) {
-    if (selection.empty()) {
+    if (selectionObjet.empty()) {
         object->name = filename;
         renderer.scene->objects.push_back(object);
     }
     else {
-        Object* parent = selection.at(0);
+        Object* parent = selectionObjet.at(0);
         object->name = filename;
         parent->children.push_back(object);
         object->parent = parent;
@@ -442,10 +447,10 @@ void Application3d::addObject(Object* object, string filename) {
 
     objectScrollView->add(object->name);
 
-    everything.push_back(object);
+    allObject.push_back(object);
 
-    selection.clear();
-    selection.push_back(object);
+    selectionObjet.clear();
+    selectionObjet.push_back(object);
 }
 
 string Application3d::getElementName(string filename) {
@@ -463,26 +468,26 @@ string Application3d::getElementName(string filename) {
 }
 
 std::vector<Object*> Application3d::getAllElementFromScene() {
-    std::vector<Object*> everything;
+    std::vector<Object*> allObject;
 
     for (Object* children : renderer.scene->objects) {
-        everything.push_back(children);
-        std::vector<Object*> everythingFromChildren = getAllElementFromObject(children);
-        everything.insert(everything.end(), everythingFromChildren.begin(), everythingFromChildren.end());
+        allObject.push_back(children);
+        std::vector<Object*> allObjectFromChildren = getAllElementFromObject(children);
+        allObject.insert(allObject.end(), allObjectFromChildren.begin(), allObjectFromChildren.end());
     }
 
-    return everything;
+    return allObject;
 }
 
 std::vector<Object*> Application3d::getAllElementFromObject(Object* object) {
-    std::vector<Object*> everything;
+    std::vector<Object*> allObject;
 
     for (Object* children : object->children) {
-        std::vector<Object*> everythingFromChildren = getAllElementFromObject(children);
-        everything.insert(everything.end(), everythingFromChildren.begin(), everythingFromChildren.end());
+        std::vector<Object*> allObjectFromChildren = getAllElementFromObject(children);
+        allObject.insert(allObject.end(), allObjectFromChildren.begin(), allObjectFromChildren.end());
     }
 
-    return everything;
+    return allObject;
 }
 
 Renderer3d::RenderMode Application3d::getRenderMode() {
@@ -550,29 +555,29 @@ void Application3d::exportRender() {
         ofLogNotice("Image Saved") << "Render saved to: " << filePath;
     }
     else {
-        ofLogNotice("File selection canceled");
+        ofLogNotice("File selectionObjet canceled");
     }
     
 }
 
 void Application3d::onEnableTurntable(ofxDatGuiButtonEvent e) {
-    for (Object* object : selection) {
+    for (Object* object : selectionObjet) {
         object->rotation_animation = !object->rotation_animation;
     }
 }
 
 void Application3d::onEnableTranslationAnimation(ofxDatGuiButtonEvent e) {
-    for (Object* object : selection) {
+    for (Object* object : selectionObjet) {
         object->translation_animation = !object->translation_animation;
     }
 }
 
 void Application3d::deleteSelected() {
-    while (!selection.empty()) {
-        Object* object = selection.at(0);
-        auto itInSelection = find(selection.begin(), selection.end(), object);
-        selectionScrollView->remove(itInSelection - selection.begin());
-        selection.erase(find(selection.begin(), selection.end(), object));
+    while (!selectionObjet.empty()) {
+        Object* object = selectionObjet.at(0);
+        auto itInselectionObjet = find(selectionObjet.begin(), selectionObjet.end(), object);
+        selectionScrollView->remove(itInselectionObjet - selectionObjet.begin());
+        selectionObjet.erase(find(selectionObjet.begin(), selectionObjet.end(), object));
 
         if (object->parent != nullptr) {
             if (count(object->parent->children.begin(), object->parent->children.end(), object))
@@ -584,19 +589,19 @@ void Application3d::deleteSelected() {
             renderer.scene->objects.push_back(child);
         }
 
-        auto it = find(everything.begin(), everything.end(), object);
-        objectScrollView->remove(it - everything.begin());
+        auto it = find(allObject.begin(), allObject.end(), object);
+        objectScrollView->remove(it - allObject.begin());
         if (count(renderer.scene->objects.begin(), renderer.scene->objects.end(), object))
             renderer.scene->objects.erase(find(renderer.scene->objects.begin(), renderer.scene->objects.end(), object));
-        everything.erase(it);
+        allObject.erase(it);
         delete object;
     }
 }
 
 void Application3d::deleteAll() {
     deleteSelected();
-        while (!everything.empty()) {
-            Object* object = everything.back();  // Get the last element
+        while (!allObject.empty()) {
+            Object* object = allObject.back();  // Get the last element
 
             // Remove from parent's children
             if (object->parent != nullptr) {
@@ -613,9 +618,9 @@ void Application3d::deleteAll() {
             }
 
             // Remove from objectScrollView
-            auto scrollViewIt = find(everything.begin(), everything.end(), object);
-            if (scrollViewIt != everything.end()) {
-                objectScrollView->remove(distance(everything.begin(), scrollViewIt));
+            auto scrollViewIt = find(allObject.begin(), allObject.end(), object);
+            if (scrollViewIt != allObject.end()) {
+                objectScrollView->remove(distance(allObject.begin(), scrollViewIt));
             }
 
             // Remove from scene
@@ -625,7 +630,7 @@ void Application3d::deleteAll() {
             }
 
             // Delete the object
-            everything.pop_back();  // Remove from the end
+            allObject.pop_back();  // Remove from the end
             delete object;
         }
     }
