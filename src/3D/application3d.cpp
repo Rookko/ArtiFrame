@@ -290,10 +290,27 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         renderMode = "Wireframe";
     }
 
-    else if (buttonLabel == "Shader")
+    else if (buttonLabel == "Phong")
+    {
+       // renderMode = "Shader";
+    }
+    else if (buttonLabel == "Phill-Phong")
+    {
+       // renderMode = "Shader";
+    }
+    else if (buttonLabel == "Tesselation")
+    {
+       // renderMode = "Shader";
+    }
+    else if (buttonLabel == "Texture")
     {
         renderMode = "Shader";
     }
+    else if (buttonLabel == "PBR")
+    {
+        //renderMode = "Shader";
+    }
+
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
 
 }
@@ -306,11 +323,11 @@ void Application3d::setup3DTaskbar()
     // Configure le menu 'File' avec un bouton 'Export'.
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import" });
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth * 2, {"Add Cube", "Add Sphere", "Add Cylinder", "Add Monkey" });
+    setupMenu(addMenu, "Add", optionWidth * 2, {"Add Cube", "Add Sphere", "Add Cylinder", "Add Monkey" , "Add Bezier Curve", "Add Bezier Surface" });
 
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Deleted", "Deleted All" });
 
-    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Shader" });
+    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Lambert","Phong","Phill-Phong","Tesselation","Texture","PBR"});
 
     setupMenu(cameraMenu, "Camera Menu", optionWidth * 5, { "Perspective", "Orthogonale" });
 
