@@ -11,8 +11,8 @@ void Renderer3d::setup()
 	camera->setupPerspective();
 	camera->setDistance(1000);
 
-	toneMapping = new ofShader();
-	toneMapping->load("shaders/tone_mapping_330_vs.glsl", "shaders/tone_mapping_330_fs.glsl");
+	TextureMapping = new ofShader();
+	TextureMapping->load("shaders/tone_mapping_330_vs.glsl", "shaders/tone_mapping_330_fs.glsl");
 
 	lambert = new ofShader();
 	lambert->load("shaders/basic_shader.vert", "shaders/lambert.frag");
@@ -26,10 +26,22 @@ void Renderer3d::setup()
 	pbr = new ofShader();
 	pbr->load("shaders/pbr_330_vs.glsl", "shaders/pbr_330_fs.glsl");
 
+	//Light setup
+	ambiantLight.color = ofColor::black;
+	pointLight.position = ofVec3f(-200, 200, 200);
+	pointLight.brightness = 40;
+	pointLight.color = ofColor::white;
+	directionalLight.position = ofVec3f(200, 200, 200);
+	directionalLight.direction = ofVec3f(1, 1, 1);
+	directionalLight.color = ofColor::darkGreen;
+	directionalLight.brightness = 40;
+	spotLight.position = ofVec3f(-200, -200, -200);
+	spotLight.brightness = 40;
+	spotLight.direction = ofVec3f(-1, -1, -1);
+	spotLight.color = ofColor::darkOrchid;
+	spotLight.innerCutoff = 10;
+	spotLight.outerCutoff = 15;
 
-	light.setPointLight();
-	light.setDiffuseColor(255);
-	light.setGlobalPosition(500, 500, 500);
 }
 
 void Renderer3d::update() {
@@ -38,18 +50,27 @@ void Renderer3d::update() {
 
 void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selected)
 {
-	ofSetColor(ofColor::black);
-
-	if (renderMode != Renderer3d::RenderMode::Wireframe) {
-		ofEnableDepthTest();
-		ofEnableLighting();
-		light.enable();
-	}
-
+	ofPushStyle();
 
 	camera->begin();
 
+	if (renderMode != RenderMode::Wireframe) {
+		ofEnableDepthTest();
+	}
+
 	if (renderMode == RenderMode::Lambert || renderMode == RenderMode::Phong || renderMode == RenderMode::Blinn_Phong) {
+
+		// Set drawing mode to OF_MESH_FILL for drawing faces
+		ofFill();
+
+		ofSetColor(pointLight.color);
+		ofDrawSphere(pointLight.position, 20);
+		ofSetColor(directionalLight.color);
+		ofDrawSphere(directionalLight.position, 20);
+		ofSetColor(spotLight.color);
+		ofDrawSphere(spotLight.position, 20);
+		ofSetColor(ofColor::white);
+		
 	}
 
 	for (Object* object : scene->objects) {
@@ -61,7 +82,7 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 			ofSetColor(ofColor::white);
 			break;
 		case RenderMode::Texture:
-			object->drawTexture(toneMapping);
+			object->drawTexture(TextureMapping);
 			break;
 		case RenderMode::Lambert:
 			object->drawShader(lambert, ambiantLight, pointLight, directionalLight, spotLight);
@@ -76,13 +97,13 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 			object->drawPBR(pbr, pointLight, directionalLight, spotLight);
 			break;
 		}
-
-		camera->end();
-		light.disable();
-		ofDisableDepthTest();
-		ofDisableLighting();
+		ofSetColor(ofColor::orangeRed);
+		object->checkIfSelected();
 		ofSetColor(ofColor::white);
 	}
+	camera->end();
+	ofDisableDepthTest();
+	ofPopStyle();
 }
 
 void Renderer3d::setCameraToPerspective() {

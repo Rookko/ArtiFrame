@@ -21,7 +21,7 @@ void Object::drawWireframe()
 	ofPopMatrix();
 }
 
-void Object::drawTexture(ofShader* toneMapping) {
+void Object::drawTexture(ofShader* TextureMapping) {
 	ofPushMatrix();
 
 	ofTranslate(translationX, translationY, translationZ);
@@ -36,11 +36,11 @@ void Object::drawTexture(ofShader* toneMapping) {
 		filteredTexture.setTextureMinMagFilter(magFilter, magFilter);
 		filteredTexture.bind();
 
-		toneMapping->begin();
-		toneMapping->setUniformTexture("image", filteredTexture, 1);
-		toneMapping->setUniform1f("tone_mapping_exposure", exposure);
-		toneMapping->setUniform1f("tone_mapping_gamma", gamma);
-		toneMapping->setUniform1i("tone_mapping_toggle", false);
+		TextureMapping->begin();
+		TextureMapping->setUniformTexture("image", filteredTexture, 1);
+		TextureMapping->setUniform1f("tone_mapping_exposure", exposure);
+		TextureMapping->setUniform1f("tone_mapping_gamma", gamma);
+		TextureMapping->setUniform1i("tone_mapping_toggle", false);
 	}
 
 	drawShaderOverride();
@@ -48,11 +48,11 @@ void Object::drawTexture(ofShader* toneMapping) {
 
 	if (filteredTexture.isAllocated()) {
 		filteredTexture.unbind();
-		toneMapping->end();
+		TextureMapping->end();
 	}
 
 	for (Object* child : children) {
-		child->drawTexture(toneMapping);
+		child->drawTexture(TextureMapping);
 	}
 
 	ofPopMatrix();
@@ -70,6 +70,7 @@ void Object::drawShader(ofShader* shader, Light ambiantLight, Light pointLight, 
 	ofScale(scaleX, scaleY, scaleZ);
 
 	shader->begin();
+
 	shader->setUniform3f("pointLight.position", pointLight.position);
 	shader->setUniform1f("pointLight.brightness", pointLight.brightness);
 	ofFloatColor pointLightcolor = pointLight.color;

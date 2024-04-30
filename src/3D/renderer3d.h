@@ -28,7 +28,7 @@ public:
 	ofShader* lambert;
 	ofShader* phong;
 	ofShader* blinnPhong;
-	ofShader* toneMapping;
+	ofShader* TextureMapping;
 	ofShader* pbr;
 	ofImage cubemap[6];
 

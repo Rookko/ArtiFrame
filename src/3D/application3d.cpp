@@ -290,25 +290,30 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
         renderMode = "Wireframe";
     }
 
+    else if (buttonLabel == "Lambert")
+    {
+         renderMode =  "Lambert";
+    }
+
     else if (buttonLabel == "Phong")
     {
-       // renderMode = "Shader";
+        renderMode = "Phong";
     }
     else if (buttonLabel == "Phill-Phong")
     {
-       // renderMode = "Shader";
+        renderMode = "Phill-Phong";
     }
     else if (buttonLabel == "Tesselation")
     {
-       // renderMode = "Shader";
+        renderMode = "Tesselation";
     }
     else if (buttonLabel == "Texture")
     {
-        renderMode = "Shader";
+        renderMode = "Texture";
     }
     else if (buttonLabel == "PBR")
     {
-        //renderMode = "Shader";
+        renderMode = "PBR";
     }
 
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
@@ -510,8 +515,18 @@ std::vector<Object*> Application3d::getAllElementFromObject(Object* object) {
 Renderer3d::RenderMode Application3d::getRenderMode() {
     if (renderMode == "Wireframe")
         return Renderer3d::RenderMode::Wireframe;
-    if (renderMode == "Shader")
-        return Renderer3d::RenderMode::Shader;
+    else if (renderMode == "Lambert")
+        return Renderer3d::RenderMode::Lambert;
+    else if (renderMode == "Phong")
+        return Renderer3d::RenderMode::Phong;
+    else if (renderMode == "Phill-Phong")
+        return Renderer3d::RenderMode::Blinn_Phong;
+    else if (renderMode == "Tesselation")
+        return Renderer3d::RenderMode::Tesselation;
+    else if (renderMode == "Texture")
+        return Renderer3d::RenderMode::Texture;
+    else if (renderMode == "PBR")
+        return Renderer3d::RenderMode::PBR;
 }
 
 

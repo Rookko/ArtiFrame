@@ -80,7 +80,7 @@ public:
 
 
 	int optionWidth;
-	string renderMode = "Shader";
+	string renderMode = "Wireframe";
 
 
 	bool isWPressed = false;
