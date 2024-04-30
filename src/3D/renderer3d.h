@@ -5,23 +5,38 @@
 
 #include "ofMain.h"
 #include "object/scene.h"
+#include "./object/light.h"
+
 
 class Renderer3d
 {
 public:
-	enum RenderMode { Wireframe, Shader };
+	enum RenderMode { Wireframe, Texture, Lambert, Phong, Blinn_Phong, PBR, Tesselation };
 	enum CameraMode { Perspective, Orthographic };
 
 	ofEasyCam* camera;
 	CameraMode cameraMode = Perspective;
 	Scene* scene;
 
-	ofLight light;
-	ofShader* shader;
+
+	Light ambiantLight;
+	Light pointLight;
+	Light directionalLight;
+	Light spotLight;
+
+
+	ofShader* lambert;
+	ofShader* phong;
+	ofShader* blinnPhong;
+	ofShader* toneMapping;
+	ofShader* pbr;
+	ofImage cubemap[6];
+
 
 	void setup();
 	void update();
 	void draw(Renderer3d::RenderMode renderMode, vector<Object*> selected);
+
 
 	void setCameraToPerspective();
 

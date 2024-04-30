@@ -11,13 +11,20 @@ void Renderer3d::setup()
 	camera->setupPerspective();
 	camera->setDistance(1000);
 
-	shader = new ofShader();
-	if (shader->load("lambert_330_vs.glsl", "lambert_330_fs.glsl")) {
-		ofLog() << "Shaders loaded successfully";
-	}
-	else {
-		ofLogError() << "Failed to load shaders";
-	}
+	toneMapping = new ofShader();
+	toneMapping->load("shaders/tone_mapping_330_vs.glsl", "shaders/tone_mapping_330_fs.glsl");
+
+	lambert = new ofShader();
+	lambert->load("shaders/basic_shader.vert", "shaders/lambert.frag");
+
+	phong = new ofShader();
+	phong->load("shaders/basic_shader.vert", "shaders/phong.frag");
+
+	blinnPhong = new ofShader();
+	blinnPhong->load("shaders/basic_shader.vert", "shaders/blinn-phong.frag");
+
+	pbr = new ofShader();
+	pbr->load("shaders/pbr_330_vs.glsl", "shaders/pbr_330_fs.glsl");
 
 
 	light.setPointLight();
@@ -26,11 +33,7 @@ void Renderer3d::setup()
 }
 
 void Renderer3d::update() {
-	shader->begin();
-	shader->setUniform3f("color_ambient", 0.1f, 0.1f, 0.1f);
-	shader->setUniform3f("color_diffuse", 1, 1, 1);
-	shader->setUniform3f("light_position", light.getGlobalPosition());
-	shader->end();
+
 }
 
 void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selected)
@@ -44,33 +47,42 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 	}
 
 
-	shader->begin();
-
 	camera->begin();
+
+	if (renderMode == RenderMode::Lambert || renderMode == RenderMode::Phong || renderMode == RenderMode::Blinn_Phong) {
+	}
 
 	for (Object* object : scene->objects) {
 
 		switch (renderMode) {
-		case Renderer3d::RenderMode::Wireframe:
-			shader->end();
+		case RenderMode::Wireframe:
+			ofSetColor(ofColor::black);
 			object->drawWireframe();
-			shader->begin();
+			ofSetColor(ofColor::white);
 			break;
-		case Renderer3d::RenderMode::Shader:
-
-			object->drawShader();
+		case RenderMode::Texture:
+			object->drawTexture(toneMapping);
+			break;
+		case RenderMode::Lambert:
+			object->drawShader(lambert, ambiantLight, pointLight, directionalLight, spotLight);
+			break;
+		case RenderMode::Phong:
+			object->drawShader(phong, ambiantLight, pointLight, directionalLight, spotLight);
+			break;
+		case RenderMode::Blinn_Phong:
+			object->drawShader(blinnPhong, ambiantLight, pointLight, directionalLight, spotLight);
+			break;
+		case RenderMode::PBR:
+			object->drawPBR(pbr, pointLight, directionalLight, spotLight);
 			break;
 		}
 
-		object->checkIfSelected();
+		camera->end();
+		light.disable();
+		ofDisableDepthTest();
+		ofDisableLighting();
+		ofSetColor(ofColor::white);
 	}
-
-	shader->end();
-	camera->end();
-	light.disable();
-	ofDisableDepthTest();
-	ofDisableLighting();
-	ofSetColor(ofColor::white);
 }
 
 void Renderer3d::setCameraToPerspective() {
