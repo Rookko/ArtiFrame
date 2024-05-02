@@ -21,42 +21,6 @@ void Object::drawWireframe()
 	ofPopMatrix();
 }
 
-void Object::drawTexture(ofShader* TextureMapping) {
-	ofPushMatrix();
-
-	ofTranslate(translationX, translationY, translationZ);
-
-	ofRotateXDeg(rotationX);
-	ofRotateYDeg(rotationY);
-	ofRotateZDeg(rotationZ);
-
-	ofScale(scaleX, scaleY, scaleZ);
-
-	if (filteredTexture.isAllocated()) {
-		filteredTexture.setTextureMinMagFilter(magFilter, magFilter);
-		filteredTexture.bind();
-
-		TextureMapping->begin();
-		TextureMapping->setUniformTexture("image", filteredTexture, 1);
-		TextureMapping->setUniform1f("tone_mapping_exposure", exposure);
-		TextureMapping->setUniform1f("tone_mapping_gamma", gamma);
-		TextureMapping->setUniform1i("tone_mapping_toggle", false);
-	}
-
-	drawShaderOverride();
-
-
-	if (filteredTexture.isAllocated()) {
-		filteredTexture.unbind();
-		TextureMapping->end();
-	}
-
-	for (Object* child : children) {
-		child->drawTexture(TextureMapping);
-	}
-
-	ofPopMatrix();
-}
 
 void Object::drawShader(ofShader* shader, Light ambiantLight, Light pointLight, Light directionalLight, Light spotLight) {
 	ofPushMatrix();
@@ -110,6 +74,43 @@ void Object::drawShader(ofShader* shader, Light ambiantLight, Light pointLight, 
 
 	for (Object* child : children) {
 		child->drawShader(shader, ambiantLight, pointLight, directionalLight, spotLight);
+	}
+
+	ofPopMatrix();
+}
+
+void Object::drawTexture(ofShader* textureMapping) {
+	ofPushMatrix();
+
+	ofTranslate(translationX, translationY, translationZ);
+
+	ofRotateXDeg(rotationX);
+	ofRotateYDeg(rotationY);
+	ofRotateZDeg(rotationZ);
+
+	ofScale(scaleX, scaleY, scaleZ);
+
+	if (filteredTexture.isAllocated()) {
+		filteredTexture.setTextureMinMagFilter(magFilter, magFilter);
+		filteredTexture.bind();
+
+		textureMapping->begin();
+		textureMapping->setUniformTexture("image", filteredTexture, 1);
+		textureMapping->setUniform1f("tone_mapping_exposure", exposure);
+		textureMapping->setUniform1f("tone_mapping_gamma", gamma);
+		textureMapping->setUniform1i("tone_mapping_toggle", false);
+	}
+
+	drawShaderOverride();
+
+
+	if (filteredTexture.isAllocated()) {
+		filteredTexture.unbind();
+		textureMapping->end();
+	}
+
+	for (Object* child : children) {
+		child->drawTexture(textureMapping);
 	}
 
 	ofPopMatrix();
@@ -173,6 +174,7 @@ void Object::drawPBR(ofShader* shader, Light pointLight, Light directionalLight,
 
 	ofPopMatrix();
 }
+
 
 void Object::checkIfSelected() {
 	if (selected) {
