@@ -107,6 +107,10 @@ public:
 	bool isQPressed = false;
 	bool isEPressed = false;
 
+	bool is1Pressed = false;
+	bool is2Pressed = false;
+	bool is3Pressed = false;
+
 	//ofImage* basicCursor;
 
 	void onLightColorChangeEvent(ofxDatGuiColorPickerEvent e);
