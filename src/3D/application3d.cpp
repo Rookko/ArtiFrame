@@ -160,6 +160,25 @@ void Application3d::update() {
 
     ofShowCursor();
 
+    Light* lightToMove;
+    if (is1Pressed)
+        lightToMove = &renderer.pointLight;
+    if (is2Pressed)
+        lightToMove = &renderer.directionalLight;
+    if (is3Pressed)
+        lightToMove = &renderer.spotLight;
+
+    if (is1Pressed || is2Pressed || is3Pressed) {
+        ofVec3f worldMouse = renderer.camera->screenToWorld(ofVec3f(ofGetMouseX(), ofGetMouseY(), 0));
+        ofVec3f direction = worldMouse - renderer.camera->getPosition();
+        direction.normalize();
+        glm::vec3 newPoint = renderer.camera->getPosition() + direction * 500;
+        lightToMove->position = newPoint;
+        lightToMove->direction = newPoint;
+    }
+
+  
+
 }
 
 void Application3d::exit() {}
@@ -408,6 +427,12 @@ void  Application3d::keyPressed(int key) {
         isQPressed = true;
     if (key == 101) // e
         isEPressed = true;
+    if (key == 49) // 1
+        is1Pressed = true;
+    if (key == 50) // 2
+        is2Pressed = true;
+    if (key == 51) // 3
+        is3Pressed = true;
 
 
 }
@@ -425,6 +450,12 @@ void  Application3d::keyReleased(int key) {
         isQPressed = false;
     if (key == 101) // e
         isEPressed = false;
+    if (key == 49) // 1
+        is1Pressed = false;
+    if (key == 50) // 2
+        is2Pressed = false;
+    if (key == 51) // 3
+        is3Pressed = false;
 }
 
 void Application3d::mousePressed(int x, int y, int button) {}
