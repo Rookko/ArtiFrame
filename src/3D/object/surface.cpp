@@ -5,8 +5,8 @@ void Surface::drawWireframeOverride() {
 
 	ofTranslate(-250 / 2, -250 / 2, 0);
 
-	surfaceBezier->drawWireframe();
-	surfaceBezier->drawControls();
+	surfaceBezierInstance->drawWireframe();
+	surfaceBezierInstance->drawControls();
 
 	ofPopStyle();
 }
@@ -14,13 +14,13 @@ void Surface::drawWireframeOverride() {
 void Surface::drawSolidOverride() {
 	ofTranslate(-250 / 2, -250 / 2, 0);
 
-	surfaceBezier->draw();
+	surfaceBezierInstance->draw();
 }
 
 void Surface::drawShaderOverride() {
 	ofTranslate(-250 / 2, -250 / 2, 0);
 
-	surfaceBezier->draw();
+	surfaceBezierInstance->draw();
 }
 
 void Surface::drawBoundingBoxOverride() {

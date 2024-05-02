@@ -7,7 +7,7 @@
 class Surface : public Object {
 public:
 
-	surfaceBezier* surfaceBezier = new surfaceBezier();
+	surfaceBezier* surfaceBezierInstance = new surfaceBezier();
 
 	void drawWireframeOverride();
 
