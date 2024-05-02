@@ -6,7 +6,7 @@
 #include "application3d.h"
 #define MAIN_ICON 102
 
-Application::ViewType viewType = Application::ViewType::View2D;
+Application::ViewType viewType = Application::ViewType::View3D;
 
 Application2d* application2D;
 Application3d* application3D;

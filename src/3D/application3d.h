@@ -109,7 +109,9 @@ public:
 
 	//ofImage* basicCursor;
 
+	void onLightColorChangeEvent(ofxDatGuiColorPickerEvent e);
 
+	void onLightBrightnessChangeEvent(ofxDatGuiSliderEvent e);
 
 
 private:

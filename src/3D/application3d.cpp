@@ -32,7 +32,7 @@ void Application3d::setup(int buttonSize) {
     selectionScrollView->setOpacity(0.1);
 
     transformationMenu = new ofxDatGui(300, 300);
-    transformationMenu->addLabel("|Transformation Menu|");
+    transformationMenu->addLabel("|~Transformation Menu~|");
     transformationMenu->addHeader(":: Click here to drag ::");
     vector<string> transformationOptions = { "Translation", "Rotation", "Proportion" };
     transformationDropdown = transformationMenu->addDropdown("Transformation Type", transformationOptions);
@@ -47,12 +47,31 @@ void Application3d::setup(int buttonSize) {
     yAxisSlider->onSliderEvent([&](ofxDatGuiSliderEvent e) { });
     zAxisSlider->onSliderEvent([&](ofxDatGuiSliderEvent e) {});
 
-    transformationMenu->addLabel("|Animation Menu|");
+    transformationMenu->addLabel("|~Animation Menu~|");
     ofxDatGuiButton* enableTurntableBtn = transformationMenu->addButton("Enable Turntable");
     enableTurntableBtn->onButtonEvent(this, &Application3d::onEnableTurntable);
     ofxDatGuiButton* enableTranslationAnimBtn = transformationMenu->addButton("Enable Translation Animation");
     enableTranslationAnimBtn->onButtonEvent(this, &Application3d::onEnableTranslationAnimation);
-    transformationMenu->setTheme(new ofxDatGuiThemeCharcoal());
+    transformationMenu->setTheme(new ofxDatGuiThemeSmoke());
+    transformationMenu->addLabel("|~Light Menu~|");
+    ofxDatGuiFolder* ambiantLightFolder = transformationMenu->addFolder("Ambiant Light");
+    ambiantLightColor = ambiantLightFolder->addColorPicker("Color", renderer.ambiantLight.color);
+    ambiantLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    ofxDatGuiFolder* pointLightFolder = transformationMenu->addFolder("Point Light");
+    pointLightColor = pointLightFolder->addColorPicker("Color", renderer.pointLight.color);
+    pointLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    pointLightBrightness = pointLightFolder->addSlider("Brightness", 0, 64, 40);
+    pointLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+    ofxDatGuiFolder* directionalLightFolder = transformationMenu->addFolder("Directional Light");
+    directionalLightColor = directionalLightFolder->addColorPicker("Color", renderer.directionalLight.color);
+    directionalLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    directionalLightBrightness = directionalLightFolder->addSlider("Brightness", 0, 64, 40);
+    directionalLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+    ofxDatGuiFolder* spotLightFolder = transformationMenu->addFolder("Spot Light");
+    spotLightColor = spotLightFolder->addColorPicker("Color", renderer.spotLight.color);
+    spotLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    spotLightBrightness = spotLightFolder->addSlider("Brightness", 0, 64, 40);
+    spotLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
 
 
     // ofxDatGuiButton* changeCameraButton = objectMenu->addButton("Switch Camera Mode");
@@ -60,6 +79,7 @@ void Application3d::setup(int buttonSize) {
 
     //basicCursor = new ofImage();
     //basicCursor->load("/data/basic_cursor.png");
+
 
 
 }
@@ -153,6 +173,7 @@ void Application3d::showUi()
     header->setVisible(true);
     transformationMenu->setVisible(true);
     cameraMenu->setVisible(true);
+    
 }
 
 void Application3d::hideUi()
@@ -164,6 +185,7 @@ void Application3d::hideUi()
     header->setVisible(false);
     transformationMenu->setVisible(false);
     cameraMenu->setVisible(false);
+    
 }
 
 void Application3d::setupButton(ofxDatGuiFolder* folder, const std::string& label, void (Application3d::* eventHandler)(const ofxDatGuiButtonEvent&))
@@ -800,7 +822,7 @@ void Application3d::importOcclusionMap() {
         ofLog() << "<app::import - failed>";
     }
 }
-/*
+
 void Application3d::onLightColorChangeEvent(ofxDatGuiColorPickerEvent e) {
     renderer.ambiantLight.color = ambiantLightColor->getColor();
     renderer.pointLight.color = pointLightColor->getColor();
@@ -813,4 +835,3 @@ void Application3d::onLightBrightnessChangeEvent(ofxDatGuiSliderEvent e) {
     renderer.directionalLight.brightness = directionalLightBrightness->getValue();
     renderer.spotLight.brightness = spotLightBrightness->getValue();
 }
-*/
