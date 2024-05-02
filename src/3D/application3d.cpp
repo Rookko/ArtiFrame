@@ -228,11 +228,37 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
       //  showUi();
     }
     // Fonction pour importer un objet lorsque bouton Import cliqué.
-    else if (buttonLabel == "Import")
+    else if (buttonLabel == "Import 3D Model")
     {
         import();
     }
 
+    else if (buttonLabel == "Import Albedo Texture")
+    {
+        importTexture();
+    }
+
+
+    else if (buttonLabel == "Import Normal Map")
+    {
+        importNormalMap();
+    }
+    else if (buttonLabel == "Import Roughness Map")
+    {
+        importRoughnesslMap();
+    }
+    else if (buttonLabel == "Import Metallic Map")
+    {
+        importMetallicMap();
+    }
+    else if (buttonLabel == "Import Occlusion Map")
+    {
+        importOcclusionMap();
+    }
+    else if (buttonLabel == "Random Texture")
+    {
+        randomTexture();
+    }
     // Fonction pour ajouter un carré à la scène lorsque bouton Add Sphere cliqué.
     else if (buttonLabel == "Add Cube")
     {
@@ -326,7 +352,8 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
 void Application3d::setup3DTaskbar()
 {
     // Configure le menu 'File' avec un bouton 'Export'.
-    setupMenu(fileMenu, "File", optionWidth, { "Export", "Import" });
+    //setupMenu(fileMenu, "File", optionWidth, { "Export", "Import" });
+    setupMenu(fileMenu, "File", optionWidth, { "Export", "Import 3D Model", "Import Albedo Texture", "Import Normal Map", "Import Roughness Map", "Import Metallic Map", "Import Occlusion Map", "Random Texture"});
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
     setupMenu(addMenu, "Add", optionWidth * 2, {"Add Cube", "Add Sphere", "Add Cylinder", "Add Monkey" , "Add Bezier Curve", "Add Bezier Surface" });
 
@@ -680,3 +707,110 @@ void Application3d::addCube() {
     filename = getElementName(filename);
     addObject(cubePrimitive, filename);
 }
+
+void Application3d::importTexture() {
+    ofLog() << "<app::import texture>";
+    ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an image");
+    if (openFileResult.bSuccess) {
+        for (Object* object : selectionObjet) {
+            ofLoadImage(object->texture, openFileResult.filePath);
+            object->filteredTexture = object->texture;
+        }
+        ofLog() << "<app::import - success>";
+    }
+    else {
+        ofLog() << "<app::import - failed>";
+    }
+}
+
+void Application3d::randomTexture() {
+    for (Object* object : selectionObjet) {
+        ofTexture texture;
+        ofPixels pixels;
+        int width = 256;
+        int height = 256;
+        pixels.allocate(width, height, OF_PIXELS_RGB);
+        float noiseScale = ofRandom(1);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                float noiseValue = ofNoise(x * noiseScale * ofRandom(1), y * noiseScale * ofRandom(1));
+                ofColor color(noiseValue * 255, noiseValue * 255, noiseValue * 255);
+                pixels.setColor(x, y, color);
+            }
+        }
+        object->texture.allocate(pixels);
+        object->filteredTexture.allocate(pixels);
+    }
+}
+
+void Application3d::importNormalMap() {
+    ofLog() << "<app::import normal map>";
+    ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an image");
+    if (openFileResult.bSuccess) {
+        for (Object* object : selectionObjet) {
+            ofLoadImage(object->normalMap, openFileResult.filePath);
+        }
+        ofLog() << "<app::import - success>";
+    }
+    else {
+        ofLog() << "<app::import - failed>";
+    }
+}
+
+
+void Application3d::importMetallicMap() {
+    ofLog() << "<app::import metallic map>";
+    ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an image");
+    if (openFileResult.bSuccess) {
+        for (Object* object : selectionObjet) {
+            ofLoadImage(object->metallicMap, openFileResult.filePath);
+        }
+        ofLog() << "<app::import - success>";
+    }
+    else {
+        ofLog() << "<app::import - failed>";
+    }
+}
+
+
+void Application3d::importRoughnesslMap() {
+    ofLog() << "<app::import roughness map>";
+    ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an image");
+    if (openFileResult.bSuccess) {
+        for (Object* object : selectionObjet) {
+            ofLoadImage(object->roughnessMap, openFileResult.filePath);
+        }
+        ofLog() << "<app::import - success>";
+    }
+    else {
+        ofLog() << "<app::import - failed>";
+    }
+}
+
+void Application3d::importOcclusionMap() {
+    ofLog() << "<app::import occlusion map>";
+    ofFileDialogResult openFileResult = ofSystemLoadDialog("Select an image");
+    if (openFileResult.bSuccess) {
+        for (Object* object : selectionObjet) {
+            ofLoadImage(object->occlusionMap, openFileResult.filePath);
+        }
+        ofLog() << "<app::import - success>";
+    }
+    else {
+        ofLog() << "<app::import - failed>";
+    }
+}
+/*
+void Application3d::onLightColorChangeEvent(ofxDatGuiColorPickerEvent e) {
+    renderer.ambiantLight.color = ambiantLightColor->getColor();
+    renderer.pointLight.color = pointLightColor->getColor();
+    renderer.directionalLight.color = directionalLightColor->getColor();
+    renderer.spotLight.color = spotLightColor->getColor();
+}
+
+void Application3d::onLightBrightnessChangeEvent(ofxDatGuiSliderEvent e) {
+    renderer.pointLight.brightness = pointLightBrightness->getValue();
+    renderer.directionalLight.brightness = directionalLightBrightness->getValue();
+    renderer.spotLight.brightness = spotLightBrightness->getValue();
+}
+*/

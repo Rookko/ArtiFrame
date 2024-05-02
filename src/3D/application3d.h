@@ -79,6 +79,22 @@ public:
 	void addCube();
 
 
+	void importTexture();
+
+	void randomTexture();
+
+		void importNormalMap();
+
+
+		void importMetallicMap();
+
+
+		void importRoughnesslMap();
+
+		void importOcclusionMap();
+
+
+
 	int optionWidth;
 	string renderMode = "Wireframe";
 
@@ -129,5 +145,32 @@ private:
 	ofxDatGuiSlider* xAxisSlider;
 	ofxDatGuiSlider* yAxisSlider;
 	ofxDatGuiSlider* zAxisSlider;
+
+	//Menu Texture Material
+	ofxDatGui* textureMenu;
+	ofxDatGuiDropdown* textureMagFilterDropdown;
+	ofxDatGuiDropdown* textureFilterDropdown;
+	ofxDatGuiSlider* exposureSlider;
+	ofxDatGuiSlider* gammaSlider;
+
+	ofxDatGui* materialMenu;
+	ofxDatGuiColorPicker* materialAmbiantCP;
+	ofxDatGuiColorPicker* materialDiffuseCP;
+	ofxDatGuiColorPicker* materialSpecularCP;
+	ofxDatGuiSlider* materialMetallicSlider;
+	ofxDatGuiSlider* materialRoughnessSlider;
+	ofxDatGuiSlider* materialOcclusionSlider;
+	ofxDatGuiSlider* materialBrightnessSlider;
+	ofxDatGuiColorPicker* materialFresnelIorColorPicker;
+
+	//Menu light
+	ofxDatGui* lightMenu;
+	ofxDatGuiColorPicker* ambiantLightColor;
+	ofxDatGuiColorPicker* pointLightColor;
+	ofxDatGuiColorPicker* directionalLightColor;
+	ofxDatGuiColorPicker* spotLightColor;
+	ofxDatGuiSlider* pointLightBrightness;
+	ofxDatGuiSlider* directionalLightBrightness;
+	ofxDatGuiSlider* spotLightBrightness;
 
 };

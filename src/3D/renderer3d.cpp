@@ -61,7 +61,7 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 	if (renderMode == RenderMode::Lambert || renderMode == RenderMode::Phong || renderMode == RenderMode::Blinn_Phong) {
 
 		// Set drawing mode to OF_MESH_FILL for drawing faces
-		ofFill();
+		//ofFill();
 
 		ofSetColor(pointLight.color);
 		ofDrawSphere(pointLight.position, 20);
