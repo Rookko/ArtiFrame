@@ -949,3 +949,62 @@ void Application3d::AddCustomObject() {
     customObject->name = filename;
     addObject(customObject, filename);
 }
+
+void Application3d::onAddBezierCurveEvent(ofxDatGuiButtonEvent e) {
+    Curve* curve = new Curve();
+    std::string filename = "Bezier Curve";
+    curve->originalName = filename;
+    filename = getElementName(filename);
+    curve->name = filename;
+    addObject(curve, filename);
+}
+
+void Application3d::onCurveControlPointPositionChangeEvent(ofxDatGuiSliderEvent e) {
+    if (!selection.empty()) {
+        if (dynamic_cast<Curve*>(selection.at(0)) != nullptr) {
+            Curve* curve = dynamic_cast<Curve*>(selection.at(0));
+            int controlPointsIndex = curvePointControlDropdown->getSelected()->getIndex();
+            curve->controlPoints[controlPointsIndex].x = curveXSlider->getValue();
+            curve->controlPoints[controlPointsIndex].y = curveYSlider->getValue();
+            curve->controlPoints[controlPointsIndex].z = curveZSlider->getValue();
+        }
+    }
+}
+
+void Application3d::onAddBezierSurfaceEvent(ofxDatGuiButtonEvent e) {
+    Surface* surface = new Surface();
+    surface->surfaceBezierInstance->setup(250, 250, 3, 36);
+    std::string filename = "Bezier Surface";
+    surface->originalName = filename;
+    filename = getElementName(filename);
+    surface->name = filename;
+    addObject(surface, filename);
+
+
+}
+
+
+void Application3d::onSurfaceControlPointPositionChangeEvent(ofxDatGuiSliderEvent e) {
+    if (!selection.empty()) {
+        if (dynamic_cast<Surface*>(selection.at(0)) != nullptr) {
+            Surface* surface = dynamic_cast<Surface*>(selection.at(0));
+            int controlPointsIndex = surfacePointControlDropdown->getSelected()->getIndex();
+            surface->surfaceBezierInstance->modifierPointControle(controlPointsIndex,
+                ofVec3f(surfaceXSlider->getValue(), surfaceYSlider->getValue(), surfaceZSlider->getValue()));
+            surface->surfaceBezierInstance->update();
+        }
+    }
+}
+
+void Application3d::onSurfacePointControlSelectionEvent(ofxDatGuiDropdownEvent e) {
+    if (!selection.empty()) {
+        if (dynamic_cast<Surface*>(selection.at(0)) != nullptr) {
+            Surface* surface = dynamic_cast<Surface*>(selection.at(0));
+            int controlPointsIndex = surfacePointControlDropdown->getSelected()->getIndex();
+            ofVec3f controlPoint = surface->surfaceBezierInstance->getPointControle(controlPointsIndex);
+            surfaceXSlider->setValue(controlPoint.x);
+            surfaceYSlider->setValue(controlPoint.y);
+            surfaceZSlider->setValue(controlPoint.z);
+        }
+    }
+}
