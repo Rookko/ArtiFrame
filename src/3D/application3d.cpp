@@ -8,6 +8,8 @@
 #include "./3d/object/spherePrimitive.h"
 #include "./3d/object/cubePrimitive.h"
 #include "./3d/object/loadedFile.h"
+#include "./3D/object/curve.h"
+#include "./3D/object/surface.h"
 
 vector<Object*> allObject;
 vector<Object*> selectionObjet;
@@ -381,6 +383,14 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     else if (buttonLabel == "PBR")
     {
         renderMode = "PBR";
+    }
+
+    else if (buttonLabel == "Add Bezier Curve") {
+        AddBezierCurve();
+    }
+
+    else if (buttonLabel == "Add Bezier Surface") {
+        AddBezierSurface();
     }
 
     // Ajouter des cas supplémentaires selon les besoins pour d'autres formes.
@@ -865,4 +875,23 @@ void Application3d::onLightBrightnessChangeEvent(ofxDatGuiSliderEvent e) {
     renderer.pointLight.brightness = pointLightBrightness->getValue();
     renderer.directionalLight.brightness = directionalLightBrightness->getValue();
     renderer.spotLight.brightness = spotLightBrightness->getValue();
+}
+
+void Application3d::AddBezierCurve() {
+    Curve* curve = new Curve();
+    std::string curveName = "courbe Bezier";
+    curve->originalName = curveName;
+    curveName = getElementName(curveName);
+    curve->name = curveName;
+    addObject(curve, curveName);
+}
+
+void Application3d::AddBezierSurface() {
+    Surface* surface = new Surface();
+    surface->surfaceBezierInstance->setup(250, 250, 3, 36);
+    std::string surfaceName = "surface Bezier";
+    surface->originalName = surfaceName;
+    surfaceName = getElementName(surfaceName);
+    surface->name = surfaceName;
+    addObject(surface, surfaceName);
 }

@@ -35,6 +35,8 @@ private:
 void Curve::drawWireframeOverride() {
 	ofPushStyle();
 
+	ofSetColor(255, 255, 255);
+
 	BezierCurve curve = BezierCurve(controlPoints[0], controlPoints[1], controlPoints[2], controlPoints[3], controlPoints[4]);
 
 	int numSteps = 50;

@@ -117,6 +117,10 @@ public:
 
 	void onLightBrightnessChangeEvent(ofxDatGuiSliderEvent e);
 
+	void AddBezierCurve();
+
+	void AddBezierSurface();
+
 
 private:
 

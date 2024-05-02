@@ -46,10 +46,12 @@ void surfaceBezier::modifierPointControle(int index, ofVec3f newPos) {
 }
 
 void surfaceBezier::draw() {
+    ofSetColor(ofColor::white);
     mesh.draw();
 }
 
 void surfaceBezier::drawWireframe() {
+    ofSetColor(ofColor::white);
     mesh.drawWireframe();
 }
 
@@ -58,13 +60,13 @@ void surfaceBezier::update() {
 }
 
 void surfaceBezier::drawControls() {
-    ofSetColor(ofColor::black);
+    ofSetColor(ofColor::white);
     int index = 0;
     for (vector<ofVec3f> column : input) {
         for (ofVec3f controlPoints : column) {
-            ofSetColor(ofColor::black);
+            ofSetColor(ofColor::red);
             ofDrawSphere(controlPoints, 3);
-            ofSetColor(ofColor::white);
+            ofSetColor(ofColor::red);
             ofDrawBitmapString(to_string(index), controlPoints);
             index++;
         }
