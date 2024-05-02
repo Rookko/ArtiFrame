@@ -6,6 +6,8 @@
 #include "ofMain.h"
 #include "object/scene.h"
 #include "./object/light.h"
+#include "./object/tess.h"
+
 
 
 class Renderer3d
@@ -31,6 +33,8 @@ public:
 	ofShader* TextureMapping;
 	ofShader* pbr;
 	ofImage cubemap[6];
+
+	TesselatorUtil* tesselator;
 
 
 	void setup();
