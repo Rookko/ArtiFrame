@@ -5,11 +5,15 @@
 
 void Renderer3d::setup()
 {
+
 	scene = new Scene();
 	camera = new ofEasyCam();
 
 	camera->setupPerspective();
 	camera->setDistance(1000);
+
+	tesselator = new TesselatorUtil();
+	tesselator->setup();
 
 	TextureMapping = new ofShader();
 	TextureMapping->load("shaders/tone_mapping_330_vs.glsl", "shaders/tone_mapping_330_fs.glsl");
@@ -52,6 +56,12 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 {
 	ofPushStyle();
 
+	if (renderMode == RenderMode::Tesselation) {
+		tesselator->draw();
+		ofPopStyle();
+		return;
+	}
+
 	camera->begin();
 
 	if (renderMode != RenderMode::Wireframe) {
@@ -61,7 +71,7 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 	if (renderMode == RenderMode::Lambert || renderMode == RenderMode::Phong || renderMode == RenderMode::Blinn_Phong) {
 
 		// Set drawing mode to OF_MESH_FILL for drawing faces
-		//ofFill();
+		ofFill();
 
 		ofSetColor(pointLight.color);
 		ofDrawSphere(pointLight.position, 20);
