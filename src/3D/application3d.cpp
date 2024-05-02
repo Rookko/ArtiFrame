@@ -10,6 +10,8 @@
 #include "./3d/object/loadedFile.h"
 #include "./3D/object/curve.h"
 #include "./3D/object/surface.h"
+#include "./3D/object/customObject.h"
+
 
 vector<Object*> allObject;
 vector<Object*> selectionObjet;
@@ -328,7 +330,7 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     }
     else if (buttonLabel == "Add Custom Object")
     {
-        addMonkey();
+        AddCustomObject();
     }
 
     else if (buttonLabel == "Deleted")
@@ -474,7 +476,20 @@ void  Application3d::keyReleased(int key) {
 
 void Application3d::mousePressed(int x, int y, int button) {}
 
-void  Application3d::mouseReleased(int x, int y, int button) {}
+void  Application3d::mouseReleased(int x, int y, int button) {
+    ofLog() << "Mouse release at : " << x << ", " << y;
+    if (button == 2 && !selectionObjet.empty()) { // right click
+        if (dynamic_cast<CustomObject*>(selectionObjet.at(0)) != nullptr) {
+            CustomObject* customObject = dynamic_cast<CustomObject*>(selectionObjet.at(0));
+            ofVec3f worldMouse = renderer.camera->screenToWorld(ofVec3f(x, y, 0));
+            ofVec3f direction = worldMouse - renderer.camera->getPosition();
+            direction.normalize();
+            glm::vec3 newPoint = renderer.camera->getPosition() + direction * 500;
+            customObject->triangulator->addPoint(newPoint.x, newPoint.y, newPoint.z);
+            customObject->triangulator->triangule();
+        }
+    }
+}
 
 void Application3d::windowResized(int w, int h) {
     rezize3DTaskbar();
@@ -898,4 +913,13 @@ void Application3d::AddBezierSurface() {
     surfaceName = getElementName(surfaceName);
     surface->name = surfaceName;
     addObject(surface, surfaceName);
+}
+
+void Application3d::AddCustomObject() {
+    CustomObject* customObject = new CustomObject();
+    std::string filename = "Custom Object";
+    customObject->originalName = filename;
+    filename = getElementName(filename);
+    customObject->name = filename;
+    addObject(customObject, filename);
 }
