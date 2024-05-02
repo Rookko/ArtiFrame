@@ -12,8 +12,10 @@ int main()
 	windowSettings.setSize(1900, 1000);
 	windowSettings.setGLVersion(4, 6);
 
-	ofCreateWindow(windowSettings);
+	windowSettings.numSamples = 4;
+	windowSettings.doubleBuffering = true;
 
+	ofCreateWindow(windowSettings);
 	Application* application = new Application();
 	ofRunApp(application);
 }
