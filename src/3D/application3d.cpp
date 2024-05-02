@@ -10,6 +10,8 @@
 #include "./3d/object/loadedFile.h"
 #include "./3D/object/curve.h"
 #include "./3D/object/surface.h"
+#include "./3D/object/customObject.h"
+
 
 vector<Object*> allObject;
 vector<Object*> selectionObjet;
@@ -352,6 +354,10 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         addMonkey();
     }
+    else if (buttonLabel == "Add Custom Object")
+    {
+        AddCustomObject();
+    }
 
     else if (buttonLabel == "Deleted")
     {
@@ -432,7 +438,7 @@ void Application3d::setup3DTaskbar()
     //setupMenu(fileMenu, "File", optionWidth, { "Export", "Import" });
     setupMenu(fileMenu, "File", optionWidth, { "Export", "Import 3D Model", "Import Albedo Texture", "Import Normal Map", "Import Roughness Map", "Import Metallic Map", "Import Occlusion Map", "Random Texture"});
     // Configure le menu 'Add' avec plusieurs boutons pour ajouter différentes formes.
-    setupMenu(addMenu, "Add", optionWidth * 2, {"Add Cube", "Add Sphere", "Add Cylinder", "Add Monkey" , "Add Bezier Curve", "Add Bezier Surface" });
+    setupMenu(addMenu, "Add", optionWidth * 2, {"Add Cube", "Add Sphere", "Add Cylinder", "Add Monkey" , "Add Bezier Curve", "Add Bezier Surface", "Add Custom Object"});
 
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Deleted", "Deleted All" });
 
@@ -496,7 +502,20 @@ void  Application3d::keyReleased(int key) {
 
 void Application3d::mousePressed(int x, int y, int button) {}
 
-void  Application3d::mouseReleased(int x, int y, int button) {}
+void  Application3d::mouseReleased(int x, int y, int button) {
+    ofLog() << "Mouse release at : " << x << ", " << y;
+    if (button == 2 && !selectionObjet.empty()) { // right click
+        if (dynamic_cast<CustomObject*>(selectionObjet.at(0)) != nullptr) {
+            CustomObject* customObject = dynamic_cast<CustomObject*>(selectionObjet.at(0));
+            ofVec3f worldMouse = renderer.camera->screenToWorld(ofVec3f(x, y, 0));
+            ofVec3f direction = worldMouse - renderer.camera->getPosition();
+            direction.normalize();
+            glm::vec3 newPoint = renderer.camera->getPosition() + direction * 500;
+            customObject->triangulator->addPoint(newPoint.x, newPoint.y, newPoint.z);
+            customObject->triangulator->triangule();
+        }
+    }
+}
 
 void Application3d::windowResized(int w, int h) {
     rezize3DTaskbar();
@@ -922,61 +941,11 @@ void Application3d::AddBezierSurface() {
     addObject(surface, surfaceName);
 }
 
-void Application3d::onAddBezierCurveEvent(ofxDatGuiButtonEvent e) {
-    Curve* curve = new Curve();
-    std::string filename = "Bezier Curve";
-    curve->originalName = filename;
+void Application3d::AddCustomObject() {
+    CustomObject* customObject = new CustomObject();
+    std::string filename = "Custom Object";
+    customObject->originalName = filename;
     filename = getElementName(filename);
-    curve->name = filename;
-    addObject(curve, filename);
-}
-
-void Application3d::onCurveControlPointPositionChangeEvent(ofxDatGuiSliderEvent e) {
-    if (!selection.empty()) {
-        if (dynamic_cast<Curve*>(selection.at(0)) != nullptr) {
-            Curve* curve = dynamic_cast<Curve*>(selection.at(0));
-            int controlPointsIndex = curvePointControlDropdown->getSelected()->getIndex();
-            curve->controlPoints[controlPointsIndex].x = curveXSlider->getValue();
-            curve->controlPoints[controlPointsIndex].y = curveYSlider->getValue();
-            curve->controlPoints[controlPointsIndex].z = curveZSlider->getValue();
-        }
-    }
-}
-
-void Application3d::onAddBezierSurfaceEvent(ofxDatGuiButtonEvent e) {
-    Surface* surface = new Surface();
-    surface->surfaceBezierInstance->setup(250, 250, 3, 36);
-    std::string filename = "Bezier Surface";
-    surface->originalName = filename;
-    filename = getElementName(filename);
-    surface->name = filename;
-    addObject(surface, filename);
-
-
-}
-
-
-void Application3d::onSurfaceControlPointPositionChangeEvent(ofxDatGuiSliderEvent e) {
-    if (!selection.empty()) {
-        if (dynamic_cast<Surface*>(selection.at(0)) != nullptr) {
-            Surface* surface = dynamic_cast<Surface*>(selection.at(0));
-            int controlPointsIndex = surfacePointControlDropdown->getSelected()->getIndex();
-            surface->surfaceBezierInstance->modifierPointControle(controlPointsIndex,
-                ofVec3f(surfaceXSlider->getValue(), surfaceYSlider->getValue(), surfaceZSlider->getValue()));
-            surface->surfaceBezierInstance->update();
-        }
-    }
-}
-
-void Application3d::onSurfacePointControlSelectionEvent(ofxDatGuiDropdownEvent e) {
-    if (!selection.empty()) {
-        if (dynamic_cast<Surface*>(selection.at(0)) != nullptr) {
-            Surface* surface = dynamic_cast<Surface*>(selection.at(0));
-            int controlPointsIndex = surfacePointControlDropdown->getSelected()->getIndex();
-            ofVec3f controlPoint = surface->surfaceBezierInstance->getPointControle(controlPointsIndex);
-            surfaceXSlider->setValue(controlPoint.x);
-            surfaceYSlider->setValue(controlPoint.y);
-            surfaceZSlider->setValue(controlPoint.z);
-        }
-    }
+    customObject->name = filename;
+    addObject(customObject, filename);
 }

@@ -87,15 +87,15 @@ public:
 
 	void randomTexture();
 
-		void importNormalMap();
+	void importNormalMap();
 
+	void importMetallicMap();
 
-		void importMetallicMap();
+	void importRoughnesslMap();
 
+	void importOcclusionMap();
 
-		void importRoughnesslMap();
-
-		void importOcclusionMap();
+	void AddCustomObject();
 
 
 
