@@ -74,6 +74,32 @@ void Application3d::setup(int buttonSize) {
     spotLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
     spotLightBrightness = spotLightFolder->addSlider("Brightness", 0, 64, 40);
     spotLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+ 
+
+    curveMenu = new ofxDatGui(330, 550);
+    curveMenu->addHeader("Bezier Curve Menu");
+    vector<string> curveControlPoints = { "1", "2", "3", "4", "5" };
+    curvePointControlDropdown = curveMenu->addDropdown("Control Point", curveControlPoints);
+    curveXSlider = curveMenu->addSlider("Position X", -500, 500, 0);
+    curveXSlider->onSliderEvent(this, &Application3d::onCurveControlPointPositionChangeEvent);
+    curveYSlider = curveMenu->addSlider("Position Y", -500, 500, 0);
+    curveYSlider->onSliderEvent(this, &Application3d::onCurveControlPointPositionChangeEvent);
+    curveZSlider = curveMenu->addSlider("Position Z", -500, 500, 0);
+    curveZSlider->onSliderEvent(this, &Application3d::onCurveControlPointPositionChangeEvent);
+
+
+    surfaceMenu = new ofxDatGui(330, 550);
+    surfaceMenu->addHeader("Bezier Surface Menu");
+    vector<string> surfaceControlPoints = { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
+    surfacePointControlDropdown = surfaceMenu->addDropdown("Control Point", surfaceControlPoints);
+    surfacePointControlDropdown->onDropdownEvent(this, &Application3d::onSurfacePointControlSelectionEvent);
+    surfaceXSlider = surfaceMenu->addSlider("Position X", -500, 500, 0);
+    surfaceXSlider->onSliderEvent(this, &Application3d::onSurfaceControlPointPositionChangeEvent);
+    surfaceYSlider = surfaceMenu->addSlider("Position Y", -500, 500, 0);
+    surfaceYSlider->onSliderEvent(this, &Application3d::onSurfaceControlPointPositionChangeEvent);
+    surfaceZSlider = surfaceMenu->addSlider("Position Z", -500, 500, 0);
+    surfaceZSlider->onSliderEvent(this, &Application3d::onSurfaceControlPointPositionChangeEvent);
+
 
 
     // ofxDatGuiButton* changeCameraButton = objectMenu->addButton("Switch Camera Mode");
@@ -894,4 +920,63 @@ void Application3d::AddBezierSurface() {
     surfaceName = getElementName(surfaceName);
     surface->name = surfaceName;
     addObject(surface, surfaceName);
+}
+
+void Application3d::onAddBezierCurveEvent(ofxDatGuiButtonEvent e) {
+    Curve* curve = new Curve();
+    std::string filename = "Bezier Curve";
+    curve->originalName = filename;
+    filename = getElementName(filename);
+    curve->name = filename;
+    addObject(curve, filename);
+}
+
+void Application3d::onCurveControlPointPositionChangeEvent(ofxDatGuiSliderEvent e) {
+    if (!selection.empty()) {
+        if (dynamic_cast<Curve*>(selection.at(0)) != nullptr) {
+            Curve* curve = dynamic_cast<Curve*>(selection.at(0));
+            int controlPointsIndex = curvePointControlDropdown->getSelected()->getIndex();
+            curve->controlPoints[controlPointsIndex].x = curveXSlider->getValue();
+            curve->controlPoints[controlPointsIndex].y = curveYSlider->getValue();
+            curve->controlPoints[controlPointsIndex].z = curveZSlider->getValue();
+        }
+    }
+}
+
+void Application3d::onAddBezierSurfaceEvent(ofxDatGuiButtonEvent e) {
+    Surface* surface = new Surface();
+    surface->surfaceBezierInstance->setup(250, 250, 3, 36);
+    std::string filename = "Bezier Surface";
+    surface->originalName = filename;
+    filename = getElementName(filename);
+    surface->name = filename;
+    addObject(surface, filename);
+
+
+}
+
+
+void Application3d::onSurfaceControlPointPositionChangeEvent(ofxDatGuiSliderEvent e) {
+    if (!selection.empty()) {
+        if (dynamic_cast<Surface*>(selection.at(0)) != nullptr) {
+            Surface* surface = dynamic_cast<Surface*>(selection.at(0));
+            int controlPointsIndex = surfacePointControlDropdown->getSelected()->getIndex();
+            surface->surfaceBezierInstance->modifierPointControle(controlPointsIndex,
+                ofVec3f(surfaceXSlider->getValue(), surfaceYSlider->getValue(), surfaceZSlider->getValue()));
+            surface->surfaceBezierInstance->update();
+        }
+    }
+}
+
+void Application3d::onSurfacePointControlSelectionEvent(ofxDatGuiDropdownEvent e) {
+    if (!selection.empty()) {
+        if (dynamic_cast<Surface*>(selection.at(0)) != nullptr) {
+            Surface* surface = dynamic_cast<Surface*>(selection.at(0));
+            int controlPointsIndex = surfacePointControlDropdown->getSelected()->getIndex();
+            ofVec3f controlPoint = surface->surfaceBezierInstance->getPointControle(controlPointsIndex);
+            surfaceXSlider->setValue(controlPoint.x);
+            surfaceYSlider->setValue(controlPoint.y);
+            surfaceZSlider->setValue(controlPoint.z);
+        }
+    }
 }

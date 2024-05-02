@@ -64,6 +64,10 @@ public:
 
 	void onEnableTranslationAnimation(ofxDatGuiButtonEvent e);
 
+	void onCurveControlPointPositionChangeEvent(ofxDatGuiSliderEvent e);
+
+	void onAddBezierCurveEvent(ofxDatGuiButtonEvent e);
+
 	string getElementName(string filename);
 
 	std::vector<Object*> getAllElementFromScene();
@@ -111,11 +115,31 @@ public:
 	bool is2Pressed = false;
 	bool is3Pressed = false;
 
+	ofxDatGui* surfaceMenu;
+	ofxDatGuiDropdown* surfacePointControlDropdown;
+	ofxDatGuiSlider* surfaceXSlider;
+	ofxDatGuiSlider* surfaceYSlider;
+	ofxDatGuiSlider* surfaceZSlider;
+
+	vector<Object*> selection;
+
+	ofxDatGuiDropdown* curvePointControlDropdown;
+	ofxDatGui* curveMenu;
+	ofxDatGuiSlider* curveXSlider;
+	ofxDatGuiSlider* curveYSlider;
+	ofxDatGuiSlider* curveZSlider;
+
 	//ofImage* basicCursor;
 
 	void onLightColorChangeEvent(ofxDatGuiColorPickerEvent e);
 
 	void onLightBrightnessChangeEvent(ofxDatGuiSliderEvent e);
+
+	void onAddBezierSurfaceEvent(ofxDatGuiButtonEvent e);
+
+	void onSurfaceControlPointPositionChangeEvent(ofxDatGuiSliderEvent e);
+
+	void onSurfacePointControlSelectionEvent(ofxDatGuiDropdownEvent e);
 
 	void AddBezierCurve();
 
