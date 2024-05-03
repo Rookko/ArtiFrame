@@ -455,9 +455,9 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         renderMode = "Phong";
     }
-    else if (buttonLabel == "Phill-Phong")
+    else if (buttonLabel == "Blinn-Phong")
     {
-        renderMode = "Phill-Phong";
+        renderMode = "Blinn-Phong";
     }
     else if (buttonLabel == "Tesselation")
     {
@@ -500,7 +500,7 @@ void Application3d::setup3DTaskbar()
 
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Deleted", "Deleted All" });
 
-    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Lambert","Phong","Phill-Phong","Tesselation","Texture","PBR", "Ray Tracing"});
+    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Lambert","Phong","Blinn-Phong","Tesselation","Texture","PBR", "Ray Tracing"});
 
     setupMenu(cameraMenu, "Camera Menu", optionWidth * 5, { "Perspective", "Orthogonale" });
 
@@ -712,7 +712,7 @@ Renderer3d::RenderMode Application3d::getRenderMode() {
         return Renderer3d::RenderMode::Lambert;
     else if (renderMode == "Phong")
         return Renderer3d::RenderMode::Phong;
-    else if (renderMode == "Phill-Phong")
+    else if (renderMode == "Blinn-Phong")
         return Renderer3d::RenderMode::Blinn_Phong;
     else if (renderMode == "Tesselation")
         return Renderer3d::RenderMode::Tesselation;
