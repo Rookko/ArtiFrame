@@ -991,7 +991,7 @@ void Application3d::AddBezierCurve() {
 
 void Application3d::AddBezierSurface() {
     Surface* surface = new Surface();
-    surface->surfaceBezierInstance->setup(250, 250, 3, 8);
+    surface->surfaceBezierInstance->setup(250, 250, 3, 36);
     std::string surfaceName = "surface Bezier";
     surface->originalName = surfaceName;
     surfaceName = getElementName(surfaceName);
@@ -1019,18 +1019,6 @@ void Application3d::onCurveControlPointPositionChangeEvent(ofxDatGuiSliderEvent 
             curve->controlPoints[controlPointsIndex].z = curveZSlider->getValue();
         }
     }
-}
-
-void Application3d::onAddBezierSurfaceEvent(ofxDatGuiButtonEvent e) {
-    Surface* surface = new Surface();
-    surface->surfaceBezierInstance->setup(250, 250, 3, 36);
-    std::string filename = "Bezier Surface";
-    surface->originalName = filename;
-    filename = getElementName(filename);
-    surface->name = filename;
-    addObject(surface, filename);
-
-
 }
 
 
