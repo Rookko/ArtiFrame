@@ -4,11 +4,6 @@ void LoadedFile::drawWireframeOverride() {
 	model->drawWireframe();
 }
 
-
-void LoadedFile::drawSolidOverride() {
-	model->drawFaces();
-}
-
 void LoadedFile::drawShaderOverride() {
 	model->disableMaterials();
 

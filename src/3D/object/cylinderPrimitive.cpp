@@ -5,12 +5,6 @@ void CylinderPrimitive::drawWireframeOverride()
 	cylinder->draw(OF_MESH_WIREFRAME);
 }
 
-void CylinderPrimitive::drawSolidOverride() {
-	cylinder->enableColors();
-	cylinder->enableTextures();
-	cylinder->drawFaces();
-}
-
 void CylinderPrimitive::drawShaderOverride() {
 	cylinder->drawFaces();
 }

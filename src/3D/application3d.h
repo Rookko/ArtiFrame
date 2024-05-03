@@ -115,20 +115,6 @@ public:
 	bool is2Pressed = false;
 	bool is3Pressed = false;
 
-	ofxDatGui* surfaceMenu;
-	ofxDatGuiDropdown* surfacePointControlDropdown;
-	ofxDatGuiSlider* surfaceXSlider;
-	ofxDatGuiSlider* surfaceYSlider;
-	ofxDatGuiSlider* surfaceZSlider;
-
-	vector<Object*> selection;
-
-	ofxDatGuiDropdown* curvePointControlDropdown;
-	ofxDatGui* curveMenu;
-	ofxDatGuiSlider* curveXSlider;
-	ofxDatGuiSlider* curveYSlider;
-	ofxDatGuiSlider* curveZSlider;
-
 	//ofImage* basicCursor;
 
 	void onLightColorChangeEvent(ofxDatGuiColorPickerEvent e);
@@ -206,5 +192,18 @@ private:
 	ofxDatGuiSlider* pointLightBrightness;
 	ofxDatGuiSlider* directionalLightBrightness;
 	ofxDatGuiSlider* spotLightBrightness;
+
+	//Menu Curve et surface
+	ofxDatGui* surfaceMenu;
+	ofxDatGuiDropdown* surfacePointControlDropdown;
+	ofxDatGuiSlider* surfaceXSlider;
+	ofxDatGuiSlider* surfaceYSlider;
+	ofxDatGuiSlider* surfaceZSlider;
+
+	ofxDatGuiDropdown* curvePointControlDropdown;
+	ofxDatGui* curveMenu;
+	ofxDatGuiSlider* curveXSlider;
+	ofxDatGuiSlider* curveYSlider;
+	ofxDatGuiSlider* curveZSlider;
 
 };

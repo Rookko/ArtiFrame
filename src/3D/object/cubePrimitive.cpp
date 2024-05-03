@@ -5,12 +5,6 @@ void CubePrimitive::drawWireframeOverride()
 	cube->draw(OF_MESH_WIREFRAME);
 }
 
-void CubePrimitive::drawSolidOverride() {
-	cube->enableColors();
-	cube->enableTextures();
-	cube->drawFaces();
-}
-
 void CubePrimitive::drawShaderOverride() {
 	cube->drawFaces();
 }

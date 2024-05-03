@@ -10,8 +10,6 @@ public:
 
 	void drawWireframeOverride();
 
-	void drawSolidOverride();
-
 	void drawShaderOverride();
 
 	void drawBoundingBoxOverride();
