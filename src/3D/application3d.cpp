@@ -35,15 +35,16 @@ void Application3d::setup(int buttonSize) {
     selectionScrollView->setPosition(optionWidth * 6, header->getHeight() - 1);
     selectionScrollView->setOpacity(0.1);
 
-    transformationMenu = new ofxDatGui(300, 300);
-    transformationMenu->addLabel("|~Transformation Menu~|");
-    transformationMenu->addHeader(":: Click here to drag ::");
+    objectMenu = new ofxDatGui(300, 300);
+    objectMenu->addLabel("|------------------Object Menu------------------|");
+    objectMenu->addLabel("|~Transformation Menu~|");
+    objectMenu->addHeader(":: Click here to drag ::");
     vector<string> transformationOptions = { "Translation", "Rotation", "Proportion" };
-    transformationDropdown = transformationMenu->addDropdown("Transformation Type", transformationOptions);
-    xAxisSlider = transformationMenu->addSlider("X", -1000, 1000, 0);
-    yAxisSlider = transformationMenu->addSlider("Y", -1000, 1000, 0);
-    zAxisSlider = transformationMenu->addSlider("Z", -1000, 1000, 0);
-    ofxDatGuiButton* applyButton = transformationMenu->addButton("Apply");
+    transformationDropdown = objectMenu->addDropdown("Transformation Type", transformationOptions);
+    xAxisSlider = objectMenu->addSlider("X", -1000, 1000, 0);
+    yAxisSlider = objectMenu->addSlider("Y", -1000, 1000, 0);
+    zAxisSlider = objectMenu->addSlider("Z", -1000, 1000, 0);
+    ofxDatGuiButton* applyButton = objectMenu->addButton("Apply");
     applyButton->onButtonEvent(this, &Application3d::onApplyTransformationEvent);
 
     transformationDropdown->onDropdownEvent([&](ofxDatGuiDropdownEvent e) {});   //Remove  [WARNING] :: Event Handler Not Set form console
@@ -51,31 +52,63 @@ void Application3d::setup(int buttonSize) {
     yAxisSlider->onSliderEvent([&](ofxDatGuiSliderEvent e) { });
     zAxisSlider->onSliderEvent([&](ofxDatGuiSliderEvent e) {});
 
-    transformationMenu->addLabel("|~Animation Menu~|");
-    ofxDatGuiButton* enableTurntableBtn = transformationMenu->addButton("Enable Turntable");
+    objectMenu->addLabel("|~Animation Menu~|");
+    ofxDatGuiButton* enableTurntableBtn = objectMenu->addButton("Enable Turntable");
     enableTurntableBtn->onButtonEvent(this, &Application3d::onEnableTurntable);
-    ofxDatGuiButton* enableTranslationAnimBtn = transformationMenu->addButton("Enable Translation Animation");
+    ofxDatGuiButton* enableTranslationAnimBtn = objectMenu->addButton("Enable Translation Animation");
     enableTranslationAnimBtn->onButtonEvent(this, &Application3d::onEnableTranslationAnimation);
-    transformationMenu->setTheme(new ofxDatGuiThemeSmoke());
-    transformationMenu->addLabel("|~Light Menu~|");
-    ofxDatGuiFolder* ambiantLightFolder = transformationMenu->addFolder("Ambiant Light");
+    objectMenu->setTheme(new ofxDatGuiThemeSmoke());
+    objectMenu->addLabel("|~Light Menu~|");
+    ofxDatGuiFolder* ambiantLightFolder = objectMenu->addFolder("Ambiant Light");
     ambiantLightColor = ambiantLightFolder->addColorPicker("Color", renderer.ambiantLight.color);
     ambiantLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
-    ofxDatGuiFolder* pointLightFolder = transformationMenu->addFolder("Point Light");
+    ofxDatGuiFolder* pointLightFolder = objectMenu->addFolder("Point Light");
     pointLightColor = pointLightFolder->addColorPicker("Color", renderer.pointLight.color);
     pointLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
     pointLightBrightness = pointLightFolder->addSlider("Brightness", 0, 64, 40);
     pointLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
-    ofxDatGuiFolder* directionalLightFolder = transformationMenu->addFolder("Directional Light");
+    ofxDatGuiFolder* directionalLightFolder = objectMenu->addFolder("Directional Light");
     directionalLightColor = directionalLightFolder->addColorPicker("Color", renderer.directionalLight.color);
     directionalLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
     directionalLightBrightness = directionalLightFolder->addSlider("Brightness", 0, 64, 40);
     directionalLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
-    ofxDatGuiFolder* spotLightFolder = transformationMenu->addFolder("Spot Light");
+    ofxDatGuiFolder* spotLightFolder = objectMenu->addFolder("Spot Light");
     spotLightColor = spotLightFolder->addColorPicker("Color", renderer.spotLight.color);
     spotLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
     spotLightBrightness = spotLightFolder->addSlider("Brightness", 0, 64, 40);
     spotLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+    objectMenu->addLabel("|~Texture Menu~|");
+    vector<string> magFilterOptions = { "Nearest", "Linear" };
+    textureMagFilterDropdown = objectMenu->addDropdown("Image Scaling", magFilterOptions);
+    textureMagFilterDropdown->onDropdownEvent(this, &Application3d::onTextureMagFilterDropdownSelection);
+    vector<string> filterOptions = { "None", "Gaussian Blur", "Sharpen", "Edge Detect" };
+    textureFilterDropdown = objectMenu->addDropdown("Texture Filter", filterOptions);
+    textureFilterDropdown->onDropdownEvent(this, &Application3d::onTextureFilterDropdownSelection);
+    objectMenu->addLabel("Tone Mapping");
+    exposureSlider = objectMenu->addSlider("Exposure", 0, 5, 1);
+    exposureSlider->onSliderEvent(this, &Application3d::onToneMappingEvent);
+    gammaSlider = objectMenu->addSlider("Gamma", 0, 5, 2.2);
+    gammaSlider->onSliderEvent(this, &Application3d::onToneMappingEvent);
+    objectMenu->addLabel("|~Material Menu~|");
+    ofxDatGuiFolder* colorFolder = objectMenu->addFolder("Color");
+    materialAmbiantCP = colorFolder->addColorPicker("Ambiant", ofFloatColor(0.1, 0.1, 0.1));
+    materialAmbiantCP->onColorPickerEvent(this, &Application3d::onMaterialColorChangeEvent);
+    materialDiffuseCP = colorFolder->addColorPicker("Diffuse", ofFloatColor(0.0, 0.6, 0.6));
+    materialDiffuseCP->onColorPickerEvent(this, &Application3d::onMaterialColorChangeEvent);
+    materialSpecularCP = colorFolder->addColorPicker("Specular", ofFloatColor(1.0, 0.0, 1.0));
+    materialSpecularCP->onColorPickerEvent(this, &Application3d::onMaterialColorChangeEvent);
+    ofxDatGuiFolder* factorFolder = objectMenu->addFolder("Factor");
+    materialMetallicSlider = factorFolder->addSlider("Metallic", 0, 1, 0.5);
+    materialMetallicSlider->onSliderEvent(this, &Application3d::onMaterialFactorChangeEvent);
+    materialRoughnessSlider = factorFolder->addSlider("Roughness", 0, 1, 0.5);
+    materialRoughnessSlider->onSliderEvent(this, &Application3d::onMaterialFactorChangeEvent);
+    materialOcclusionSlider = factorFolder->addSlider("Occlusion", 0, 5, 1);
+    materialOcclusionSlider->onSliderEvent(this, &Application3d::onMaterialFactorChangeEvent);
+    materialBrightnessSlider = factorFolder->addSlider("Brightness", 0, 5, 1);
+    materialBrightnessSlider->onSliderEvent(this, &Application3d::onMaterialFactorChangeEvent);
+    materialFresnelIorColorPicker = objectMenu->addColorPicker("Fresnel IOR");
+    materialFresnelIorColorPicker->onColorPickerEvent(this, &Application3d::onMaterialFactorIorChangeEvent);
+
  
 
     curveMenu = new ofxDatGui(330, 550);
@@ -237,7 +270,7 @@ void Application3d::showUi()
     editMenu->setVisible(true);
     renderMenu->setVisible(true);
     header->setVisible(true);
-    transformationMenu->setVisible(true);
+    objectMenu->setVisible(true);
     cameraMenu->setVisible(true);
     
 }
@@ -249,7 +282,7 @@ void Application3d::hideUi()
     editMenu->setVisible(false);
     renderMenu->setVisible(false);
     header->setVisible(false);
-    transformationMenu->setVisible(false);
+    objectMenu->setVisible(false);
     cameraMenu->setVisible(false);
     
 }
@@ -1015,5 +1048,110 @@ void Application3d::onSurfacePointControlSelectionEvent(ofxDatGuiDropdownEvent e
             surfaceYSlider->setValue(controlPoint.y);
             surfaceZSlider->setValue(controlPoint.z);
         }
+    }
+}
+
+void Application3d::onTextureMagFilterDropdownSelection(ofxDatGuiDropdownEvent e) {
+    for (Object* object : selectionObjet) {
+        if (e.child == 0)
+            object->magFilter = GL_NEAREST;
+        if (e.child == 1)
+            object->magFilter = GL_LINEAR;
+    }
+}
+
+void Application3d::onTextureFilterDropdownSelection(ofxDatGuiDropdownEvent e) {
+    float kernel[9];
+    for (Object* object : selectionObjet) {
+        if (e.child == 0) {
+            object->filteredTexture = object->texture;
+            return;
+        }
+        if (e.child == 1) {
+            float gaussianBlurKernel[9] =
+            { 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0,
+               1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0,
+               1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0 };
+            copy(begin(gaussianBlurKernel), end(gaussianBlurKernel), begin(kernel));
+        }
+        if (e.child == 2) {
+            float sharpenKernel[9] = { 0, -1, 0, -1, 5, -1, 0, -1, 0 };
+            copy(begin(sharpenKernel), end(sharpenKernel), begin(kernel));
+        }
+        if (e.child == 3) {
+            float edgeDetectKernel[9] = { 0, 1, 0, 1, -4, 1, 0, 1, 0 };
+            copy(begin(edgeDetectKernel), end(edgeDetectKernel), begin(kernel));
+        }
+
+        int width = object->texture.getWidth();
+        int height = object->texture.getHeight();
+
+        ofPixels pixels;
+        object->texture.readToPixels(pixels);
+        ofImage redImage, greenImage, blueImage;
+        redImage.allocate(width, height, OF_IMAGE_GRAYSCALE);
+        greenImage.allocate(width, height, OF_IMAGE_GRAYSCALE);
+        blueImage.allocate(width, height, OF_IMAGE_GRAYSCALE);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int index = y * width + x;
+                redImage.getPixels()[index] = pixels[index * 3];
+                greenImage.getPixels()[index] = pixels[index * 3 + 1];
+                blueImage.getPixels()[index] = pixels[index * 3 + 2];
+            }
+        }
+        redImage.update();
+        greenImage.update();
+        blueImage.update();
+
+        ofImage filteredImage;
+        filteredImage.allocate(width, height, OF_IMAGE_COLOR);
+        for (int c = 0; c < 3; c++) {
+            for (int y = 1; y < height - 1; y++) {
+                for (int x = 1; x < width - 1; x++) {
+                    float sum = 0.0;
+                    for (int j = -1; j <= 1; j++) {
+                        for (int i = -1; i <= 1; i++) {
+                            int index = (y + j) * width + (x + i);
+                            sum += pixels[index * 3 + c] * kernel[(j + 1) * 3 + (i + 1)];
+                        }
+                    }
+                    int index = y * width + x;
+                    filteredImage.getPixels()[index * 3 + c] = ofClamp(sum, 0, 255);
+                }
+            }
+        }
+        filteredImage.update();
+        object->filteredTexture.allocate(filteredImage);
+    }
+}
+
+void Application3d::onToneMappingEvent(ofxDatGuiSliderEvent e) {
+    for (Object* object : selectionObjet) {
+        object->exposure = exposureSlider->getValue();
+        object->gamma = gammaSlider->getValue();
+    }
+}
+
+void Application3d::onMaterialColorChangeEvent(ofxDatGuiColorPickerEvent e) {
+    for (Object* object : selectionObjet) {
+        object->materialAmbiant = materialAmbiantCP->getColor();
+        object->materialDiffuse = materialDiffuseCP->getColor();
+        object->materialSpecular = materialSpecularCP->getColor();
+    }
+}
+
+void Application3d::onMaterialFactorChangeEvent(ofxDatGuiSliderEvent e) {
+    for (Object* object : selectionObjet) {
+        object->materialMetallic = materialMetallicSlider->getValue();
+        object->materialRoughness = materialRoughnessSlider->getValue();
+        object->materialOcclusion = materialOcclusionSlider->getValue();
+        object->materialBrightness = materialBrightnessSlider->getValue();
+    }
+}
+
+void Application3d::onMaterialFactorIorChangeEvent(ofxDatGuiColorPickerEvent e) {
+    for (Object* object : selectionObjet) {
+        object->materialIor = materialFresnelIorColorPicker->getColor();
     }
 }

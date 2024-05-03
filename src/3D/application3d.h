@@ -97,6 +97,19 @@ public:
 
 	void AddCustomObject();
 
+	void onTextureMagFilterDropdownSelection(ofxDatGuiDropdownEvent e);
+
+	void onTextureFilterDropdownSelection(ofxDatGuiDropdownEvent e);
+
+	void onToneMappingEvent(ofxDatGuiSliderEvent e);
+
+	void onMaterialColorChangeEvent(ofxDatGuiColorPickerEvent e);
+
+	void onMaterialFactorChangeEvent(ofxDatGuiSliderEvent e);
+
+	void onMaterialFactorIorChangeEvent(ofxDatGuiColorPickerEvent e);
+
+
 
 
 	int optionWidth;
@@ -160,20 +173,18 @@ private:
 	ofxDatGuiScrollView* objectScrollView;
 	ofxDatGuiScrollView* selectionScrollView;
 
-	ofxDatGui* transformationMenu;
+	ofxDatGui* objectMenu;
 	ofxDatGuiDropdown* transformationDropdown;
 	ofxDatGuiSlider* xAxisSlider;
 	ofxDatGuiSlider* yAxisSlider;
 	ofxDatGuiSlider* zAxisSlider;
 
 	//Menu Texture Material
-	ofxDatGui* textureMenu;
 	ofxDatGuiDropdown* textureMagFilterDropdown;
 	ofxDatGuiDropdown* textureFilterDropdown;
 	ofxDatGuiSlider* exposureSlider;
 	ofxDatGuiSlider* gammaSlider;
 
-	ofxDatGui* materialMenu;
 	ofxDatGuiColorPicker* materialAmbiantCP;
 	ofxDatGuiColorPicker* materialDiffuseCP;
 	ofxDatGuiColorPicker* materialSpecularCP;
@@ -184,7 +195,6 @@ private:
 	ofxDatGuiColorPicker* materialFresnelIorColorPicker;
 
 	//Menu light
-	ofxDatGui* lightMenu;
 	ofxDatGuiColorPicker* ambiantLightColor;
 	ofxDatGuiColorPicker* pointLightColor;
 	ofxDatGuiColorPicker* directionalLightColor;
