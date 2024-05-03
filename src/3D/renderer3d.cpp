@@ -9,7 +9,6 @@ void Renderer3d::setup()
 	ofSetFrameRate(60);
 	ofDisableArbTex(); // Enable 2d texture
 	ofSetLogLevel(OF_LOG_VERBOSE);
-	ofSetSphereResolution(32);
 
 
 	scene = new Scene();
