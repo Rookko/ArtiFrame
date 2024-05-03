@@ -11,7 +11,7 @@ void Object::drawWireframe()
 	ofRotateZDeg(rotationZ);
 
 	ofScale(scaleX, scaleY, scaleZ);
-
+	ofSetColor(ofColor::white);
 	drawWireframeOverride();
 
 	for (Object* child : children) {
