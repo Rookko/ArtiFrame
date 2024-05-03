@@ -110,6 +110,7 @@ void Application3d::setup(int buttonSize) {
     spotLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
     spotLightBrightness = spotLightFolder->addSlider("Brightness", 0, 64, 40);
     spotLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+    objectMenu->addFooter();
 
     objectMenu->setTheme(new ofxDatGuiThemeSmoke());
 
@@ -987,7 +988,7 @@ void Application3d::AddBezierCurve() {
 
 void Application3d::AddBezierSurface() {
     Surface* surface = new Surface();
-    surface->surfaceBezierInstance->setup(250, 250, 3, 36);
+    surface->surfaceBezierInstance->setup(250, 250, 3, 8);
     std::string surfaceName = "surface Bezier";
     surface->originalName = surfaceName;
     surfaceName = getElementName(surfaceName);
