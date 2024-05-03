@@ -36,7 +36,7 @@ void Application3d::setup(int buttonSize) {
     selectionScrollView->setOpacity(0.1);
 
     objectMenu = new ofxDatGui(300, 300);
-    objectMenu->addLabel("|------------------Object Menu------------------|");
+    objectMenu->addLabel("|-----------------------Object Menu-----------------------|");
     objectMenu->addLabel("|~Transformation Menu~|");
     objectMenu->addHeader(":: Click here to drag ::");
     vector<string> transformationOptions = { "Translation", "Rotation", "Proportion" };
@@ -57,26 +57,7 @@ void Application3d::setup(int buttonSize) {
     enableTurntableBtn->onButtonEvent(this, &Application3d::onEnableTurntable);
     ofxDatGuiButton* enableTranslationAnimBtn = objectMenu->addButton("Enable Translation Animation");
     enableTranslationAnimBtn->onButtonEvent(this, &Application3d::onEnableTranslationAnimation);
-    objectMenu->setTheme(new ofxDatGuiThemeSmoke());
-    objectMenu->addLabel("|~Light Menu~|");
-    ofxDatGuiFolder* ambiantLightFolder = objectMenu->addFolder("Ambiant Light");
-    ambiantLightColor = ambiantLightFolder->addColorPicker("Color", renderer.ambiantLight.color);
-    ambiantLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
-    ofxDatGuiFolder* pointLightFolder = objectMenu->addFolder("Point Light");
-    pointLightColor = pointLightFolder->addColorPicker("Color", renderer.pointLight.color);
-    pointLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
-    pointLightBrightness = pointLightFolder->addSlider("Brightness", 0, 64, 40);
-    pointLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
-    ofxDatGuiFolder* directionalLightFolder = objectMenu->addFolder("Directional Light");
-    directionalLightColor = directionalLightFolder->addColorPicker("Color", renderer.directionalLight.color);
-    directionalLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
-    directionalLightBrightness = directionalLightFolder->addSlider("Brightness", 0, 64, 40);
-    directionalLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
-    ofxDatGuiFolder* spotLightFolder = objectMenu->addFolder("Spot Light");
-    spotLightColor = spotLightFolder->addColorPicker("Color", renderer.spotLight.color);
-    spotLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
-    spotLightBrightness = spotLightFolder->addSlider("Brightness", 0, 64, 40);
-    spotLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+   
     objectMenu->addLabel("|~Texture Menu~|");
     vector<string> magFilterOptions = { "Nearest", "Linear" };
     textureMagFilterDropdown = objectMenu->addDropdown("Image Scaling", magFilterOptions);
@@ -89,6 +70,7 @@ void Application3d::setup(int buttonSize) {
     exposureSlider->onSliderEvent(this, &Application3d::onToneMappingEvent);
     gammaSlider = objectMenu->addSlider("Gamma", 0, 5, 2.2);
     gammaSlider->onSliderEvent(this, &Application3d::onToneMappingEvent);
+
     objectMenu->addLabel("|~Material Menu~|");
     ofxDatGuiFolder* colorFolder = objectMenu->addFolder("Color");
     materialAmbiantCP = colorFolder->addColorPicker("Ambiant", ofFloatColor(0.1, 0.1, 0.1));
@@ -108,6 +90,28 @@ void Application3d::setup(int buttonSize) {
     materialBrightnessSlider->onSliderEvent(this, &Application3d::onMaterialFactorChangeEvent);
     materialFresnelIorColorPicker = objectMenu->addColorPicker("Fresnel IOR");
     materialFresnelIorColorPicker->onColorPickerEvent(this, &Application3d::onMaterialFactorIorChangeEvent);
+
+    objectMenu->addLabel("|~Light Menu~|");
+    ofxDatGuiFolder* ambiantLightFolder = objectMenu->addFolder("Ambiant Light");
+    ambiantLightColor = ambiantLightFolder->addColorPicker("Color", renderer.ambiantLight.color);
+    ambiantLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    ofxDatGuiFolder* pointLightFolder = objectMenu->addFolder("Point Light");
+    pointLightColor = pointLightFolder->addColorPicker("Color", renderer.pointLight.color);
+    pointLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    pointLightBrightness = pointLightFolder->addSlider("Brightness", 0, 64, 40);
+    pointLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+    ofxDatGuiFolder* directionalLightFolder = objectMenu->addFolder("Directional Light");
+    directionalLightColor = directionalLightFolder->addColorPicker("Color", renderer.directionalLight.color);
+    directionalLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    directionalLightBrightness = directionalLightFolder->addSlider("Brightness", 0, 64, 40);
+    directionalLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+    ofxDatGuiFolder* spotLightFolder = objectMenu->addFolder("Spot Light");
+    spotLightColor = spotLightFolder->addColorPicker("Color", renderer.spotLight.color);
+    spotLightColor->onColorPickerEvent(this, &Application3d::onLightColorChangeEvent);
+    spotLightBrightness = spotLightFolder->addSlider("Brightness", 0, 64, 40);
+    spotLightBrightness->onSliderEvent(this, &Application3d::onLightBrightnessChangeEvent);
+
+    objectMenu->setTheme(new ofxDatGuiThemeSmoke());
 
  
 
