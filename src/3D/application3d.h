@@ -7,6 +7,7 @@
 #include "ofxDatGui.h"
 
 #include "renderer3d.h"
+#include "./3d/object/rayTracer.h"
 
 class Application3d : public ofBaseApp
 {
@@ -108,6 +109,8 @@ public:
 	void onMaterialFactorChangeEvent(ofxDatGuiSliderEvent e);
 
 	void onMaterialFactorIorChangeEvent(ofxDatGuiColorPickerEvent e);
+
+	void rayTracingRender();
 
 
 

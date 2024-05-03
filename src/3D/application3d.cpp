@@ -471,7 +471,10 @@ void Application3d::onAddShapeEvent(const ofxDatGuiButtonEvent& e)
     {
         renderMode = "PBR";
     }
-
+    else if (buttonLabel == "Ray Tracing")
+    {
+        rayTracingRender();
+    }
     else if (buttonLabel == "Add Bezier Curve") {
         AddBezierCurve();
     }
@@ -497,7 +500,7 @@ void Application3d::setup3DTaskbar()
 
     setupMenu(editMenu, "Edit", optionWidth * 3, { "Undo", "Redo", "Deleted", "Deleted All" });
 
-    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Lambert","Phong","Phill-Phong","Tesselation","Texture","PBR"});
+    setupMenu(renderMenu, "Render Mode", optionWidth * 4, { "WireFrame", "Lambert","Phong","Phill-Phong","Tesselation","Texture","PBR", "Ray Tracing"});
 
     setupMenu(cameraMenu, "Camera Menu", optionWidth * 5, { "Perspective", "Orthogonale" });
 
@@ -1159,4 +1162,15 @@ void Application3d::onMaterialFactorIorChangeEvent(ofxDatGuiColorPickerEvent e) 
     for (Object* object : selectionObjet) {
         object->materialIor = materialFresnelIorColorPicker->getColor();
     }
+}
+
+void Application3d::rayTracingRender() {
+    auto render = [](ofCamera* camera, Scene* scene) {
+        RayTracer* rayTracer = new RayTracer();
+        rayTracer->run(camera, scene);
+        delete rayTracer;
+        };
+
+    thread task(render, renderer.camera, renderer.scene);
+    task.detach();
 }
