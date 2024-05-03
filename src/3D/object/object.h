@@ -55,7 +55,7 @@ public:
 	void drawWireframe();
 	virtual void drawWireframeOverride() = 0;
 
-	void drawTexture(ofShader* TextureMapping);
+	void drawTexture(ofShader* textureMapping);
 	void drawShader(ofShader* shader, Light ambiantLight, Light pointLight, Light directionalLight, Light spotLight);
 	void drawPBR(ofShader* shader, Light pointLight, Light directionalLight, Light spotLight);
 	virtual void drawShaderOverride() = 0;

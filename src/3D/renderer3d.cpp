@@ -6,6 +6,12 @@
 void Renderer3d::setup()
 {
 
+	ofSetFrameRate(60);
+	ofDisableArbTex(); // Enable 2d texture
+	ofSetLogLevel(OF_LOG_VERBOSE);
+	ofSetSphereResolution(32);
+
+
 	scene = new Scene();
 	camera = new ofEasyCam();
 
@@ -82,6 +88,8 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 		ofSetColor(ofColor::white);
 		
 	}
+	// activer l'éclairage dynamique
+	ofEnableLighting();
 
 	for (Object* object : scene->objects) {
 
@@ -111,6 +119,7 @@ void Renderer3d::draw(Renderer3d::RenderMode renderMode, vector<Object*> selecte
 		object->checkIfSelected();
 		ofSetColor(ofColor::white);
 	}
+	ofDisableLighting();
 	camera->end();
 	ofDisableDepthTest();
 	ofPopStyle();
