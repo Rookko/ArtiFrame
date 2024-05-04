@@ -589,7 +589,7 @@ void RayTracer::run(ofCamera* cam, Scene* sc) {
 
     image_width = 300;
     image_height = 300;
-    ray_per_pixel = 100;
+    ray_per_pixel = 50;
 
     constexpr double anchor = 1e5;
     constexpr double wall_radius = anchor;
