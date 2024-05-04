@@ -305,7 +305,7 @@ struct Camera
 
     Camera(Vector p, Vector o) : position(p), orientation(o) {}
 
-    
+    // fonction qui permet de calibrer la cam�ra en fonction la valeur courante de ses attributs
     void calibrate()
     {
         axis_z = orientation;
@@ -320,7 +320,7 @@ struct Image {
     int count;  // nombre de pixels
     int index;  // index d'un des pixels
 
-    double size;
+    double size; // poids en m�moire (en m�gaoctets)
 
     Vector* pixel;
 
@@ -367,7 +367,7 @@ Vector compute_radiance(const Ray& ray, int depth) {
     // distance de l'intersection
     double distance;
 
-    
+    // identifiant de la g�om�trie en intersection
     int id = 0;
 
     // valider s'il n'y a pas intersection
@@ -386,10 +386,10 @@ Vector compute_radiance(const Ray& ray, int depth) {
     if (distance >= infinity)
         return Vector();
 
-    
+    // r�f�rence sur une g�om�trie en intersection avec un rayon
     const Element& obj = *scene[id];
 
-    
+    // calculer les coordonn�es du point d'intersection
     Vector x = ray.origin + ray.direction * distance;
 
     // calculer la normale au point d'intersection
@@ -402,7 +402,7 @@ Vector compute_radiance(const Ray& ray, int depth) {
     Vector f = obj.color;
     double threshold = f.x > f.y && f.x > f.z ? f.x : f.y > f.z ? f.y : f.z;
 
-    
+    // valider si la limite du nombre de r�cursions est atteinte
     if (++depth > max_depth)
     {
         // test de probabilit�
@@ -414,7 +414,7 @@ Vector compute_radiance(const Ray& ray, int depth) {
 
     if (obj.material == SurfaceType::diffuse)
     {
-       
+        // mat�riau avec r�flexion diffuse
 
         double r1 = 2 * PI * random01(rng);
         double r2 = random01(rng);
@@ -431,7 +431,7 @@ Vector compute_radiance(const Ray& ray, int depth) {
     }
     else if (obj.material == SurfaceType::specular)
     {
-        
+        // mat�riau avec r�flexion sp�culaire
 
         radiance = obj.emission + f.multiply(compute_radiance(Ray(x, ray.direction - n * 2.0 * n.dot(ray.direction)), depth));
 
@@ -439,13 +439,13 @@ Vector compute_radiance(const Ray& ray, int depth) {
     }
     else if (obj.material == SurfaceType::refraction)
     {
-        
+        // mat�riau avec r�flexion r�fraction
 
         Ray reflection_ray(x, ray.direction - n * 2.0 * n.dot(ray.direction));
 
         bool into = n.dot(na) > 0;
 
-        double ior = 1.5; 
+        double ior = 1.5; // indice de r�fraction du verre
         double nc = 1.0;
         double nt = ior;
         double nnt = into ? nc / nt : nt / nc;
@@ -491,23 +491,23 @@ void save_image_file(int width, int height, int ray_per_pixel, const Vector* pix
     ss << "image" << width << "x" << height << "_" << ray_per_pixel << ".ppm";
     std::string filename = ss.str();
 
-    
+    // d�claration et ouverture du fichier en mode �criture
     std::ofstream file;
     file.open(filename, std::ios::out);
 
-    
+    // ent�te du ficher pour une image avec un espace de couleur RGB 24 bits (P3 pour pixmap)
     file << "P3\n";
 
-    
+    // largeur et hauteur de l'image sur la seconde ligne de l'ent�te
     file << width << ' ' << height << '\n';
 
-    
+    // valeur maximale de l'espace de couleur sur la troisi�me ligne de l'ent�te
     file << "255\n";
 
-    
+    // �criture des pixels dans le fichier image
     for (int index = 0; index < width * height; ++index)
     {
-        
+        // �crire la couleur du pixel dans le fichier image
         file << static_cast<std::uint32_t>(format_color_component(pixel[index].x)) << " ";
         file << static_cast<std::uint32_t>(format_color_component(pixel[index].y)) << " ";
         file << static_cast<std::uint32_t>(format_color_component(pixel[index].z)) << " ";
@@ -561,9 +561,9 @@ void RayTracer::run(ofCamera* cam, Scene* sc) {
 
     std::cout << "Raytracer start" << std::endl;
 
-    image_width = 320;
-    image_height = 320;
-    ray_per_pixel = 16;
+    image_width = 300;
+    image_height = 300;
+    ray_per_pixel = 50;
 
     constexpr double anchor = 1e5;
     constexpr double wall_radius = anchor;
@@ -573,15 +573,26 @@ void RayTracer::run(ofCamera* cam, Scene* sc) {
     // Walls
     scene.push_back(&Sphere(wall_radius, Vector(0, -anchor - 50, 0), Vector(), Vector(0.75, 0.75, 0.75), SurfaceType::diffuse));    // plancher
     scene.push_back(&Sphere(wall_radius, Vector(0, anchor + 50, 0), Vector(), Vector(0.75, 0.75, 0.75), SurfaceType::diffuse));    // plafond
-    scene.push_back(&Sphere(wall_radius, Vector(anchor - 50, 0, 0), Vector(), Vector(0.75, 0.25, 0.25), SurfaceType::diffuse));    // mur gauche
-    scene.push_back(&Sphere(wall_radius, Vector(0, 0, -anchor - 50), Vector(), Vector(0.25, 0.75, 0.25), SurfaceType::diffuse));    // mur arri�re
-    scene.push_back(&Sphere(wall_radius, Vector(-anchor + 50, 0, 0), Vector(), Vector(0.25, 0.25, 0.75), SurfaceType::diffuse));    // mur droit
-    scene.push_back(&Sphere(wall_radius, Vector(0, 0, anchor + 250), Vector(), Vector((0.25, 0.75, 0.75)), SurfaceType::diffuse));    // mur avant
+    scene.push_back(&Sphere(wall_radius, Vector(-anchor + 50, 0, 0), Vector(), Vector(0.15, 0.15, 0.75), SurfaceType::diffuse));    // mur droit
+    scene.push_back(&Sphere(wall_radius, Vector(anchor - 50, 0, 0), Vector(), Vector(0.75, 0.1, 0.75), SurfaceType::diffuse));  // Mur gauche en mauve
+    scene.push_back(&Sphere(wall_radius, Vector(0, 0, -anchor - 50), Vector(), Vector(0.9, 0.3, 0.1), SurfaceType::diffuse));   // Mur arrière en orange brûlé
+    scene.push_back(&Sphere(wall_radius, Vector(0, 0, anchor + 250), Vector(), Vector(0.15, 0.75, 0.15), SurfaceType::diffuse));    // Mur avant en vert
 
-    scene.push_back(&Sphere(20, Vector(-25, -10, 20), Vector(), Vector(1.0, 1.0, 1.0), SurfaceType::refraction));
-    scene.push_back(&Cube(35, Vector(25, 15, -10), Vector(), Vector(1.0, 1.0, 1.0), SurfaceType::specular));
-    scene.push_back(&Sphere(20, Vector(0, 60, 20), Vector(15, 15, 15), Vector(1.0, 1.0, 1.0), SurfaceType::diffuse));
-    scene.push_back(&Sphere(20, Vector(0, -25, 250), Vector(15, 15, 15), Vector(1.0, 1.0, 1.0), SurfaceType::diffuse));
+
+    scene.push_back(&Sphere(13, Vector(30, -35, 120), Vector(), Vector(1.0, 1.0, 1.0), SurfaceType::refraction)); // Sphere vitre devant droit
+    scene.push_back(&Cube(15, Vector(-35, -40, 100), Vector(), Vector(1.0, 1.0, 1.0), SurfaceType::refraction)); // Cube de vitre devant gauche
+    scene.push_back(&Cube(35, Vector(25, 25, -13), Vector(), Vector(1.0, 1.0, 1.0), SurfaceType::specular)); // Cube miroir fond droit
+    scene.push_back(&Cube(20, Vector(0, -15, 50), Vector(), Vector(1.0, 0.1, 0.1), SurfaceType::diffuse)); // Cube rouge milieu
+    scene.push_back(&Sphere(20, Vector(0, 60, 20), Vector(15, 15, 15), Vector(1.0, 1.0, 1.0), SurfaceType::diffuse)); // Lumiere plafond
+    scene.push_back(&Sphere(20, Vector(0, -25, 250), Vector(15, 15, 15), Vector(1.0, 1.0, 1.0), SurfaceType::diffuse)); // Lumiere camera devant
+    // Ajouter une sphère miroir fond gauche
+    scene.push_back(new Sphere(
+        30,                           // rayon de la sphère
+        Vector(-25, -25, -10),          // position de la sphère
+        Vector(0, 0, 0),              // émission (lumière), ici aucune émission
+        Vector(1, 1, 1),              // couleur (blanc, pour refléter comme un miroir)
+        SurfaceType::specular         // type de surface spéculaire pour agir comme un miroir
+    ));
 
     for (Object* obj : sc->objects) {
         if (dynamic_cast<LoadedFile*>(obj) != nullptr) {
@@ -601,7 +612,7 @@ void RayTracer::run(ofCamera* cam, Scene* sc) {
 
     }
 
-    
+    // allocation de la m�moire de l'image en fonction des param�tres du programme
     image.resize(image_width, image_height);
 
     std::cout << "image resize to " << image.width << "x" << image.height << " (" << image.count << " pixels, " << image.size << " MB)" << std::endl;
