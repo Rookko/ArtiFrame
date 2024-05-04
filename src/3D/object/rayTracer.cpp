@@ -16,6 +16,9 @@
 #include "surface.h"
 #include "transformation.h"
 #include "light.h"
+#include <omp.h>
+#include <atomic> // Include for atomic variable
+
 
 const int max_depth = 5;
 const double camera_fov = 0.5135;
@@ -79,14 +82,29 @@ struct Vector {
             z - v.z);
     }
 
+    Vector& operator+=(const Vector& v) {
+        x += v.x;
+        y += v.y;
+        z += v.z;
+        return *this;
+    }
+
     Vector& normalize() {
-        return *this = *this * (1.0 / sqrt(x * x + y * y + z * z));
+        double len = length();
+        if (len > 0) { // to avoid division by zero
+            double invLen = 1.0 / len;
+            x *= invLen;
+            y *= invLen;
+            z *= invLen;
+        }
+        return *this;
     }
 
     double length() const {
         return sqrt(x * x + y * y + z * z);
     }
 };
+
 
 struct Ray {
     Vector origin;
@@ -521,41 +539,49 @@ void render(Camera camera)
 {
     std::cout << "render start" << std::endl;
 
-    unsigned short x = 0;
-    int index, y, s, sx, sy = 0;
-    float progression = 0.0f;
-    double r1, r2 = 0.0;
-    double dx, dy = 0.0;
-    Vector radiance;
-    Vector distance;
+    int x, y, s, sx, sy;
+    std::atomic<int> completedLines(0);
+    int totalLines = image_height;
+    Vector radiance, distance;
 
+    // Détermination du nombre de threads qui seront utilisés
+    int nThreads;
+#pragma omp parallel
+    {
+#pragma omp single
+        nThreads = omp_get_num_threads();
+    }
+
+    // Parallélisation avec OpenMP
+#pragma omp parallel for private(x, s, sx, sy, radiance, distance) schedule(dynamic)
     for (y = 0; y < image_height; ++y) {
-        progression = 100.0f * y / (image_height - 1.0f);
-        fprintf(stderr, "\rraytracing (%d rays per pixel) : %4.1f %%", ray_per_pixel, progression);
         for (x = 0; x < image_width; ++x) {
-            index = (image_height - y - 1) * image_width + x;
+            int index = (image_height - y - 1) * image_width + x;
             for (sy = 0; sy < 2; ++sy) {
                 for (sx = 0; sx < 2; ++sx) {
                     radiance = Vector();
                     for (s = 0; s < ray_per_pixel; ++s) {
-                        r1 = 2.0 * random01(rng);
-                        dx = r1 < 1.0 ? sqrt(r1) - 1.0 : 1.0 - sqrt(2.0 - r1);
-
-                        r2 = 2.0 * random01(rng);
-                        dy = r2 < 1.0 ? sqrt(r2) - 1.0 : 1.0 - sqrt(2.0 - r2);
-
-                        distance = camera.axis_x * (((sx + 0.5 + dx) / 2.0 + x) / image_width - 0.5) +
+                        double r1 = 2.0 * random01(rng);
+                        double dx = r1 < 1.0 ? sqrt(r1) - 1.0 : 1.0 - sqrt(2.0 - r1);
+                        double r2 = 2.0 * random01(rng);
+                        double dy = r2 < 1.0 ? sqrt(r2) - 1.0 : 1.0 - sqrt(2.0 - r2);
+                        Vector distance = camera.axis_x * (((sx + 0.5 + dx) / 2.0 + x) / image_width - 0.5) +
                             camera.axis_y * (((sy + 0.5 + dy) / 2.0 + y) / image_height - 0.5) + camera.axis_z;
-
-                        radiance = radiance + compute_radiance(Ray(camera.position + distance * 140, distance.normalize()), 0) * (1.0 / ray_per_pixel);
+                        radiance += compute_radiance(Ray(camera.position + distance * 140, distance.normalize()), 0) * (1.0 / ray_per_pixel);
                     }
-                    image.pixel[index] = image.pixel[index] + Vector(clamp(radiance.x), clamp(radiance.y), clamp(radiance.z)) * 0.25;
+                    image.pixel[index] += Vector(clamp(radiance.x), clamp(radiance.y), clamp(radiance.z)) * 0.25;
                 }
             }
         }
+        ++completedLines;
+        if (omp_get_thread_num() == 0) { // Affichage uniquement par le thread principal
+            std::cout << "\rRendering progress: " << static_cast<int>(100.0 * completedLines / totalLines) << "%";
+        }
     }
-    std::cout << "\nrender done" << std::endl;
+
+    std::cout << "\nRendering completed. Total progress: 100%\n";
 }
+
 
 void RayTracer::run(ofCamera* cam, Scene* sc) {
 
@@ -563,7 +589,7 @@ void RayTracer::run(ofCamera* cam, Scene* sc) {
 
     image_width = 300;
     image_height = 300;
-    ray_per_pixel = 50;
+    ray_per_pixel = 100;
 
     constexpr double anchor = 1e5;
     constexpr double wall_radius = anchor;

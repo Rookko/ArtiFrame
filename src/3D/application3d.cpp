@@ -11,6 +11,7 @@
 #include "./3D/object/curve.h"
 #include "./3D/object/surface.h"
 #include "./3D/object/customObject.h"
+#include <omp.h> // Assurez-vous d'inclure omp.h
 
 
 vector<Object*> allObject;
@@ -148,6 +149,20 @@ void Application3d::setup(int buttonSize) {
     //basicCursor = new ofImage();
     //basicCursor->load("/data/basic_cursor.png");
 
+    ofSetVerticalSync(true);
+
+    // Test OpenMP
+#pragma omp parallel
+    {
+        int tid = omp_get_thread_num();
+        if (tid == 0) {
+            int nthreads = omp_get_num_threads();
+            ofLog() << "Nombre de threads = " << nthreads;
+        }
+        else {
+            ofLog() << "Hello from thread " << tid;
+        }
+    }
 
 
 }
